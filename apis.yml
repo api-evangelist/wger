@@ -23,6 +23,8 @@ apis:
       - type: Documentation
         url: https://wger.de/en/software/api
 common:
+  - type: DomainSecurity
+    url: security/wger-domain-security.yml
   - type: Website
     url: https://wger.de/en/software/api
   - type: PublicAPIsListing
