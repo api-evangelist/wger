@@ -51,49 +51,2040 @@ tags:
   - Django
   - REST
 apis:
-  - name: Wger REST API v2
-    description: >-
-      The wger REST API, served under /api/v2/ on every wger instance. Returns
-      JSON by default, uses limit/offset pagination (cursor pagination on
-      /api/v2/ingredient-sync/), supports ordering and field filtering, and
-      documents itself with a drf-spectacular generated OpenAPI 3.0.3 schema at
-      /api/v2/schema. Public reference data is anonymous; user data requires a
-      Token, JWT Bearer, OAuth2/OIDC token or session cookie.
-    humanURL: https://wger.readthedocs.io/en/latest/api/api.html
-    baseURL: https://wger.de/api/v2
-    tags:
-      - Sports And Fitness
-      - Fitness
-      - Nutrition
-      - Workout Tracking
-    properties:
-      - type: OpenAPI
-        url: openapi/wger-openapi.yml
-      - type: Documentation
-        url: https://wger.readthedocs.io/en/latest/api/api.html
-      - type: APIReference
-        url: https://wger.de/api/v2/schema/ui
-      - type: GettingStarted
-        url: https://wger.readthedocs.io/en/latest/api/api.html
-      - type: Authentication
-        url: authentication/wger-authentication.yml
-      - type: OAuthScopes
-        url: scopes/wger-scopes.yml
-      - type: RateLimits
-        url: rate-limits/wger-rate-limits.yml
-      - type: ErrorCatalog
-        url: errors/wger-problem-types.yml
-      - type: Conventions
-        url: conventions/wger-conventions.yml
-      - type: DataModel
-        url: data-model/wger-data-model.yml
-      - type: Overlay
-        url: overlays/wger-openapi-overlay.yaml
-      - type: Sandbox
-        url: sandbox/wger-sandbox.yml
-      - type: Conformance
-        url: conformance/wger-conformance.yml
+- aid: wger:wger-check-language-api
+  name: Wger Check Language API
+  description: The check-language API from Wger — 1 operation(s) for check-language.
+  humanURL: https://wger.readthedocs.io/en/latest/api/api.html
+  baseURL: https://wger.de/api/v2
+  tags:
+  - check-language
+  properties:
+  - type: OpenAPI
+    url: openapi/wger-check-language-api-openapi.yml
+  - type: Documentation
+    url: https://wger.readthedocs.io/en/latest/api/api.html
+  - type: APIReference
+    url: https://wger.de/api/v2/schema/ui
+  - type: GettingStarted
+    url: https://wger.readthedocs.io/en/latest/api/api.html
+  - type: Authentication
+    url: authentication/wger-authentication.yml
+  - type: OAuthScopes
+    url: scopes/wger-scopes.yml
+  - type: RateLimits
+    url: rate-limits/wger-rate-limits.yml
+  - type: ErrorCatalog
+    url: errors/wger-problem-types.yml
+  - type: Conventions
+    url: conventions/wger-conventions.yml
+  - type: DataModel
+    url: data-model/wger-data-model.yml
+  - type: Sandbox
+    url: sandbox/wger-sandbox.yml
+  - type: Conformance
+    url: conformance/wger-conformance.yml
+- aid: wger:wger-check-permission-api
+  name: Wger Check Permission API
+  description: The check-permission API from Wger — 1 operation(s) for check-permission.
+  humanURL: https://wger.readthedocs.io/en/latest/api/api.html
+  baseURL: https://wger.de/api/v2
+  tags:
+  - check-permission
+  properties:
+  - type: OpenAPI
+    url: openapi/wger-check-permission-api-openapi.yml
+  - type: Documentation
+    url: https://wger.readthedocs.io/en/latest/api/api.html
+  - type: APIReference
+    url: https://wger.de/api/v2/schema/ui
+  - type: GettingStarted
+    url: https://wger.readthedocs.io/en/latest/api/api.html
+  - type: Authentication
+    url: authentication/wger-authentication.yml
+  - type: OAuthScopes
+    url: scopes/wger-scopes.yml
+  - type: RateLimits
+    url: rate-limits/wger-rate-limits.yml
+  - type: ErrorCatalog
+    url: errors/wger-problem-types.yml
+  - type: Conventions
+    url: conventions/wger-conventions.yml
+  - type: DataModel
+    url: data-model/wger-data-model.yml
+  - type: Sandbox
+    url: sandbox/wger-sandbox.yml
+  - type: Conformance
+    url: conformance/wger-conformance.yml
+- aid: wger:wger-day-api
+  name: Wger Day API
+  description: The day API from Wger — 2 operation(s) for day.
+  humanURL: https://wger.readthedocs.io/en/latest/api/api.html
+  baseURL: https://wger.de/api/v2
+  tags:
+  - day
+  properties:
+  - type: OpenAPI
+    url: openapi/wger-day-api-openapi.yml
+  - type: Documentation
+    url: https://wger.readthedocs.io/en/latest/api/api.html
+  - type: APIReference
+    url: https://wger.de/api/v2/schema/ui
+  - type: GettingStarted
+    url: https://wger.readthedocs.io/en/latest/api/api.html
+  - type: Authentication
+    url: authentication/wger-authentication.yml
+  - type: OAuthScopes
+    url: scopes/wger-scopes.yml
+  - type: RateLimits
+    url: rate-limits/wger-rate-limits.yml
+  - type: ErrorCatalog
+    url: errors/wger-problem-types.yml
+  - type: Conventions
+    url: conventions/wger-conventions.yml
+  - type: DataModel
+    url: data-model/wger-data-model.yml
+  - type: Sandbox
+    url: sandbox/wger-sandbox.yml
+  - type: Conformance
+    url: conformance/wger-conformance.yml
+- aid: wger:wger-deletion-log-api
+  name: Wger Deletion Log API
+  description: The deletion-log API from Wger — 2 operation(s) for deletion-log.
+  humanURL: https://wger.readthedocs.io/en/latest/api/api.html
+  baseURL: https://wger.de/api/v2
+  tags:
+  - deletion-log
+  properties:
+  - type: OpenAPI
+    url: openapi/wger-deletion-log-api-openapi.yml
+  - type: Documentation
+    url: https://wger.readthedocs.io/en/latest/api/api.html
+  - type: APIReference
+    url: https://wger.de/api/v2/schema/ui
+  - type: GettingStarted
+    url: https://wger.readthedocs.io/en/latest/api/api.html
+  - type: Authentication
+    url: authentication/wger-authentication.yml
+  - type: OAuthScopes
+    url: scopes/wger-scopes.yml
+  - type: RateLimits
+    url: rate-limits/wger-rate-limits.yml
+  - type: ErrorCatalog
+    url: errors/wger-problem-types.yml
+  - type: Conventions
+    url: conventions/wger-conventions.yml
+  - type: DataModel
+    url: data-model/wger-data-model.yml
+  - type: Sandbox
+    url: sandbox/wger-sandbox.yml
+  - type: Conformance
+    url: conformance/wger-conformance.yml
+- aid: wger:wger-equipment-api
+  name: Wger Equipment API
+  description: The equipment API from Wger — 2 operation(s) for equipment.
+  humanURL: https://wger.readthedocs.io/en/latest/api/api.html
+  baseURL: https://wger.de/api/v2
+  tags:
+  - equipment
+  properties:
+  - type: OpenAPI
+    url: openapi/wger-equipment-api-openapi.yml
+  - type: Documentation
+    url: https://wger.readthedocs.io/en/latest/api/api.html
+  - type: APIReference
+    url: https://wger.de/api/v2/schema/ui
+  - type: GettingStarted
+    url: https://wger.readthedocs.io/en/latest/api/api.html
+  - type: Authentication
+    url: authentication/wger-authentication.yml
+  - type: OAuthScopes
+    url: scopes/wger-scopes.yml
+  - type: RateLimits
+    url: rate-limits/wger-rate-limits.yml
+  - type: ErrorCatalog
+    url: errors/wger-problem-types.yml
+  - type: Conventions
+    url: conventions/wger-conventions.yml
+  - type: DataModel
+    url: data-model/wger-data-model.yml
+  - type: Sandbox
+    url: sandbox/wger-sandbox.yml
+  - type: Conformance
+    url: conformance/wger-conformance.yml
+- aid: wger:wger-exercise-api
+  name: Wger Exercise API
+  description: >-
+    The exercise database. Related objects are referenced by ID. This is the writable endpoint of the
+    two exercise representations.
+  humanURL: https://wger.readthedocs.io/en/latest/api/api.html
+  baseURL: https://wger.de/api/v2
+  tags:
+  - exercise
+  properties:
+  - type: OpenAPI
+    url: openapi/wger-exercise-api-openapi.yml
+  - type: Documentation
+    url: https://wger.readthedocs.io/en/latest/api/api.html
+  - type: APIReference
+    url: https://wger.de/api/v2/schema/ui
+  - type: GettingStarted
+    url: https://wger.readthedocs.io/en/latest/api/api.html
+  - type: Authentication
+    url: authentication/wger-authentication.yml
+  - type: OAuthScopes
+    url: scopes/wger-scopes.yml
+  - type: RateLimits
+    url: rate-limits/wger-rate-limits.yml
+  - type: ErrorCatalog
+    url: errors/wger-problem-types.yml
+  - type: Conventions
+    url: conventions/wger-conventions.yml
+  - type: DataModel
+    url: data-model/wger-data-model.yml
+  - type: Sandbox
+    url: sandbox/wger-sandbox.yml
+  - type: Conformance
+    url: conformance/wger-conformance.yml
+- aid: wger:wger-exercise-submission-api
+  name: Wger Exercise Submission API
+  description: The exercise-submission API from Wger — 1 operation(s) for exercise-submission.
+  humanURL: https://wger.readthedocs.io/en/latest/api/api.html
+  baseURL: https://wger.de/api/v2
+  tags:
+  - exercise-submission
+  properties:
+  - type: OpenAPI
+    url: openapi/wger-exercise-submission-api-openapi.yml
+  - type: Documentation
+    url: https://wger.readthedocs.io/en/latest/api/api.html
+  - type: APIReference
+    url: https://wger.de/api/v2/schema/ui
+  - type: GettingStarted
+    url: https://wger.readthedocs.io/en/latest/api/api.html
+  - type: Authentication
+    url: authentication/wger-authentication.yml
+  - type: OAuthScopes
+    url: scopes/wger-scopes.yml
+  - type: RateLimits
+    url: rate-limits/wger-rate-limits.yml
+  - type: ErrorCatalog
+    url: errors/wger-problem-types.yml
+  - type: Conventions
+    url: conventions/wger-conventions.yml
+  - type: DataModel
+    url: data-model/wger-data-model.yml
+  - type: Sandbox
+    url: sandbox/wger-sandbox.yml
+  - type: Conformance
+    url: conformance/wger-conformance.yml
+- aid: wger:wger-exercise-translation-api
+  name: Wger Exercise Translation API
+  description: The exercise-translation API from Wger — 2 operation(s) for exercise-translation.
+  humanURL: https://wger.readthedocs.io/en/latest/api/api.html
+  baseURL: https://wger.de/api/v2
+  tags:
+  - exercise-translation
+  properties:
+  - type: OpenAPI
+    url: openapi/wger-exercise-translation-api-openapi.yml
+  - type: Documentation
+    url: https://wger.readthedocs.io/en/latest/api/api.html
+  - type: APIReference
+    url: https://wger.de/api/v2/schema/ui
+  - type: GettingStarted
+    url: https://wger.readthedocs.io/en/latest/api/api.html
+  - type: Authentication
+    url: authentication/wger-authentication.yml
+  - type: OAuthScopes
+    url: scopes/wger-scopes.yml
+  - type: RateLimits
+    url: rate-limits/wger-rate-limits.yml
+  - type: ErrorCatalog
+    url: errors/wger-problem-types.yml
+  - type: Conventions
+    url: conventions/wger-conventions.yml
+  - type: DataModel
+    url: data-model/wger-data-model.yml
+  - type: Sandbox
+    url: sandbox/wger-sandbox.yml
+  - type: Conformance
+    url: conformance/wger-conformance.yml
+- aid: wger:wger-exercisealias-api
+  name: Wger Exercisealias API
+  description: The exercisealias API from Wger — 2 operation(s) for exercisealias.
+  humanURL: https://wger.readthedocs.io/en/latest/api/api.html
+  baseURL: https://wger.de/api/v2
+  tags:
+  - exercisealias
+  properties:
+  - type: OpenAPI
+    url: openapi/wger-exercisealias-api-openapi.yml
+  - type: Documentation
+    url: https://wger.readthedocs.io/en/latest/api/api.html
+  - type: APIReference
+    url: https://wger.de/api/v2/schema/ui
+  - type: GettingStarted
+    url: https://wger.readthedocs.io/en/latest/api/api.html
+  - type: Authentication
+    url: authentication/wger-authentication.yml
+  - type: OAuthScopes
+    url: scopes/wger-scopes.yml
+  - type: RateLimits
+    url: rate-limits/wger-rate-limits.yml
+  - type: ErrorCatalog
+    url: errors/wger-problem-types.yml
+  - type: Conventions
+    url: conventions/wger-conventions.yml
+  - type: DataModel
+    url: data-model/wger-data-model.yml
+  - type: Sandbox
+    url: sandbox/wger-sandbox.yml
+  - type: Conformance
+    url: conformance/wger-conformance.yml
+- aid: wger:wger-exercisecategory-api
+  name: Wger Exercisecategory API
+  description: The exercisecategory API from Wger — 2 operation(s) for exercisecategory.
+  humanURL: https://wger.readthedocs.io/en/latest/api/api.html
+  baseURL: https://wger.de/api/v2
+  tags:
+  - exercisecategory
+  properties:
+  - type: OpenAPI
+    url: openapi/wger-exercisecategory-api-openapi.yml
+  - type: Documentation
+    url: https://wger.readthedocs.io/en/latest/api/api.html
+  - type: APIReference
+    url: https://wger.de/api/v2/schema/ui
+  - type: GettingStarted
+    url: https://wger.readthedocs.io/en/latest/api/api.html
+  - type: Authentication
+    url: authentication/wger-authentication.yml
+  - type: OAuthScopes
+    url: scopes/wger-scopes.yml
+  - type: RateLimits
+    url: rate-limits/wger-rate-limits.yml
+  - type: ErrorCatalog
+    url: errors/wger-problem-types.yml
+  - type: Conventions
+    url: conventions/wger-conventions.yml
+  - type: DataModel
+    url: data-model/wger-data-model.yml
+  - type: Sandbox
+    url: sandbox/wger-sandbox.yml
+  - type: Conformance
+    url: conformance/wger-conformance.yml
+- aid: wger:wger-exercisecomment-api
+  name: Wger Exercisecomment API
+  description: The exercisecomment API from Wger — 2 operation(s) for exercisecomment.
+  humanURL: https://wger.readthedocs.io/en/latest/api/api.html
+  baseURL: https://wger.de/api/v2
+  tags:
+  - exercisecomment
+  properties:
+  - type: OpenAPI
+    url: openapi/wger-exercisecomment-api-openapi.yml
+  - type: Documentation
+    url: https://wger.readthedocs.io/en/latest/api/api.html
+  - type: APIReference
+    url: https://wger.de/api/v2/schema/ui
+  - type: GettingStarted
+    url: https://wger.readthedocs.io/en/latest/api/api.html
+  - type: Authentication
+    url: authentication/wger-authentication.yml
+  - type: OAuthScopes
+    url: scopes/wger-scopes.yml
+  - type: RateLimits
+    url: rate-limits/wger-rate-limits.yml
+  - type: ErrorCatalog
+    url: errors/wger-problem-types.yml
+  - type: Conventions
+    url: conventions/wger-conventions.yml
+  - type: DataModel
+    url: data-model/wger-data-model.yml
+  - type: Sandbox
+    url: sandbox/wger-sandbox.yml
+  - type: Conformance
+    url: conformance/wger-conformance.yml
+- aid: wger:wger-exerciseimage-api
+  name: Wger Exerciseimage API
+  description: The exerciseimage API from Wger — 3 operation(s) for exerciseimage.
+  humanURL: https://wger.readthedocs.io/en/latest/api/api.html
+  baseURL: https://wger.de/api/v2
+  tags:
+  - exerciseimage
+  properties:
+  - type: OpenAPI
+    url: openapi/wger-exerciseimage-api-openapi.yml
+  - type: Documentation
+    url: https://wger.readthedocs.io/en/latest/api/api.html
+  - type: APIReference
+    url: https://wger.de/api/v2/schema/ui
+  - type: GettingStarted
+    url: https://wger.readthedocs.io/en/latest/api/api.html
+  - type: Authentication
+    url: authentication/wger-authentication.yml
+  - type: OAuthScopes
+    url: scopes/wger-scopes.yml
+  - type: RateLimits
+    url: rate-limits/wger-rate-limits.yml
+  - type: ErrorCatalog
+    url: errors/wger-problem-types.yml
+  - type: Conventions
+    url: conventions/wger-conventions.yml
+  - type: DataModel
+    url: data-model/wger-data-model.yml
+  - type: Sandbox
+    url: sandbox/wger-sandbox.yml
+  - type: Conformance
+    url: conformance/wger-conformance.yml
+- aid: wger:wger-exerciseinfo-api
+  name: Wger Exerciseinfo API
+  description: >-
+    The same exercises read-only, with categories, muscles, equipment, images, videos and translations
+    expanded inline. Meant for external tools and integrations: one request returns everything, with no
+    IDs left to resolve.
+  humanURL: https://wger.readthedocs.io/en/latest/api/api.html
+  baseURL: https://wger.de/api/v2
+  tags:
+  - exerciseinfo
+  properties:
+  - type: OpenAPI
+    url: openapi/wger-exerciseinfo-api-openapi.yml
+  - type: Documentation
+    url: https://wger.readthedocs.io/en/latest/api/api.html
+  - type: APIReference
+    url: https://wger.de/api/v2/schema/ui
+  - type: GettingStarted
+    url: https://wger.readthedocs.io/en/latest/api/api.html
+  - type: Authentication
+    url: authentication/wger-authentication.yml
+  - type: OAuthScopes
+    url: scopes/wger-scopes.yml
+  - type: RateLimits
+    url: rate-limits/wger-rate-limits.yml
+  - type: ErrorCatalog
+    url: errors/wger-problem-types.yml
+  - type: Conventions
+    url: conventions/wger-conventions.yml
+  - type: DataModel
+    url: data-model/wger-data-model.yml
+  - type: Sandbox
+    url: sandbox/wger-sandbox.yml
+  - type: Conformance
+    url: conformance/wger-conformance.yml
+- aid: wger:wger-gallery-api
+  name: Wger Gallery API
+  description: The gallery API from Wger — 2 operation(s) for gallery.
+  humanURL: https://wger.readthedocs.io/en/latest/api/api.html
+  baseURL: https://wger.de/api/v2
+  tags:
+  - gallery
+  properties:
+  - type: OpenAPI
+    url: openapi/wger-gallery-api-openapi.yml
+  - type: Documentation
+    url: https://wger.readthedocs.io/en/latest/api/api.html
+  - type: APIReference
+    url: https://wger.de/api/v2/schema/ui
+  - type: GettingStarted
+    url: https://wger.readthedocs.io/en/latest/api/api.html
+  - type: Authentication
+    url: authentication/wger-authentication.yml
+  - type: OAuthScopes
+    url: scopes/wger-scopes.yml
+  - type: RateLimits
+    url: rate-limits/wger-rate-limits.yml
+  - type: ErrorCatalog
+    url: errors/wger-problem-types.yml
+  - type: Conventions
+    url: conventions/wger-conventions.yml
+  - type: DataModel
+    url: data-model/wger-data-model.yml
+  - type: Sandbox
+    url: sandbox/wger-sandbox.yml
+  - type: Conformance
+    url: conformance/wger-conformance.yml
+- aid: wger:wger-ingredient-api
+  name: Wger Ingredient API
+  description: >-
+    Nutritional information per ingredient, referencing related objects by ID. Read-only and rate limited.
+  humanURL: https://wger.readthedocs.io/en/latest/api/api.html
+  baseURL: https://wger.de/api/v2
+  tags:
+  - ingredient
+  properties:
+  - type: OpenAPI
+    url: openapi/wger-ingredient-api-openapi.yml
+  - type: Documentation
+    url: https://wger.readthedocs.io/en/latest/api/api.html
+  - type: APIReference
+    url: https://wger.de/api/v2/schema/ui
+  - type: GettingStarted
+    url: https://wger.readthedocs.io/en/latest/api/api.html
+  - type: Authentication
+    url: authentication/wger-authentication.yml
+  - type: OAuthScopes
+    url: scopes/wger-scopes.yml
+  - type: RateLimits
+    url: rate-limits/wger-rate-limits.yml
+  - type: ErrorCatalog
+    url: errors/wger-problem-types.yml
+  - type: Conventions
+    url: conventions/wger-conventions.yml
+  - type: DataModel
+    url: data-model/wger-data-model.yml
+  - type: Sandbox
+    url: sandbox/wger-sandbox.yml
+  - type: Conformance
+    url: conformance/wger-conformance.yml
+- aid: wger:wger-ingredient-image-api
+  name: Wger Ingredient Image API
+  description: The ingredient-image API from Wger — 2 operation(s) for ingredient-image.
+  humanURL: https://wger.readthedocs.io/en/latest/api/api.html
+  baseURL: https://wger.de/api/v2
+  tags:
+  - ingredient-image
+  properties:
+  - type: OpenAPI
+    url: openapi/wger-ingredient-image-api-openapi.yml
+  - type: Documentation
+    url: https://wger.readthedocs.io/en/latest/api/api.html
+  - type: APIReference
+    url: https://wger.de/api/v2/schema/ui
+  - type: GettingStarted
+    url: https://wger.readthedocs.io/en/latest/api/api.html
+  - type: Authentication
+    url: authentication/wger-authentication.yml
+  - type: OAuthScopes
+    url: scopes/wger-scopes.yml
+  - type: RateLimits
+    url: rate-limits/wger-rate-limits.yml
+  - type: ErrorCatalog
+    url: errors/wger-problem-types.yml
+  - type: Conventions
+    url: conventions/wger-conventions.yml
+  - type: DataModel
+    url: data-model/wger-data-model.yml
+  - type: Sandbox
+    url: sandbox/wger-sandbox.yml
+  - type: Conformance
+    url: conformance/wger-conformance.yml
+- aid: wger:wger-ingredient-sync-api
+  name: Wger Ingredient Sync API
+  description: >-
+    The same data as ingredientinfo, but cursor paginated for mirroring the whole catalogue. No `count`,
+    and only `next`/`previous` rather than arbitrary offsets. Combine with the `last_update__gt` filter
+    for incremental syncs.
+  humanURL: https://wger.readthedocs.io/en/latest/api/api.html
+  baseURL: https://wger.de/api/v2
+  tags:
+  - ingredient-sync
+  properties:
+  - type: OpenAPI
+    url: openapi/wger-ingredient-sync-api-openapi.yml
+  - type: Documentation
+    url: https://wger.readthedocs.io/en/latest/api/api.html
+  - type: APIReference
+    url: https://wger.de/api/v2/schema/ui
+  - type: GettingStarted
+    url: https://wger.readthedocs.io/en/latest/api/api.html
+  - type: Authentication
+    url: authentication/wger-authentication.yml
+  - type: OAuthScopes
+    url: scopes/wger-scopes.yml
+  - type: RateLimits
+    url: rate-limits/wger-rate-limits.yml
+  - type: ErrorCatalog
+    url: errors/wger-problem-types.yml
+  - type: Conventions
+    url: conventions/wger-conventions.yml
+  - type: DataModel
+    url: data-model/wger-data-model.yml
+  - type: Sandbox
+    url: sandbox/wger-sandbox.yml
+  - type: Conformance
+    url: conformance/wger-conformance.yml
+- aid: wger:wger-ingredientinfo-api
+  name: Wger Ingredientinfo API
+  description: >-
+    The same ingredients read-only, with language, license, image and weight units expanded inline. Meant
+    for external tools and integrations: one request returns everything, with no IDs left to resolve.
+  humanURL: https://wger.readthedocs.io/en/latest/api/api.html
+  baseURL: https://wger.de/api/v2
+  tags:
+  - ingredientinfo
+  properties:
+  - type: OpenAPI
+    url: openapi/wger-ingredientinfo-api-openapi.yml
+  - type: Documentation
+    url: https://wger.readthedocs.io/en/latest/api/api.html
+  - type: APIReference
+    url: https://wger.de/api/v2/schema/ui
+  - type: GettingStarted
+    url: https://wger.readthedocs.io/en/latest/api/api.html
+  - type: Authentication
+    url: authentication/wger-authentication.yml
+  - type: OAuthScopes
+    url: scopes/wger-scopes.yml
+  - type: RateLimits
+    url: rate-limits/wger-rate-limits.yml
+  - type: ErrorCatalog
+    url: errors/wger-problem-types.yml
+  - type: Conventions
+    url: conventions/wger-conventions.yml
+  - type: DataModel
+    url: data-model/wger-data-model.yml
+  - type: Sandbox
+    url: sandbox/wger-sandbox.yml
+  - type: Conformance
+    url: conformance/wger-conformance.yml
+- aid: wger:wger-ingredientweightunit-api
+  name: Wger Ingredientweightunit API
+  description: The ingredientweightunit API from Wger — 2 operation(s) for ingredientweightunit.
+  humanURL: https://wger.readthedocs.io/en/latest/api/api.html
+  baseURL: https://wger.de/api/v2
+  tags:
+  - ingredientweightunit
+  properties:
+  - type: OpenAPI
+    url: openapi/wger-ingredientweightunit-api-openapi.yml
+  - type: Documentation
+    url: https://wger.readthedocs.io/en/latest/api/api.html
+  - type: APIReference
+    url: https://wger.de/api/v2/schema/ui
+  - type: GettingStarted
+    url: https://wger.readthedocs.io/en/latest/api/api.html
+  - type: Authentication
+    url: authentication/wger-authentication.yml
+  - type: OAuthScopes
+    url: scopes/wger-scopes.yml
+  - type: RateLimits
+    url: rate-limits/wger-rate-limits.yml
+  - type: ErrorCatalog
+    url: errors/wger-problem-types.yml
+  - type: Conventions
+    url: conventions/wger-conventions.yml
+  - type: DataModel
+    url: data-model/wger-data-model.yml
+  - type: Sandbox
+    url: sandbox/wger-sandbox.yml
+  - type: Conformance
+    url: conformance/wger-conformance.yml
+- aid: wger:wger-issue-refresh-token-api
+  name: Wger Issue Refresh Token API
+  description: The issue-refresh-token API from Wger — 1 operation(s) for issue-refresh-token.
+  humanURL: https://wger.readthedocs.io/en/latest/api/api.html
+  baseURL: https://wger.de/api/v2
+  tags:
+  - issue-refresh-token
+  properties:
+  - type: OpenAPI
+    url: openapi/wger-issue-refresh-token-api-openapi.yml
+  - type: Documentation
+    url: https://wger.readthedocs.io/en/latest/api/api.html
+  - type: APIReference
+    url: https://wger.de/api/v2/schema/ui
+  - type: GettingStarted
+    url: https://wger.readthedocs.io/en/latest/api/api.html
+  - type: Authentication
+    url: authentication/wger-authentication.yml
+  - type: OAuthScopes
+    url: scopes/wger-scopes.yml
+  - type: RateLimits
+    url: rate-limits/wger-rate-limits.yml
+  - type: ErrorCatalog
+    url: errors/wger-problem-types.yml
+  - type: Conventions
+    url: conventions/wger-conventions.yml
+  - type: DataModel
+    url: data-model/wger-data-model.yml
+  - type: Sandbox
+    url: sandbox/wger-sandbox.yml
+  - type: Conformance
+    url: conformance/wger-conformance.yml
+- aid: wger:wger-language-api
+  name: Wger Language API
+  description: The language API from Wger — 2 operation(s) for language.
+  humanURL: https://wger.readthedocs.io/en/latest/api/api.html
+  baseURL: https://wger.de/api/v2
+  tags:
+  - language
+  properties:
+  - type: OpenAPI
+    url: openapi/wger-language-api-openapi.yml
+  - type: Documentation
+    url: https://wger.readthedocs.io/en/latest/api/api.html
+  - type: APIReference
+    url: https://wger.de/api/v2/schema/ui
+  - type: GettingStarted
+    url: https://wger.readthedocs.io/en/latest/api/api.html
+  - type: Authentication
+    url: authentication/wger-authentication.yml
+  - type: OAuthScopes
+    url: scopes/wger-scopes.yml
+  - type: RateLimits
+    url: rate-limits/wger-rate-limits.yml
+  - type: ErrorCatalog
+    url: errors/wger-problem-types.yml
+  - type: Conventions
+    url: conventions/wger-conventions.yml
+  - type: DataModel
+    url: data-model/wger-data-model.yml
+  - type: Sandbox
+    url: sandbox/wger-sandbox.yml
+  - type: Conformance
+    url: conformance/wger-conformance.yml
+- aid: wger:wger-license-api
+  name: Wger License API
+  description: The license API from Wger — 2 operation(s) for license.
+  humanURL: https://wger.readthedocs.io/en/latest/api/api.html
+  baseURL: https://wger.de/api/v2
+  tags:
+  - license
+  properties:
+  - type: OpenAPI
+    url: openapi/wger-license-api-openapi.yml
+  - type: Documentation
+    url: https://wger.readthedocs.io/en/latest/api/api.html
+  - type: APIReference
+    url: https://wger.de/api/v2/schema/ui
+  - type: GettingStarted
+    url: https://wger.readthedocs.io/en/latest/api/api.html
+  - type: Authentication
+    url: authentication/wger-authentication.yml
+  - type: OAuthScopes
+    url: scopes/wger-scopes.yml
+  - type: RateLimits
+    url: rate-limits/wger-rate-limits.yml
+  - type: ErrorCatalog
+    url: errors/wger-problem-types.yml
+  - type: Conventions
+    url: conventions/wger-conventions.yml
+  - type: DataModel
+    url: data-model/wger-data-model.yml
+  - type: Sandbox
+    url: sandbox/wger-sandbox.yml
+  - type: Conformance
+    url: conformance/wger-conformance.yml
+- aid: wger:wger-max-repetitions-config-api
+  name: Wger Max Repetitions Config API
+  description: Upper limit for the repetitions of a set, per iteration.
+  humanURL: https://wger.readthedocs.io/en/latest/api/api.html
+  baseURL: https://wger.de/api/v2
+  tags:
+  - max-repetitions-config
+  properties:
+  - type: OpenAPI
+    url: openapi/wger-max-repetitions-config-api-openapi.yml
+  - type: Documentation
+    url: https://wger.readthedocs.io/en/latest/api/api.html
+  - type: APIReference
+    url: https://wger.de/api/v2/schema/ui
+  - type: GettingStarted
+    url: https://wger.readthedocs.io/en/latest/api/api.html
+  - type: Authentication
+    url: authentication/wger-authentication.yml
+  - type: OAuthScopes
+    url: scopes/wger-scopes.yml
+  - type: RateLimits
+    url: rate-limits/wger-rate-limits.yml
+  - type: ErrorCatalog
+    url: errors/wger-problem-types.yml
+  - type: Conventions
+    url: conventions/wger-conventions.yml
+  - type: DataModel
+    url: data-model/wger-data-model.yml
+  - type: Sandbox
+    url: sandbox/wger-sandbox.yml
+  - type: Conformance
+    url: conformance/wger-conformance.yml
+- aid: wger:wger-max-rest-config-api
+  name: Wger Max Rest Config API
+  description: Upper limit for the rest between sets, per iteration.
+  humanURL: https://wger.readthedocs.io/en/latest/api/api.html
+  baseURL: https://wger.de/api/v2
+  tags:
+  - max-rest-config
+  properties:
+  - type: OpenAPI
+    url: openapi/wger-max-rest-config-api-openapi.yml
+  - type: Documentation
+    url: https://wger.readthedocs.io/en/latest/api/api.html
+  - type: APIReference
+    url: https://wger.de/api/v2/schema/ui
+  - type: GettingStarted
+    url: https://wger.readthedocs.io/en/latest/api/api.html
+  - type: Authentication
+    url: authentication/wger-authentication.yml
+  - type: OAuthScopes
+    url: scopes/wger-scopes.yml
+  - type: RateLimits
+    url: rate-limits/wger-rate-limits.yml
+  - type: ErrorCatalog
+    url: errors/wger-problem-types.yml
+  - type: Conventions
+    url: conventions/wger-conventions.yml
+  - type: DataModel
+    url: data-model/wger-data-model.yml
+  - type: Sandbox
+    url: sandbox/wger-sandbox.yml
+  - type: Conformance
+    url: conformance/wger-conformance.yml
+- aid: wger:wger-max-rir-config-api
+  name: Wger Max Rir Config API
+  description: Upper limit for the reps in reserve of a set, per iteration.
+  humanURL: https://wger.readthedocs.io/en/latest/api/api.html
+  baseURL: https://wger.de/api/v2
+  tags:
+  - max-rir-config
+  properties:
+  - type: OpenAPI
+    url: openapi/wger-max-rir-config-api-openapi.yml
+  - type: Documentation
+    url: https://wger.readthedocs.io/en/latest/api/api.html
+  - type: APIReference
+    url: https://wger.de/api/v2/schema/ui
+  - type: GettingStarted
+    url: https://wger.readthedocs.io/en/latest/api/api.html
+  - type: Authentication
+    url: authentication/wger-authentication.yml
+  - type: OAuthScopes
+    url: scopes/wger-scopes.yml
+  - type: RateLimits
+    url: rate-limits/wger-rate-limits.yml
+  - type: ErrorCatalog
+    url: errors/wger-problem-types.yml
+  - type: Conventions
+    url: conventions/wger-conventions.yml
+  - type: DataModel
+    url: data-model/wger-data-model.yml
+  - type: Sandbox
+    url: sandbox/wger-sandbox.yml
+  - type: Conformance
+    url: conformance/wger-conformance.yml
+- aid: wger:wger-max-sets-config-api
+  name: Wger Max Sets Config API
+  description: Upper limit for the number of sets, per iteration.
+  humanURL: https://wger.readthedocs.io/en/latest/api/api.html
+  baseURL: https://wger.de/api/v2
+  tags:
+  - max-sets-config
+  properties:
+  - type: OpenAPI
+    url: openapi/wger-max-sets-config-api-openapi.yml
+  - type: Documentation
+    url: https://wger.readthedocs.io/en/latest/api/api.html
+  - type: APIReference
+    url: https://wger.de/api/v2/schema/ui
+  - type: GettingStarted
+    url: https://wger.readthedocs.io/en/latest/api/api.html
+  - type: Authentication
+    url: authentication/wger-authentication.yml
+  - type: OAuthScopes
+    url: scopes/wger-scopes.yml
+  - type: RateLimits
+    url: rate-limits/wger-rate-limits.yml
+  - type: ErrorCatalog
+    url: errors/wger-problem-types.yml
+  - type: Conventions
+    url: conventions/wger-conventions.yml
+  - type: DataModel
+    url: data-model/wger-data-model.yml
+  - type: Sandbox
+    url: sandbox/wger-sandbox.yml
+  - type: Conformance
+    url: conformance/wger-conformance.yml
+- aid: wger:wger-max-weight-config-api
+  name: Wger Max Weight Config API
+  description: Upper limit for the weight of a set, per iteration.
+  humanURL: https://wger.readthedocs.io/en/latest/api/api.html
+  baseURL: https://wger.de/api/v2
+  tags:
+  - max-weight-config
+  properties:
+  - type: OpenAPI
+    url: openapi/wger-max-weight-config-api-openapi.yml
+  - type: Documentation
+    url: https://wger.readthedocs.io/en/latest/api/api.html
+  - type: APIReference
+    url: https://wger.de/api/v2/schema/ui
+  - type: GettingStarted
+    url: https://wger.readthedocs.io/en/latest/api/api.html
+  - type: Authentication
+    url: authentication/wger-authentication.yml
+  - type: OAuthScopes
+    url: scopes/wger-scopes.yml
+  - type: RateLimits
+    url: rate-limits/wger-rate-limits.yml
+  - type: ErrorCatalog
+    url: errors/wger-problem-types.yml
+  - type: Conventions
+    url: conventions/wger-conventions.yml
+  - type: DataModel
+    url: data-model/wger-data-model.yml
+  - type: Sandbox
+    url: sandbox/wger-sandbox.yml
+  - type: Conformance
+    url: conformance/wger-conformance.yml
+- aid: wger:wger-meal-api
+  name: Wger Meal API
+  description: The meal API from Wger — 3 operation(s) for meal.
+  humanURL: https://wger.readthedocs.io/en/latest/api/api.html
+  baseURL: https://wger.de/api/v2
+  tags:
+  - meal
+  properties:
+  - type: OpenAPI
+    url: openapi/wger-meal-api-openapi.yml
+  - type: Documentation
+    url: https://wger.readthedocs.io/en/latest/api/api.html
+  - type: APIReference
+    url: https://wger.de/api/v2/schema/ui
+  - type: GettingStarted
+    url: https://wger.readthedocs.io/en/latest/api/api.html
+  - type: Authentication
+    url: authentication/wger-authentication.yml
+  - type: OAuthScopes
+    url: scopes/wger-scopes.yml
+  - type: RateLimits
+    url: rate-limits/wger-rate-limits.yml
+  - type: ErrorCatalog
+    url: errors/wger-problem-types.yml
+  - type: Conventions
+    url: conventions/wger-conventions.yml
+  - type: DataModel
+    url: data-model/wger-data-model.yml
+  - type: Sandbox
+    url: sandbox/wger-sandbox.yml
+  - type: Conformance
+    url: conformance/wger-conformance.yml
+- aid: wger:wger-mealitem-api
+  name: Wger Mealitem API
+  description: The mealitem API from Wger — 3 operation(s) for mealitem.
+  humanURL: https://wger.readthedocs.io/en/latest/api/api.html
+  baseURL: https://wger.de/api/v2
+  tags:
+  - mealitem
+  properties:
+  - type: OpenAPI
+    url: openapi/wger-mealitem-api-openapi.yml
+  - type: Documentation
+    url: https://wger.readthedocs.io/en/latest/api/api.html
+  - type: APIReference
+    url: https://wger.de/api/v2/schema/ui
+  - type: GettingStarted
+    url: https://wger.readthedocs.io/en/latest/api/api.html
+  - type: Authentication
+    url: authentication/wger-authentication.yml
+  - type: OAuthScopes
+    url: scopes/wger-scopes.yml
+  - type: RateLimits
+    url: rate-limits/wger-rate-limits.yml
+  - type: ErrorCatalog
+    url: errors/wger-problem-types.yml
+  - type: Conventions
+    url: conventions/wger-conventions.yml
+  - type: DataModel
+    url: data-model/wger-data-model.yml
+  - type: Sandbox
+    url: sandbox/wger-sandbox.yml
+  - type: Conformance
+    url: conformance/wger-conformance.yml
+- aid: wger:wger-measurement-api
+  name: Wger Measurement API
+  description: The measurement API from Wger — 2 operation(s) for measurement.
+  humanURL: https://wger.readthedocs.io/en/latest/api/api.html
+  baseURL: https://wger.de/api/v2
+  tags:
+  - measurement
+  properties:
+  - type: OpenAPI
+    url: openapi/wger-measurement-api-openapi.yml
+  - type: Documentation
+    url: https://wger.readthedocs.io/en/latest/api/api.html
+  - type: APIReference
+    url: https://wger.de/api/v2/schema/ui
+  - type: GettingStarted
+    url: https://wger.readthedocs.io/en/latest/api/api.html
+  - type: Authentication
+    url: authentication/wger-authentication.yml
+  - type: OAuthScopes
+    url: scopes/wger-scopes.yml
+  - type: RateLimits
+    url: rate-limits/wger-rate-limits.yml
+  - type: ErrorCatalog
+    url: errors/wger-problem-types.yml
+  - type: Conventions
+    url: conventions/wger-conventions.yml
+  - type: DataModel
+    url: data-model/wger-data-model.yml
+  - type: Sandbox
+    url: sandbox/wger-sandbox.yml
+  - type: Conformance
+    url: conformance/wger-conformance.yml
+- aid: wger:wger-measurement-category-api
+  name: Wger Measurement Category API
+  description: The measurement-category API from Wger — 2 operation(s) for measurement-category.
+  humanURL: https://wger.readthedocs.io/en/latest/api/api.html
+  baseURL: https://wger.de/api/v2
+  tags:
+  - measurement-category
+  properties:
+  - type: OpenAPI
+    url: openapi/wger-measurement-category-api-openapi.yml
+  - type: Documentation
+    url: https://wger.readthedocs.io/en/latest/api/api.html
+  - type: APIReference
+    url: https://wger.de/api/v2/schema/ui
+  - type: GettingStarted
+    url: https://wger.readthedocs.io/en/latest/api/api.html
+  - type: Authentication
+    url: authentication/wger-authentication.yml
+  - type: OAuthScopes
+    url: scopes/wger-scopes.yml
+  - type: RateLimits
+    url: rate-limits/wger-rate-limits.yml
+  - type: ErrorCatalog
+    url: errors/wger-problem-types.yml
+  - type: Conventions
+    url: conventions/wger-conventions.yml
+  - type: DataModel
+    url: data-model/wger-data-model.yml
+  - type: Sandbox
+    url: sandbox/wger-sandbox.yml
+  - type: Conformance
+    url: conformance/wger-conformance.yml
+- aid: wger:wger-min-app-version-api
+  name: Wger Min App Version API
+  description: The min-app-version API from Wger — 1 operation(s) for min-app-version.
+  humanURL: https://wger.readthedocs.io/en/latest/api/api.html
+  baseURL: https://wger.de/api/v2
+  tags:
+  - min-app-version
+  properties:
+  - type: OpenAPI
+    url: openapi/wger-min-app-version-api-openapi.yml
+  - type: Documentation
+    url: https://wger.readthedocs.io/en/latest/api/api.html
+  - type: APIReference
+    url: https://wger.de/api/v2/schema/ui
+  - type: GettingStarted
+    url: https://wger.readthedocs.io/en/latest/api/api.html
+  - type: Authentication
+    url: authentication/wger-authentication.yml
+  - type: OAuthScopes
+    url: scopes/wger-scopes.yml
+  - type: RateLimits
+    url: rate-limits/wger-rate-limits.yml
+  - type: ErrorCatalog
+    url: errors/wger-problem-types.yml
+  - type: Conventions
+    url: conventions/wger-conventions.yml
+  - type: DataModel
+    url: data-model/wger-data-model.yml
+  - type: Sandbox
+    url: sandbox/wger-sandbox.yml
+  - type: Conformance
+    url: conformance/wger-conformance.yml
+- aid: wger:wger-min-server-version-api
+  name: Wger Min Server Version API
+  description: The min-server-version API from Wger — 1 operation(s) for min-server-version.
+  humanURL: https://wger.readthedocs.io/en/latest/api/api.html
+  baseURL: https://wger.de/api/v2
+  tags:
+  - min-server-version
+  properties:
+  - type: OpenAPI
+    url: openapi/wger-min-server-version-api-openapi.yml
+  - type: Documentation
+    url: https://wger.readthedocs.io/en/latest/api/api.html
+  - type: APIReference
+    url: https://wger.de/api/v2/schema/ui
+  - type: GettingStarted
+    url: https://wger.readthedocs.io/en/latest/api/api.html
+  - type: Authentication
+    url: authentication/wger-authentication.yml
+  - type: OAuthScopes
+    url: scopes/wger-scopes.yml
+  - type: RateLimits
+    url: rate-limits/wger-rate-limits.yml
+  - type: ErrorCatalog
+    url: errors/wger-problem-types.yml
+  - type: Conventions
+    url: conventions/wger-conventions.yml
+  - type: DataModel
+    url: data-model/wger-data-model.yml
+  - type: Sandbox
+    url: sandbox/wger-sandbox.yml
+  - type: Conformance
+    url: conformance/wger-conformance.yml
+- aid: wger:wger-muscle-api
+  name: Wger Muscle API
+  description: The muscle API from Wger — 2 operation(s) for muscle.
+  humanURL: https://wger.readthedocs.io/en/latest/api/api.html
+  baseURL: https://wger.de/api/v2
+  tags:
+  - muscle
+  properties:
+  - type: OpenAPI
+    url: openapi/wger-muscle-api-openapi.yml
+  - type: Documentation
+    url: https://wger.readthedocs.io/en/latest/api/api.html
+  - type: APIReference
+    url: https://wger.de/api/v2/schema/ui
+  - type: GettingStarted
+    url: https://wger.readthedocs.io/en/latest/api/api.html
+  - type: Authentication
+    url: authentication/wger-authentication.yml
+  - type: OAuthScopes
+    url: scopes/wger-scopes.yml
+  - type: RateLimits
+    url: rate-limits/wger-rate-limits.yml
+  - type: ErrorCatalog
+    url: errors/wger-problem-types.yml
+  - type: Conventions
+    url: conventions/wger-conventions.yml
+  - type: DataModel
+    url: data-model/wger-data-model.yml
+  - type: Sandbox
+    url: sandbox/wger-sandbox.yml
+  - type: Conformance
+    url: conformance/wger-conformance.yml
+- aid: wger:wger-nutritiondiary-api
+  name: Wger Nutritiondiary API
+  description: The nutritiondiary API from Wger — 3 operation(s) for nutritiondiary.
+  humanURL: https://wger.readthedocs.io/en/latest/api/api.html
+  baseURL: https://wger.de/api/v2
+  tags:
+  - nutritiondiary
+  properties:
+  - type: OpenAPI
+    url: openapi/wger-nutritiondiary-api-openapi.yml
+  - type: Documentation
+    url: https://wger.readthedocs.io/en/latest/api/api.html
+  - type: APIReference
+    url: https://wger.de/api/v2/schema/ui
+  - type: GettingStarted
+    url: https://wger.readthedocs.io/en/latest/api/api.html
+  - type: Authentication
+    url: authentication/wger-authentication.yml
+  - type: OAuthScopes
+    url: scopes/wger-scopes.yml
+  - type: RateLimits
+    url: rate-limits/wger-rate-limits.yml
+  - type: ErrorCatalog
+    url: errors/wger-problem-types.yml
+  - type: Conventions
+    url: conventions/wger-conventions.yml
+  - type: DataModel
+    url: data-model/wger-data-model.yml
+  - type: Sandbox
+    url: sandbox/wger-sandbox.yml
+  - type: Conformance
+    url: conformance/wger-conformance.yml
+- aid: wger:wger-nutritionplan-api
+  name: Wger Nutritionplan API
+  description: Nutrition plans, referencing meals and items by ID.
+  humanURL: https://wger.readthedocs.io/en/latest/api/api.html
+  baseURL: https://wger.de/api/v2
+  tags:
+  - nutritionplan
+  properties:
+  - type: OpenAPI
+    url: openapi/wger-nutritionplan-api-openapi.yml
+  - type: Documentation
+    url: https://wger.readthedocs.io/en/latest/api/api.html
+  - type: APIReference
+    url: https://wger.de/api/v2/schema/ui
+  - type: GettingStarted
+    url: https://wger.readthedocs.io/en/latest/api/api.html
+  - type: Authentication
+    url: authentication/wger-authentication.yml
+  - type: OAuthScopes
+    url: scopes/wger-scopes.yml
+  - type: RateLimits
+    url: rate-limits/wger-rate-limits.yml
+  - type: ErrorCatalog
+    url: errors/wger-problem-types.yml
+  - type: Conventions
+    url: conventions/wger-conventions.yml
+  - type: DataModel
+    url: data-model/wger-data-model.yml
+  - type: Sandbox
+    url: sandbox/wger-sandbox.yml
+  - type: Conformance
+    url: conformance/wger-conformance.yml
+- aid: wger:wger-nutritionplaninfo-api
+  name: Wger Nutritionplaninfo API
+  description: >-
+    The same plans read-only, with meals, items and their nutritional values expanded inline. Meant for
+    external tools and integrations that want a whole plan in one request, with no IDs left to resolve.
+  humanURL: https://wger.readthedocs.io/en/latest/api/api.html
+  baseURL: https://wger.de/api/v2
+  tags:
+  - nutritionplaninfo
+  properties:
+  - type: OpenAPI
+    url: openapi/wger-nutritionplaninfo-api-openapi.yml
+  - type: Documentation
+    url: https://wger.readthedocs.io/en/latest/api/api.html
+  - type: APIReference
+    url: https://wger.de/api/v2/schema/ui
+  - type: GettingStarted
+    url: https://wger.readthedocs.io/en/latest/api/api.html
+  - type: Authentication
+    url: authentication/wger-authentication.yml
+  - type: OAuthScopes
+    url: scopes/wger-scopes.yml
+  - type: RateLimits
+    url: rate-limits/wger-rate-limits.yml
+  - type: ErrorCatalog
+    url: errors/wger-problem-types.yml
+  - type: Conventions
+    url: conventions/wger-conventions.yml
+  - type: DataModel
+    url: data-model/wger-data-model.yml
+  - type: Sandbox
+    url: sandbox/wger-sandbox.yml
+  - type: Conformance
+    url: conformance/wger-conformance.yml
+- aid: wger:wger-powersync-keys-api
+  name: Wger Powersync Keys API
+  description: The powersync-keys API from Wger — 1 operation(s) for powersync-keys.
+  humanURL: https://wger.readthedocs.io/en/latest/api/api.html
+  baseURL: https://wger.de/api/v2
+  tags:
+  - powersync-keys
+  properties:
+  - type: OpenAPI
+    url: openapi/wger-powersync-keys-api-openapi.yml
+  - type: Documentation
+    url: https://wger.readthedocs.io/en/latest/api/api.html
+  - type: APIReference
+    url: https://wger.de/api/v2/schema/ui
+  - type: GettingStarted
+    url: https://wger.readthedocs.io/en/latest/api/api.html
+  - type: Authentication
+    url: authentication/wger-authentication.yml
+  - type: OAuthScopes
+    url: scopes/wger-scopes.yml
+  - type: RateLimits
+    url: rate-limits/wger-rate-limits.yml
+  - type: ErrorCatalog
+    url: errors/wger-problem-types.yml
+  - type: Conventions
+    url: conventions/wger-conventions.yml
+  - type: DataModel
+    url: data-model/wger-data-model.yml
+  - type: Sandbox
+    url: sandbox/wger-sandbox.yml
+  - type: Conformance
+    url: conformance/wger-conformance.yml
+- aid: wger:wger-powersync-token-api
+  name: Wger Powersync Token API
+  description: The powersync-token API from Wger — 1 operation(s) for powersync-token.
+  humanURL: https://wger.readthedocs.io/en/latest/api/api.html
+  baseURL: https://wger.de/api/v2
+  tags:
+  - powersync-token
+  properties:
+  - type: OpenAPI
+    url: openapi/wger-powersync-token-api-openapi.yml
+  - type: Documentation
+    url: https://wger.readthedocs.io/en/latest/api/api.html
+  - type: APIReference
+    url: https://wger.de/api/v2/schema/ui
+  - type: GettingStarted
+    url: https://wger.readthedocs.io/en/latest/api/api.html
+  - type: Authentication
+    url: authentication/wger-authentication.yml
+  - type: OAuthScopes
+    url: scopes/wger-scopes.yml
+  - type: RateLimits
+    url: rate-limits/wger-rate-limits.yml
+  - type: ErrorCatalog
+    url: errors/wger-problem-types.yml
+  - type: Conventions
+    url: conventions/wger-conventions.yml
+  - type: DataModel
+    url: data-model/wger-data-model.yml
+  - type: Sandbox
+    url: sandbox/wger-sandbox.yml
+  - type: Conformance
+    url: conformance/wger-conformance.yml
+- aid: wger:wger-public-templates-api
+  name: Wger Public Templates API
+  description: Read-only view of the routine templates published by other users.
+  humanURL: https://wger.readthedocs.io/en/latest/api/api.html
+  baseURL: https://wger.de/api/v2
+  tags:
+  - public-templates
+  properties:
+  - type: OpenAPI
+    url: openapi/wger-public-templates-api-openapi.yml
+  - type: Documentation
+    url: https://wger.readthedocs.io/en/latest/api/api.html
+  - type: APIReference
+    url: https://wger.de/api/v2/schema/ui
+  - type: GettingStarted
+    url: https://wger.readthedocs.io/en/latest/api/api.html
+  - type: Authentication
+    url: authentication/wger-authentication.yml
+  - type: OAuthScopes
+    url: scopes/wger-scopes.yml
+  - type: RateLimits
+    url: rate-limits/wger-rate-limits.yml
+  - type: ErrorCatalog
+    url: errors/wger-problem-types.yml
+  - type: Conventions
+    url: conventions/wger-conventions.yml
+  - type: DataModel
+    url: data-model/wger-data-model.yml
+  - type: Sandbox
+    url: sandbox/wger-sandbox.yml
+  - type: Conformance
+    url: conformance/wger-conformance.yml
+- aid: wger:wger-repetitions-config-api
+  name: Wger Repetitions Config API
+  description: Repetitions for a set, per iteration.
+  humanURL: https://wger.readthedocs.io/en/latest/api/api.html
+  baseURL: https://wger.de/api/v2
+  tags:
+  - repetitions-config
+  properties:
+  - type: OpenAPI
+    url: openapi/wger-repetitions-config-api-openapi.yml
+  - type: Documentation
+    url: https://wger.readthedocs.io/en/latest/api/api.html
+  - type: APIReference
+    url: https://wger.de/api/v2/schema/ui
+  - type: GettingStarted
+    url: https://wger.readthedocs.io/en/latest/api/api.html
+  - type: Authentication
+    url: authentication/wger-authentication.yml
+  - type: OAuthScopes
+    url: scopes/wger-scopes.yml
+  - type: RateLimits
+    url: rate-limits/wger-rate-limits.yml
+  - type: ErrorCatalog
+    url: errors/wger-problem-types.yml
+  - type: Conventions
+    url: conventions/wger-conventions.yml
+  - type: DataModel
+    url: data-model/wger-data-model.yml
+  - type: Sandbox
+    url: sandbox/wger-sandbox.yml
+  - type: Conformance
+    url: conformance/wger-conformance.yml
+- aid: wger:wger-rest-config-api
+  name: Wger Rest Config API
+  description: Rest between sets, per iteration.
+  humanURL: https://wger.readthedocs.io/en/latest/api/api.html
+  baseURL: https://wger.de/api/v2
+  tags:
+  - rest-config
+  properties:
+  - type: OpenAPI
+    url: openapi/wger-rest-config-api-openapi.yml
+  - type: Documentation
+    url: https://wger.readthedocs.io/en/latest/api/api.html
+  - type: APIReference
+    url: https://wger.de/api/v2/schema/ui
+  - type: GettingStarted
+    url: https://wger.readthedocs.io/en/latest/api/api.html
+  - type: Authentication
+    url: authentication/wger-authentication.yml
+  - type: OAuthScopes
+    url: scopes/wger-scopes.yml
+  - type: RateLimits
+    url: rate-limits/wger-rate-limits.yml
+  - type: ErrorCatalog
+    url: errors/wger-problem-types.yml
+  - type: Conventions
+    url: conventions/wger-conventions.yml
+  - type: DataModel
+    url: data-model/wger-data-model.yml
+  - type: Sandbox
+    url: sandbox/wger-sandbox.yml
+  - type: Conformance
+    url: conformance/wger-conformance.yml
+- aid: wger:wger-rir-config-api
+  name: Wger Rir Config API
+  description: Reps in reserve for a set, per iteration.
+  humanURL: https://wger.readthedocs.io/en/latest/api/api.html
+  baseURL: https://wger.de/api/v2
+  tags:
+  - rir-config
+  properties:
+  - type: OpenAPI
+    url: openapi/wger-rir-config-api-openapi.yml
+  - type: Documentation
+    url: https://wger.readthedocs.io/en/latest/api/api.html
+  - type: APIReference
+    url: https://wger.de/api/v2/schema/ui
+  - type: GettingStarted
+    url: https://wger.readthedocs.io/en/latest/api/api.html
+  - type: Authentication
+    url: authentication/wger-authentication.yml
+  - type: OAuthScopes
+    url: scopes/wger-scopes.yml
+  - type: RateLimits
+    url: rate-limits/wger-rate-limits.yml
+  - type: ErrorCatalog
+    url: errors/wger-problem-types.yml
+  - type: Conventions
+    url: conventions/wger-conventions.yml
+  - type: DataModel
+    url: data-model/wger-data-model.yml
+  - type: Sandbox
+    url: sandbox/wger-sandbox.yml
+  - type: Conformance
+    url: conformance/wger-conformance.yml
+- aid: wger:wger-routine-api
+  name: Wger Routine API
+  description: >-
+    Workout routines. The nested day, slot and config structure is available in one request under `/routine/{id}/structure/`.
+  humanURL: https://wger.readthedocs.io/en/latest/api/api.html
+  baseURL: https://wger.de/api/v2
+  tags:
+  - routine
+  properties:
+  - type: OpenAPI
+    url: openapi/wger-routine-api-openapi.yml
+  - type: Documentation
+    url: https://wger.readthedocs.io/en/latest/api/api.html
+  - type: APIReference
+    url: https://wger.de/api/v2/schema/ui
+  - type: GettingStarted
+    url: https://wger.readthedocs.io/en/latest/api/api.html
+  - type: Authentication
+    url: authentication/wger-authentication.yml
+  - type: OAuthScopes
+    url: scopes/wger-scopes.yml
+  - type: RateLimits
+    url: rate-limits/wger-rate-limits.yml
+  - type: ErrorCatalog
+    url: errors/wger-problem-types.yml
+  - type: Conventions
+    url: conventions/wger-conventions.yml
+  - type: DataModel
+    url: data-model/wger-data-model.yml
+  - type: Sandbox
+    url: sandbox/wger-sandbox.yml
+  - type: Conformance
+    url: conformance/wger-conformance.yml
+- aid: wger:wger-schema-api
+  name: Wger Schema API
+  description: The schema API from Wger — 1 operation(s) for schema.
+  humanURL: https://wger.readthedocs.io/en/latest/api/api.html
+  baseURL: https://wger.de/api/v2
+  tags:
+  - schema
+  properties:
+  - type: OpenAPI
+    url: openapi/wger-schema-api-openapi.yml
+  - type: Documentation
+    url: https://wger.readthedocs.io/en/latest/api/api.html
+  - type: APIReference
+    url: https://wger.de/api/v2/schema/ui
+  - type: GettingStarted
+    url: https://wger.readthedocs.io/en/latest/api/api.html
+  - type: Authentication
+    url: authentication/wger-authentication.yml
+  - type: OAuthScopes
+    url: scopes/wger-scopes.yml
+  - type: RateLimits
+    url: rate-limits/wger-rate-limits.yml
+  - type: ErrorCatalog
+    url: errors/wger-problem-types.yml
+  - type: Conventions
+    url: conventions/wger-conventions.yml
+  - type: DataModel
+    url: data-model/wger-data-model.yml
+  - type: Sandbox
+    url: sandbox/wger-sandbox.yml
+  - type: Conformance
+    url: conformance/wger-conformance.yml
+- aid: wger:wger-sets-config-api
+  name: Wger Sets Config API
+  description: Number of sets, per iteration.
+  humanURL: https://wger.readthedocs.io/en/latest/api/api.html
+  baseURL: https://wger.de/api/v2
+  tags:
+  - sets-config
+  properties:
+  - type: OpenAPI
+    url: openapi/wger-sets-config-api-openapi.yml
+  - type: Documentation
+    url: https://wger.readthedocs.io/en/latest/api/api.html
+  - type: APIReference
+    url: https://wger.de/api/v2/schema/ui
+  - type: GettingStarted
+    url: https://wger.readthedocs.io/en/latest/api/api.html
+  - type: Authentication
+    url: authentication/wger-authentication.yml
+  - type: OAuthScopes
+    url: scopes/wger-scopes.yml
+  - type: RateLimits
+    url: rate-limits/wger-rate-limits.yml
+  - type: ErrorCatalog
+    url: errors/wger-problem-types.yml
+  - type: Conventions
+    url: conventions/wger-conventions.yml
+  - type: DataModel
+    url: data-model/wger-data-model.yml
+  - type: Sandbox
+    url: sandbox/wger-sandbox.yml
+  - type: Conformance
+    url: conformance/wger-conformance.yml
+- aid: wger:wger-setting-repetitionunit-api
+  name: Wger Setting Repetitionunit API
+  description: The setting-repetitionunit API from Wger — 2 operation(s) for setting-repetitionunit.
+  humanURL: https://wger.readthedocs.io/en/latest/api/api.html
+  baseURL: https://wger.de/api/v2
+  tags:
+  - setting-repetitionunit
+  properties:
+  - type: OpenAPI
+    url: openapi/wger-setting-repetitionunit-api-openapi.yml
+  - type: Documentation
+    url: https://wger.readthedocs.io/en/latest/api/api.html
+  - type: APIReference
+    url: https://wger.de/api/v2/schema/ui
+  - type: GettingStarted
+    url: https://wger.readthedocs.io/en/latest/api/api.html
+  - type: Authentication
+    url: authentication/wger-authentication.yml
+  - type: OAuthScopes
+    url: scopes/wger-scopes.yml
+  - type: RateLimits
+    url: rate-limits/wger-rate-limits.yml
+  - type: ErrorCatalog
+    url: errors/wger-problem-types.yml
+  - type: Conventions
+    url: conventions/wger-conventions.yml
+  - type: DataModel
+    url: data-model/wger-data-model.yml
+  - type: Sandbox
+    url: sandbox/wger-sandbox.yml
+  - type: Conformance
+    url: conformance/wger-conformance.yml
+- aid: wger:wger-setting-weightunit-api
+  name: Wger Setting Weightunit API
+  description: The setting-weightunit API from Wger — 2 operation(s) for setting-weightunit.
+  humanURL: https://wger.readthedocs.io/en/latest/api/api.html
+  baseURL: https://wger.de/api/v2
+  tags:
+  - setting-weightunit
+  properties:
+  - type: OpenAPI
+    url: openapi/wger-setting-weightunit-api-openapi.yml
+  - type: Documentation
+    url: https://wger.readthedocs.io/en/latest/api/api.html
+  - type: APIReference
+    url: https://wger.de/api/v2/schema/ui
+  - type: GettingStarted
+    url: https://wger.readthedocs.io/en/latest/api/api.html
+  - type: Authentication
+    url: authentication/wger-authentication.yml
+  - type: OAuthScopes
+    url: scopes/wger-scopes.yml
+  - type: RateLimits
+    url: rate-limits/wger-rate-limits.yml
+  - type: ErrorCatalog
+    url: errors/wger-problem-types.yml
+  - type: Conventions
+    url: conventions/wger-conventions.yml
+  - type: DataModel
+    url: data-model/wger-data-model.yml
+  - type: Sandbox
+    url: sandbox/wger-sandbox.yml
+  - type: Conformance
+    url: conformance/wger-conformance.yml
+- aid: wger:wger-slot-api
+  name: Wger Slot API
+  description: The slot API from Wger — 2 operation(s) for slot.
+  humanURL: https://wger.readthedocs.io/en/latest/api/api.html
+  baseURL: https://wger.de/api/v2
+  tags:
+  - slot
+  properties:
+  - type: OpenAPI
+    url: openapi/wger-slot-api-openapi.yml
+  - type: Documentation
+    url: https://wger.readthedocs.io/en/latest/api/api.html
+  - type: APIReference
+    url: https://wger.de/api/v2/schema/ui
+  - type: GettingStarted
+    url: https://wger.readthedocs.io/en/latest/api/api.html
+  - type: Authentication
+    url: authentication/wger-authentication.yml
+  - type: OAuthScopes
+    url: scopes/wger-scopes.yml
+  - type: RateLimits
+    url: rate-limits/wger-rate-limits.yml
+  - type: ErrorCatalog
+    url: errors/wger-problem-types.yml
+  - type: Conventions
+    url: conventions/wger-conventions.yml
+  - type: DataModel
+    url: data-model/wger-data-model.yml
+  - type: Sandbox
+    url: sandbox/wger-sandbox.yml
+  - type: Conformance
+    url: conformance/wger-conformance.yml
+- aid: wger:wger-slot-entry-api
+  name: Wger Slot Entry API
+  description: The slot-entry API from Wger — 2 operation(s) for slot-entry.
+  humanURL: https://wger.readthedocs.io/en/latest/api/api.html
+  baseURL: https://wger.de/api/v2
+  tags:
+  - slot-entry
+  properties:
+  - type: OpenAPI
+    url: openapi/wger-slot-entry-api-openapi.yml
+  - type: Documentation
+    url: https://wger.readthedocs.io/en/latest/api/api.html
+  - type: APIReference
+    url: https://wger.de/api/v2/schema/ui
+  - type: GettingStarted
+    url: https://wger.readthedocs.io/en/latest/api/api.html
+  - type: Authentication
+    url: authentication/wger-authentication.yml
+  - type: OAuthScopes
+    url: scopes/wger-scopes.yml
+  - type: RateLimits
+    url: rate-limits/wger-rate-limits.yml
+  - type: ErrorCatalog
+    url: errors/wger-problem-types.yml
+  - type: Conventions
+    url: conventions/wger-conventions.yml
+  - type: DataModel
+    url: data-model/wger-data-model.yml
+  - type: Sandbox
+    url: sandbox/wger-sandbox.yml
+  - type: Conformance
+    url: conformance/wger-conformance.yml
+- aid: wger:wger-templates-api
+  name: Wger Templates API
+  description: >-
+    Read-only view of the routines the user marked as a template, plus their trainer's, if they have one.
+  humanURL: https://wger.readthedocs.io/en/latest/api/api.html
+  baseURL: https://wger.de/api/v2
+  tags:
+  - templates
+  properties:
+  - type: OpenAPI
+    url: openapi/wger-templates-api-openapi.yml
+  - type: Documentation
+    url: https://wger.readthedocs.io/en/latest/api/api.html
+  - type: APIReference
+    url: https://wger.de/api/v2/schema/ui
+  - type: GettingStarted
+    url: https://wger.readthedocs.io/en/latest/api/api.html
+  - type: Authentication
+    url: authentication/wger-authentication.yml
+  - type: OAuthScopes
+    url: scopes/wger-scopes.yml
+  - type: RateLimits
+    url: rate-limits/wger-rate-limits.yml
+  - type: ErrorCatalog
+    url: errors/wger-problem-types.yml
+  - type: Conventions
+    url: conventions/wger-conventions.yml
+  - type: DataModel
+    url: data-model/wger-data-model.yml
+  - type: Sandbox
+    url: sandbox/wger-sandbox.yml
+  - type: Conformance
+    url: conformance/wger-conformance.yml
+- aid: wger:wger-token-api
+  name: Wger Token API
+  description: The token API from Wger — 2 operation(s) for token.
+  humanURL: https://wger.readthedocs.io/en/latest/api/api.html
+  baseURL: https://wger.de/api/v2
+  tags:
+  - token
+  properties:
+  - type: OpenAPI
+    url: openapi/wger-token-api-openapi.yml
+  - type: Documentation
+    url: https://wger.readthedocs.io/en/latest/api/api.html
+  - type: APIReference
+    url: https://wger.de/api/v2/schema/ui
+  - type: GettingStarted
+    url: https://wger.readthedocs.io/en/latest/api/api.html
+  - type: Authentication
+    url: authentication/wger-authentication.yml
+  - type: OAuthScopes
+    url: scopes/wger-scopes.yml
+  - type: RateLimits
+    url: rate-limits/wger-rate-limits.yml
+  - type: ErrorCatalog
+    url: errors/wger-problem-types.yml
+  - type: Conventions
+    url: conventions/wger-conventions.yml
+  - type: DataModel
+    url: data-model/wger-data-model.yml
+  - type: Sandbox
+    url: sandbox/wger-sandbox.yml
+  - type: Conformance
+    url: conformance/wger-conformance.yml
+- aid: wger:wger-trophy-api
+  name: Wger Trophy API
+  description: The trophy API from Wger — 3 operation(s) for trophy.
+  humanURL: https://wger.readthedocs.io/en/latest/api/api.html
+  baseURL: https://wger.de/api/v2
+  tags:
+  - trophy
+  properties:
+  - type: OpenAPI
+    url: openapi/wger-trophy-api-openapi.yml
+  - type: Documentation
+    url: https://wger.readthedocs.io/en/latest/api/api.html
+  - type: APIReference
+    url: https://wger.de/api/v2/schema/ui
+  - type: GettingStarted
+    url: https://wger.readthedocs.io/en/latest/api/api.html
+  - type: Authentication
+    url: authentication/wger-authentication.yml
+  - type: OAuthScopes
+    url: scopes/wger-scopes.yml
+  - type: RateLimits
+    url: rate-limits/wger-rate-limits.yml
+  - type: ErrorCatalog
+    url: errors/wger-problem-types.yml
+  - type: Conventions
+    url: conventions/wger-conventions.yml
+  - type: DataModel
+    url: data-model/wger-data-model.yml
+  - type: Sandbox
+    url: sandbox/wger-sandbox.yml
+  - type: Conformance
+    url: conformance/wger-conformance.yml
+- aid: wger:wger-upload-powersync-data-api
+  name: Wger Upload Powersync Data API
+  description: The upload-powersync-data API from Wger — 1 operation(s) for upload-powersync-data.
+  humanURL: https://wger.readthedocs.io/en/latest/api/api.html
+  baseURL: https://wger.de/api/v2
+  tags:
+  - upload-powersync-data
+  properties:
+  - type: OpenAPI
+    url: openapi/wger-upload-powersync-data-api-openapi.yml
+  - type: Documentation
+    url: https://wger.readthedocs.io/en/latest/api/api.html
+  - type: APIReference
+    url: https://wger.de/api/v2/schema/ui
+  - type: GettingStarted
+    url: https://wger.readthedocs.io/en/latest/api/api.html
+  - type: Authentication
+    url: authentication/wger-authentication.yml
+  - type: OAuthScopes
+    url: scopes/wger-scopes.yml
+  - type: RateLimits
+    url: rate-limits/wger-rate-limits.yml
+  - type: ErrorCatalog
+    url: errors/wger-problem-types.yml
+  - type: Conventions
+    url: conventions/wger-conventions.yml
+  - type: DataModel
+    url: data-model/wger-data-model.yml
+  - type: Sandbox
+    url: sandbox/wger-sandbox.yml
+  - type: Conformance
+    url: conformance/wger-conformance.yml
+- aid: wger:wger-user-statistics-api
+  name: Wger User Statistics API
+  description: The user-statistics API from Wger — 2 operation(s) for user-statistics.
+  humanURL: https://wger.readthedocs.io/en/latest/api/api.html
+  baseURL: https://wger.de/api/v2
+  tags:
+  - user-statistics
+  properties:
+  - type: OpenAPI
+    url: openapi/wger-user-statistics-api-openapi.yml
+  - type: Documentation
+    url: https://wger.readthedocs.io/en/latest/api/api.html
+  - type: APIReference
+    url: https://wger.de/api/v2/schema/ui
+  - type: GettingStarted
+    url: https://wger.readthedocs.io/en/latest/api/api.html
+  - type: Authentication
+    url: authentication/wger-authentication.yml
+  - type: OAuthScopes
+    url: scopes/wger-scopes.yml
+  - type: RateLimits
+    url: rate-limits/wger-rate-limits.yml
+  - type: ErrorCatalog
+    url: errors/wger-problem-types.yml
+  - type: Conventions
+    url: conventions/wger-conventions.yml
+  - type: DataModel
+    url: data-model/wger-data-model.yml
+  - type: Sandbox
+    url: sandbox/wger-sandbox.yml
+  - type: Conformance
+    url: conformance/wger-conformance.yml
+- aid: wger:wger-user-trophy-api
+  name: Wger User Trophy API
+  description: The user-trophy API from Wger — 2 operation(s) for user-trophy.
+  humanURL: https://wger.readthedocs.io/en/latest/api/api.html
+  baseURL: https://wger.de/api/v2
+  tags:
+  - user-trophy
+  properties:
+  - type: OpenAPI
+    url: openapi/wger-user-trophy-api-openapi.yml
+  - type: Documentation
+    url: https://wger.readthedocs.io/en/latest/api/api.html
+  - type: APIReference
+    url: https://wger.de/api/v2/schema/ui
+  - type: GettingStarted
+    url: https://wger.readthedocs.io/en/latest/api/api.html
+  - type: Authentication
+    url: authentication/wger-authentication.yml
+  - type: OAuthScopes
+    url: scopes/wger-scopes.yml
+  - type: RateLimits
+    url: rate-limits/wger-rate-limits.yml
+  - type: ErrorCatalog
+    url: errors/wger-problem-types.yml
+  - type: Conventions
+    url: conventions/wger-conventions.yml
+  - type: DataModel
+    url: data-model/wger-data-model.yml
+  - type: Sandbox
+    url: sandbox/wger-sandbox.yml
+  - type: Conformance
+    url: conformance/wger-conformance.yml
+- aid: wger:wger-userprofile-api
+  name: Wger Userprofile API
+  description: The userprofile API from Wger — 2 operation(s) for userprofile.
+  humanURL: https://wger.readthedocs.io/en/latest/api/api.html
+  baseURL: https://wger.de/api/v2
+  tags:
+  - userprofile
+  properties:
+  - type: OpenAPI
+    url: openapi/wger-userprofile-api-openapi.yml
+  - type: Documentation
+    url: https://wger.readthedocs.io/en/latest/api/api.html
+  - type: APIReference
+    url: https://wger.de/api/v2/schema/ui
+  - type: GettingStarted
+    url: https://wger.readthedocs.io/en/latest/api/api.html
+  - type: Authentication
+    url: authentication/wger-authentication.yml
+  - type: OAuthScopes
+    url: scopes/wger-scopes.yml
+  - type: RateLimits
+    url: rate-limits/wger-rate-limits.yml
+  - type: ErrorCatalog
+    url: errors/wger-problem-types.yml
+  - type: Conventions
+    url: conventions/wger-conventions.yml
+  - type: DataModel
+    url: data-model/wger-data-model.yml
+  - type: Sandbox
+    url: sandbox/wger-sandbox.yml
+  - type: Conformance
+    url: conformance/wger-conformance.yml
+- aid: wger:wger-version-api
+  name: Wger Version API
+  description: The version API from Wger — 1 operation(s) for version.
+  humanURL: https://wger.readthedocs.io/en/latest/api/api.html
+  baseURL: https://wger.de/api/v2
+  tags:
+  - version
+  properties:
+  - type: OpenAPI
+    url: openapi/wger-version-api-openapi.yml
+  - type: Documentation
+    url: https://wger.readthedocs.io/en/latest/api/api.html
+  - type: APIReference
+    url: https://wger.de/api/v2/schema/ui
+  - type: GettingStarted
+    url: https://wger.readthedocs.io/en/latest/api/api.html
+  - type: Authentication
+    url: authentication/wger-authentication.yml
+  - type: OAuthScopes
+    url: scopes/wger-scopes.yml
+  - type: RateLimits
+    url: rate-limits/wger-rate-limits.yml
+  - type: ErrorCatalog
+    url: errors/wger-problem-types.yml
+  - type: Conventions
+    url: conventions/wger-conventions.yml
+  - type: DataModel
+    url: data-model/wger-data-model.yml
+  - type: Sandbox
+    url: sandbox/wger-sandbox.yml
+  - type: Conformance
+    url: conformance/wger-conformance.yml
+- aid: wger:wger-video-api
+  name: Wger Video API
+  description: The video API from Wger — 2 operation(s) for video.
+  humanURL: https://wger.readthedocs.io/en/latest/api/api.html
+  baseURL: https://wger.de/api/v2
+  tags:
+  - video
+  properties:
+  - type: OpenAPI
+    url: openapi/wger-video-api-openapi.yml
+  - type: Documentation
+    url: https://wger.readthedocs.io/en/latest/api/api.html
+  - type: APIReference
+    url: https://wger.de/api/v2/schema/ui
+  - type: GettingStarted
+    url: https://wger.readthedocs.io/en/latest/api/api.html
+  - type: Authentication
+    url: authentication/wger-authentication.yml
+  - type: OAuthScopes
+    url: scopes/wger-scopes.yml
+  - type: RateLimits
+    url: rate-limits/wger-rate-limits.yml
+  - type: ErrorCatalog
+    url: errors/wger-problem-types.yml
+  - type: Conventions
+    url: conventions/wger-conventions.yml
+  - type: DataModel
+    url: data-model/wger-data-model.yml
+  - type: Sandbox
+    url: sandbox/wger-sandbox.yml
+  - type: Conformance
+    url: conformance/wger-conformance.yml
+- aid: wger:wger-weight-config-api
+  name: Wger Weight Config API
+  description: Weight for a set, per iteration.
+  humanURL: https://wger.readthedocs.io/en/latest/api/api.html
+  baseURL: https://wger.de/api/v2
+  tags:
+  - weight-config
+  properties:
+  - type: OpenAPI
+    url: openapi/wger-weight-config-api-openapi.yml
+  - type: Documentation
+    url: https://wger.readthedocs.io/en/latest/api/api.html
+  - type: APIReference
+    url: https://wger.de/api/v2/schema/ui
+  - type: GettingStarted
+    url: https://wger.readthedocs.io/en/latest/api/api.html
+  - type: Authentication
+    url: authentication/wger-authentication.yml
+  - type: OAuthScopes
+    url: scopes/wger-scopes.yml
+  - type: RateLimits
+    url: rate-limits/wger-rate-limits.yml
+  - type: ErrorCatalog
+    url: errors/wger-problem-types.yml
+  - type: Conventions
+    url: conventions/wger-conventions.yml
+  - type: DataModel
+    url: data-model/wger-data-model.yml
+  - type: Sandbox
+    url: sandbox/wger-sandbox.yml
+  - type: Conformance
+    url: conformance/wger-conformance.yml
+- aid: wger:wger-weightentry-api
+  name: Wger Weightentry API
+  description: The weightentry API from Wger — 2 operation(s) for weightentry.
+  humanURL: https://wger.readthedocs.io/en/latest/api/api.html
+  baseURL: https://wger.de/api/v2
+  tags:
+  - weightentry
+  properties:
+  - type: OpenAPI
+    url: openapi/wger-weightentry-api-openapi.yml
+  - type: Documentation
+    url: https://wger.readthedocs.io/en/latest/api/api.html
+  - type: APIReference
+    url: https://wger.de/api/v2/schema/ui
+  - type: GettingStarted
+    url: https://wger.readthedocs.io/en/latest/api/api.html
+  - type: Authentication
+    url: authentication/wger-authentication.yml
+  - type: OAuthScopes
+    url: scopes/wger-scopes.yml
+  - type: RateLimits
+    url: rate-limits/wger-rate-limits.yml
+  - type: ErrorCatalog
+    url: errors/wger-problem-types.yml
+  - type: Conventions
+    url: conventions/wger-conventions.yml
+  - type: DataModel
+    url: data-model/wger-data-model.yml
+  - type: Sandbox
+    url: sandbox/wger-sandbox.yml
+  - type: Conformance
+    url: conformance/wger-conformance.yml
+- aid: wger:wger-workoutlog-api
+  name: Wger Workoutlog API
+  description: The workoutlog API from Wger — 2 operation(s) for workoutlog.
+  humanURL: https://wger.readthedocs.io/en/latest/api/api.html
+  baseURL: https://wger.de/api/v2
+  tags:
+  - workoutlog
+  properties:
+  - type: OpenAPI
+    url: openapi/wger-workoutlog-api-openapi.yml
+  - type: Documentation
+    url: https://wger.readthedocs.io/en/latest/api/api.html
+  - type: APIReference
+    url: https://wger.de/api/v2/schema/ui
+  - type: GettingStarted
+    url: https://wger.readthedocs.io/en/latest/api/api.html
+  - type: Authentication
+    url: authentication/wger-authentication.yml
+  - type: OAuthScopes
+    url: scopes/wger-scopes.yml
+  - type: RateLimits
+    url: rate-limits/wger-rate-limits.yml
+  - type: ErrorCatalog
+    url: errors/wger-problem-types.yml
+  - type: Conventions
+    url: conventions/wger-conventions.yml
+  - type: DataModel
+    url: data-model/wger-data-model.yml
+  - type: Sandbox
+    url: sandbox/wger-sandbox.yml
+  - type: Conformance
+    url: conformance/wger-conformance.yml
+- aid: wger:wger-workoutsession-api
+  name: Wger Workoutsession API
+  description: The workoutsession API from Wger — 2 operation(s) for workoutsession.
+  humanURL: https://wger.readthedocs.io/en/latest/api/api.html
+  baseURL: https://wger.de/api/v2
+  tags:
+  - workoutsession
+  properties:
+  - type: OpenAPI
+    url: openapi/wger-workoutsession-api-openapi.yml
+  - type: Documentation
+    url: https://wger.readthedocs.io/en/latest/api/api.html
+  - type: APIReference
+    url: https://wger.de/api/v2/schema/ui
+  - type: GettingStarted
+    url: https://wger.readthedocs.io/en/latest/api/api.html
+  - type: Authentication
+    url: authentication/wger-authentication.yml
+  - type: OAuthScopes
+    url: scopes/wger-scopes.yml
+  - type: RateLimits
+    url: rate-limits/wger-rate-limits.yml
+  - type: ErrorCatalog
+    url: errors/wger-problem-types.yml
+  - type: Conventions
+    url: conventions/wger-conventions.yml
+  - type: DataModel
+    url: data-model/wger-data-model.yml
+  - type: Sandbox
+    url: sandbox/wger-sandbox.yml
+  - type: Conformance
+    url: conformance/wger-conformance.yml
 common:
+  - type: Overlay
+    url: overlays/wger-openapi-overlay.yaml
   - type: Website
     url: https://wger.de
   - type: DeveloperPortal
