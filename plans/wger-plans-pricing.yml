@@ -1,0 +1,33 @@
+generated: '2026-08-27'
+method: searched
+source: https://github.com/wger-project/wger
+plan_count: 0
+pricing_model: free-open-source
+note: >-
+  wger publishes no plans, tiers, quotas or paid API access of any kind. The
+  software is AGPL-3.0 and self-hosted; the project also runs a free public
+  instance at wger.de where anyone can register at /en/user/registration and
+  mint an API key at /en/user/api-key. Reference data (exercises, ingredients,
+  muscles, equipment) is readable anonymously with no account. There is no
+  pricing page to point at, and plan_count: 0 is the finding rather than a gap
+  in this profile.
+free_tier:
+  exists: true
+  description: >-
+    The entire product. Anonymous read of the community catalogs; a free account
+    unlocks the user-owned write surface.
+  signup: https://wger.de/en/user/registration
+  api_key: https://wger.de/en/user/api-key
+  quota: >-
+    No quota. Only the six throttled endpoints in rate-limits/wger-rate-limits.yml
+    apply.
+self_hosting:
+  supported: true
+  cost: none (AGPL-3.0)
+  distributions:
+    - https://github.com/wger-project/docker
+    - https://github.com/wger-project/helm-charts
+funding:
+  note: >-
+    No commercial tier, marketplace listing or enterprise SKU was found on the
+    project's own surfaces.

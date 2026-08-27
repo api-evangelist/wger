@@ -1,0 +1,140 @@
+generated: '2026-08-27'
+method: derived
+source: openapi/wger-openapi.yml
+docs: https://wger.readthedocs.io/en/latest/api/api.html
+format: not-rfc9457
+format_note: >-
+  wger does NOT emit application/problem+json. Errors are the Django REST
+  Framework default envelope — a JSON object whose keys are either "detail"
+  (a single message) or the offending field names mapped to arrays of
+  validation messages. There is no type URI, no title/status/instance, and no
+  machine-readable error code. An agent must branch on the HTTP status and,
+  for 400, walk the field map.
+coverage_note: >-
+  The OpenAPI schema declares explicit 4xx/5xx responses on only five
+  operations (listed below under declared[]). Every other operation documents
+  its 2xx shape and leaves failure to DRF's defaults, so the rest of this
+  catalog is the framework contract that actually applies, recorded so an agent
+  is not left guessing. Nothing here is invented: the statuses are DRF's
+  documented behaviour plus the throttle behaviour wger's own docs state.
+envelope:
+  variants:
+    - name: detail
+      shape: '{"detail": "<message>"}'
+      used_for: [401, 403, 404, 405, 429]
+    - name: field_errors
+      shape: '{"<field>": ["<message>", ...]}'
+      used_for: [400]
+    - name: non_field_errors
+      shape: '{"non_field_errors": ["<message>"]}'
+      used_for: [400]
+  content_type: application/json
+declared:
+  - operationId: check_language_create
+    status: 400
+    description: >-
+      The input could not be detected as the given language, or the language
+      itself is unknown
+    source: openapi/wger-openapi.yml
+  - operationId: check_permission_retrieve
+    status: 400
+    description: "Please pass a permission name in the 'permission' parameter"
+    source: openapi/wger-openapi.yml
+  - operationId: upload_powersync_data_update
+    statuses:
+      403: The request is not authenticated
+      500: Unclassified server error, the client should retry
+      503: Transient database error, the client should retry
+    source: openapi/wger-openapi.yml
+  - operationId: upload_powersync_data_partial_update
+    statuses:
+      403: The request is not authenticated
+      500: Unclassified server error, the client should retry
+      503: Transient database error, the client should retry
+    source: openapi/wger-openapi.yml
+  - operationId: upload_powersync_data_destroy
+    statuses:
+      403: The request is not authenticated
+      500: Unclassified server error, the client should retry
+      503: Transient database error, the client should retry
+    source: openapi/wger-openapi.yml
+problem_types:
+  - status: 400
+    name: validation_error
+    envelope: field_errors
+    cause: >-
+      A request body failed serializer validation, or a query parameter was
+      malformed. Boolean filters are the common trap: wger accepts only True
+      and False, case-sensitive, and silently IGNORES 1, 0 and false rather
+      than rejecting them — so a bad boolean produces a wrong result set, not
+      a 400.
+    remediation: >-
+      Read the returned field map; each key is the field, each value the list
+      of messages. Re-send the corrected body.
+  - status: 401
+    name: not_authenticated
+    envelope: detail
+    cause: >-
+      No credential presented on a user-owned resource. Note that DRF returns
+      401 only when a WWW-Authenticate-bearing scheme is in play; wger's
+      session-cookie default frequently yields 403 instead for the same cause.
+    remediation: >-
+      Send Authorization: Token <key> or Authorization: Bearer <jwt>. See
+      authentication/wger-authentication.yml.
+  - status: 403
+    name: permission_denied
+    envelope: detail
+    cause: >-
+      Authenticated but not permitted — the object belongs to another user, the
+      account lacks the permission, or (on the community catalog) the write
+      requires moderator rights. Also returned when a credential is absent on a
+      session-authenticated endpoint.
+    remediation: Check ownership; use check_permission_retrieve to test a permission by name.
+  - status: 404
+    name: not_found
+    envelope: detail
+    cause: >-
+      Unknown id, OR an id that exists but belongs to another user — wger scopes
+      user-owned querysets to the caller, so someone else's routine is
+      indistinguishable from a deleted one.
+    remediation: List the collection first; do not infer existence from a 404.
+  - status: 405
+    name: method_not_allowed
+    envelope: detail
+    cause: >-
+      Writing to a read-only collection. The community catalogs are read-only by
+      design over REST — /api/v2/ingredient/ takes GET, HEAD and OPTIONS only,
+      as its Allow header states.
+    remediation: >-
+      Read the Allow response header. For ingredients, submission goes through
+      the community process, not the API.
+  - status: 429
+    name: throttled
+    envelope: detail
+    cause: >-
+      One of the six throttled endpoints was exceeded. Only authentication,
+      registration and the ingredient catalog/sync endpoints are throttled;
+      everything else is unthrottled.
+    remediation: >-
+      Honour the Retry-After response header and back off. There is no
+      proactive RateLimit-* header to read ahead of time.
+    detail: rate-limits/wger-rate-limits.yml
+    source: https://wger.readthedocs.io/en/latest/api/api.html
+  - status: 500
+    name: server_error
+    envelope: detail
+    cause: Unclassified server error
+    remediation: Retry — the spec's own 500 description for the powersync surface says the client should retry
+  - status: 503
+    name: transient_database_error
+    envelope: detail
+    cause: Transient database error
+    remediation: Retry with backoff
+self_hosting_caveat: >-
+  Because every wger instance is independently deployed, an agent can also meet
+  errors produced by the operator's reverse proxy rather than by wger. On
+  wger.de specifically, HTML requests are fronted by an Anubis bot-check
+  interstitial that answers HTTP 200 with a challenge page for ANY path,
+  including paths that do not exist — so a 200 on an HTML URL of that host
+  proves nothing. The /api/v2/ JSON surface is served directly and was not
+  challenged (probed 2026-08-27).

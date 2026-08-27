@@ -1,0 +1,131 @@
+overlay: 1.0.0
+info:
+  title: API Evangelist enrichment overlay for the wger REST API
+  version: 1.0.0
+extends: ../openapi/wger-openapi.yml
+x-generated: '2026-08-27'
+x-method: derived
+x-source: >-
+  Derived from openapi/wger-openapi.yml plus the artifacts in this repository
+  (conventions/, errors/, rate-limits/, lifecycle/, data-model/, mcp/). Applies
+  API Evangelist annotations only — it adds no operation, parameter, schema or
+  response that wger does not already publish, and the original spec is never
+  mutated.
+actions:
+  - target: $.info
+    update:
+      x-apievangelist-profile: https://apis.io/provider/wger
+      x-artifacts:
+        authentication: authentication/wger-authentication.yml
+        scopes: scopes/wger-scopes.yml
+        conventions: conventions/wger-conventions.yml
+        errors: errors/wger-problem-types.yml
+        rate-limits: rate-limits/wger-rate-limits.yml
+        lifecycle: lifecycle/wger-lifecycle.yml
+        data-model: data-model/wger-data-model.yml
+        mcp: mcp/wger-mcp.yml
+        tool-crosswalk: mcp/wger-tool-crosswalk.yml
+      x-self-hosted: true
+      x-version-negotiation:
+        note: >-
+          Every wger instance is upgraded independently. Read /api/v2/version/,
+          /api/v2/min-server-version/ and /api/v2/min-app-version/ before
+          assuming a capability exists.
+  - target: $.info
+    update:
+      x-error-format:
+        rfc9457: false
+        envelope: >-
+          Django REST Framework — {"detail": "..."} or {"<field>": ["..."]}
+        catalog: errors/wger-problem-types.yml
+      x-idempotency:
+        supported: false
+        note: No Idempotency-Key. A retried POST creates a second row.
+      x-reversibility:
+        grade: none
+        note: >-
+          No cancel, undo, restore or soft-delete anywhere in the contract.
+          Every *_destroy is terminal, and four of them cascade.
+  - target: $.paths['/api/v2/routine/{id}/'].delete
+    update:
+      x-consequence: destructive
+      x-cascade: [Day, Slot, SlotEntry, Config]
+      x-reversible: false
+      x-agent-escalation: recommended
+  - target: $.paths['/api/v2/day/{id}/'].delete
+    update:
+      x-consequence: destructive
+      x-cascade: [Slot, SlotEntry, Config]
+      x-reversible: false
+      x-agent-escalation: recommended
+  - target: $.paths['/api/v2/slot/{id}/'].delete
+    update:
+      x-consequence: destructive
+      x-cascade: [SlotEntry, Config]
+      x-reversible: false
+      x-agent-escalation: recommended
+  - target: $.paths['/api/v2/workoutsession/{id}/'].delete
+    update:
+      x-consequence: destructive
+      x-cascade: [WorkoutLog]
+      x-reversible: false
+      x-agent-escalation: recommended
+      x-note: deleting a session takes its logged sets with it
+  - target: $.paths['/api/v2/measurement-category/{id}/'].delete
+    update:
+      x-consequence: destructive
+      x-cascade: [Measurement]
+      x-reversible: false
+  - target: $.paths['/api/v2/ingredient/'].get
+    update:
+      x-rate-limit:
+        limit: 120
+        window: 1m
+        scope: per-IP anonymous / per-user authenticated
+        exhaustion: 429 + Retry-After
+        source: https://wger.readthedocs.io/en/latest/api/api.html
+      x-anonymous: true
+  - target: $.paths['/api/v2/ingredientinfo/'].get
+    update:
+      x-rate-limit:
+        limit: 120
+        window: 1m
+        exhaustion: 429 + Retry-After
+      x-anonymous: true
+  - target: $.paths['/api/v2/ingredient/{id}/'].get
+    update:
+      x-rate-limit:
+        limit: 300
+        window: 1m
+        exhaustion: 429 + Retry-After
+      x-anonymous: true
+  - target: $.paths['/api/v2/ingredient-sync/'].get
+    update:
+      x-rate-limit:
+        limit: 600
+        window: 1m
+        exhaustion: 429 + Retry-After
+      x-pagination: cursor
+      x-note: >-
+        Cursor-paginated; the response carries no count. Follow next rather than
+        choosing an offset.
+  - target: $.paths['/api/v2/userprofile/'].get
+    update:
+      x-rate-limit:
+        note: >-
+          The registration path through this collection is limited to 5
+          requests/min.
+  - target: $.paths['/api/v2/exerciseinfo/'].get
+    update:
+      x-anonymous: true
+      x-prefer-over: /api/v2/exercise/
+      x-note: >-
+        Exercise carries no name; names live on ExerciseTranslation. The info
+        projection embeds translations, images, videos, muscles and equipment.
+  - target: $.paths['/api/v2/workoutlog/'].post
+    update:
+      x-plan-linkage:
+        required_for_routine_views: [routine, slot_entry, iteration]
+        note: >-
+          A log posted without routine/slot_entry/iteration is freestanding and
+          is invisible to every routine view and routine statistic.

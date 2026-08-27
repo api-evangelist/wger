@@ -1,0 +1,127 @@
+generated: '2026-08-27'
+method: searched
+source: >-
+  PyPI + npm registry metadata endpoints and the wger-project GitHub
+  organization, read 2026-08-27
+note: >-
+  wger is a self-hosted product, so its "packages" split into two kinds: client
+  libraries that CALL the REST API (wger-api-client, wger-mcp) and distributions
+  of the server itself (wger on PyPI, the Docker/Helm stacks). Both are
+  first-party, published by the wger-project organization. Registry versions and
+  dates below are read from registry.npmjs.org / pypi.org JSON metadata, not
+  from prose.
+packages:
+  - language: python
+    registry: pypi
+    name: wger-api-client
+    url: https://pypi.org/project/wger-api-client/
+    install: pip install wger-api-client
+    official: true
+    kind: client-sdk
+    version: 2.6.1
+    published: '2026-08-13'
+    repository: https://github.com/wger-project/api-client
+    license: Apache-2.0
+    description: >-
+      Typed Python client for the wger REST API, generated from the server's
+      OpenAPI schema with openapi-python-client and built on httpx. Sync and
+      async call for every endpoint. Major.minor tracks the wger release it
+      targets, so 2.6.x is meant for a 2.6 server.
+  - language: python
+    registry: pypi
+    name: wger-mcp
+    url: https://pypi.org/project/wger-mcp/
+    install: uvx wger-mcp
+    official: true
+    kind: mcp-server
+    version: 0.2.0
+    published: '2026-08-26'
+    repository: https://github.com/wger-project/mcp-server
+    license: AGPL-3.0
+    description: >-
+      MCP server exposing the wger REST API as 85 tools, with stdio and
+      Streamable HTTP transports and pluggable auth (OIDC token exchange or a
+      static token).
+  - language: javascript
+    registry: npm
+    name: "@wger-project/react-components"
+    url: https://www.npmjs.com/package/@wger-project/react-components
+    install: npm install @wger-project/react-components
+    official: true
+    kind: ui-components
+    version: 26.8.12
+    published: '2026-08-12'
+    repository: https://github.com/wger-project/react
+    description: >-
+      The React components used inside the wger application itself, published
+      for reuse. Calendar-style versioning (YY.M.D), not aligned to the server
+      release train.
+  - language: python
+    registry: pypi
+    name: wger
+    url: https://pypi.org/project/wger/
+    install: pip install wger
+    official: true
+    kind: server-distribution
+    version: '2.1'
+    published: '2022-10-11'
+    repository: https://github.com/wger-project/wger
+    license: AGPL-3.0
+    description: >-
+      The wger server itself, packaged for pip. Provides the `wger` console
+      script (see cli/wger-cli.yml).
+    staleness_note: >-
+      DECAY SIGNAL — the PyPI distribution is pinned at 2.1 (2022-10-11) while
+      the project has since shipped 2.2 (2023-12-06), 2.3 (2025-04-05), 2.4
+      (2026-01-18), 2.5 (2026-04-15) and 2.6 (2026-06-17) on GitHub, and the
+      live wger.de instance reports 2.7.0a2 in its OpenAPI info.version. Four
+      years and five releases behind. The project's documented install paths are
+      now Docker and the source checkout, not PyPI; this is not an abandoned
+      API, it is an abandoned distribution channel.
+  - language: docker
+    registry: ghcr
+    name: ghcr.io/wger-project/wger
+    url: https://github.com/wger-project/docker
+    install: docker compose up
+    official: true
+    kind: server-distribution
+    version: null
+    published: null
+    note: >-
+      version/published null — a container registry tag list is not a package
+      metadata endpoint of the kind this field is read from, and the compose
+      stack floats on :latest. A consumer pulling it cannot tell which release
+      they get either, which is the finding.
+  - language: docker
+    registry: ghcr
+    name: ghcr.io/wger-project/mcp-server
+    url: https://github.com/wger-project/mcp-server
+    install: docker pull ghcr.io/wger-project/mcp-server
+    official: true
+    kind: mcp-server
+    version: null
+    published: null
+    note: container image for the MCP server; not queried through a package metadata endpoint
+  - language: helm
+    registry: github
+    name: wger helm chart
+    url: https://github.com/wger-project/helm-charts
+    official: true
+    kind: server-distribution
+    version: null
+    published: null
+    note: chart repository; no registry metadata endpoint queried
+apps:
+  - platform: flutter
+    repository: https://github.com/wger-project/flutter
+    official: true
+    note: cross-platform mobile app; an API consumer, not a library
+  - platform: android
+    repository: https://github.com/wger-project/android
+    official: true
+    note: WebView wrapper around the hosted app
+absent:
+  - registry: npm
+    name: wger
+    status: 404
+    note: no npm package under the bare name

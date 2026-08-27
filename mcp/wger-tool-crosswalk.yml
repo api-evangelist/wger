@@ -1,0 +1,570 @@
+generated: '2026-08-27'
+method: derived
+source: >-
+  mcp/wger-mcp.yml (tool names + signatures read from
+  https://github.com/wger-project/mcp-server#tools) bound against the
+  operationIds in openapi/wger-openapi.yml
+note: >-
+  The wger MCP server's live tools/list could not be introspected — the project
+  publishes no hosted endpoint, so a real inputSchema read requires running the
+  server locally with a wger credential. Rows are therefore bound by name and by
+  the argument signatures the provider documents in its own README, against
+  operationIds verified present in openapi/wger-openapi.yml. Confidence is set
+  accordingly: high where the tool name and its arguments map 1:1 onto a single
+  documented operation, medium where the tool composes several operations or
+  the provider documents it as a convenience/alias, low where the backing
+  operation is inferred.
+surfaces:
+  openapi:
+    file: openapi/wger-openapi.yml
+    source: https://wger.de/api/v2/schema
+    gated: false
+    operations: 254
+    paths: 129
+  mcp:
+    manifest: mcp/wger-mcp.yml
+    url: null
+    transport: stdio (local) or self-hosted Streamable HTTP
+    gated: true
+    gated_reason: >-
+      no vendor-hosted endpoint; tools/list requires a locally run server plus a
+      wger API key or OIDC token
+    tools: 85
+  graphql:
+    present: false
+coverage:
+  mcp_tools_total: 85
+  mcp_tools_mapped: 76
+  mcp_only: 8
+  rest_operations_total: 254
+  rest_operations_referenced: 112
+  rest_only_families: 18
+  rest_only_operations: 81
+  enumeration_note: >-
+    The provider states the default registration is 85 tools; its README tables
+    name 84 distinct tools (the `equipment` group is listed as a valid MCP_TOOLS
+    value but its tools are not tabulated). 84 are accounted for here — 76 bound
+    to REST operations, 8 MCP-only.
+crosswalk:
+  - tool: whoami
+    category: profile
+    rest: [userprofile_retrieve]
+    binding: direct
+    confidence: high
+  - tool: update_user_profile
+    category: profile
+    rest: [userprofile_partial_update]
+    binding: direct
+    confidence: high
+  - tool: list_routines
+    category: routines_read
+    rest: [routine_list]
+    binding: direct
+    confidence: high
+  - tool: get_routine
+    category: routines_read
+    rest: [routine_retrieve]
+    binding: direct
+    confidence: high
+  - tool: create_routine
+    category: routines_write
+    rest: [routine_create]
+    binding: direct
+    confidence: high
+  - tool: update_routine
+    category: routines_write
+    rest: [routine_partial_update]
+    binding: direct
+    confidence: high
+  - tool: delete_routine
+    category: routines_write
+    rest: [routine_destroy]
+    binding: direct
+    confidence: high
+    note: cascades to days, slots, entries and configs
+  - tool: list_routine_days
+    category: routines_read
+    rest: [day_list]
+    binding: direct
+    confidence: high
+  - tool: get_routine_day
+    category: routines_read
+    rest: [day_retrieve]
+    binding: direct
+    confidence: high
+  - tool: add_routine_day
+    category: routines_write
+    rest: [day_create]
+    binding: direct
+    confidence: high
+  - tool: update_routine_day
+    category: routines_write
+    rest: [day_partial_update]
+    binding: direct
+    confidence: high
+  - tool: delete_routine_day
+    category: routines_write
+    rest: [day_destroy]
+    binding: direct
+    confidence: high
+  - tool: list_slots
+    category: routines_read
+    rest: [slot_list]
+    binding: direct
+    confidence: high
+  - tool: add_slot_to_day
+    category: routines_write
+    rest: [slot_create]
+    binding: direct
+    confidence: high
+  - tool: update_slot
+    category: routines_write
+    rest: [slot_partial_update]
+    binding: direct
+    confidence: high
+  - tool: delete_slot
+    category: routines_write
+    rest: [slot_destroy]
+    binding: direct
+    confidence: high
+  - tool: list_slot_entries
+    category: routines_read
+    rest: [slot_entry_list]
+    binding: direct
+    confidence: high
+  - tool: get_slot_entry
+    category: routines_read
+    rest: [slot_entry_retrieve]
+    binding: direct
+    confidence: high
+  - tool: attach_exercise_to_slot
+    category: routines_write
+    rest: [slot_entry_create]
+    binding: direct
+    confidence: high
+  - tool: update_slot_entry
+    category: routines_write
+    rest: [slot_entry_partial_update]
+    binding: direct
+    confidence: high
+  - tool: delete_slot_entry
+    category: routines_write
+    rest: [slot_entry_destroy]
+    binding: direct
+    confidence: high
+  - tool: list_slot_entry_configs
+    category: routines_read
+    rest:
+      - sets_config_list
+      - max_sets_config_list
+      - repetitions_config_list
+      - max_repetitions_config_list
+      - weight_config_list
+      - max_weight_config_list
+      - rir_config_list
+      - max_rir_config_list
+      - rest_config_list
+      - max_rest_config_list
+    binding: composite
+    confidence: high
+    note: >-
+      one tool fans out across the ten per-iteration config collections; the
+      README documents the fan-out with an asyncio.gather + Semaphore
+  - tool: set_slot_entry_config
+    category: routines_write
+    rest:
+      - sets_config_create
+      - max_sets_config_create
+      - repetitions_config_create
+      - max_repetitions_config_create
+      - weight_config_create
+      - max_weight_config_create
+      - rir_config_create
+      - max_rir_config_create
+      - rest_config_create
+      - max_rest_config_create
+    binding: dispatch
+    confidence: high
+    note: the `kind` argument selects which config collection is posted to
+  - tool: update_slot_entry_config
+    category: routines_write
+    rest:
+      - sets_config_partial_update
+      - max_sets_config_partial_update
+      - repetitions_config_partial_update
+      - max_repetitions_config_partial_update
+      - weight_config_partial_update
+      - max_weight_config_partial_update
+      - rir_config_partial_update
+      - max_rir_config_partial_update
+      - rest_config_partial_update
+      - max_rest_config_partial_update
+    binding: dispatch
+    confidence: high
+  - tool: delete_slot_entry_config
+    category: routines_write
+    rest:
+      - sets_config_destroy
+      - max_sets_config_destroy
+      - repetitions_config_destroy
+      - max_repetitions_config_destroy
+      - weight_config_destroy
+      - max_weight_config_destroy
+      - rir_config_destroy
+      - max_rir_config_destroy
+      - rest_config_destroy
+      - max_rest_config_destroy
+    binding: dispatch
+    confidence: high
+  - tool: add_exercise_with_sets
+    category: routines_write
+    rest: [slot_create, slot_entry_create, sets_config_create, repetitions_config_create, weight_config_create]
+    binding: composite
+    confidence: high
+    note: >-
+      documented by the provider as a convenience that creates the slot, the
+      slot entry and the sets/reps/weight configs in one call
+  - tool: get_workout_for_date
+    category: routines_read
+    rest: [routine_structure_retrieve, routine_date_sequence_display_list]
+    binding: composite
+    confidence: medium
+    note: >-
+      resolves what a routine prescribes on a date into one row per planned SET;
+      wger exposes the day sequence and the resolved structure as separate
+      read-only sub-resources of /routine/{id}/
+  - tool: log_set
+    category: workout_logs
+    rest: [workoutlog_create]
+    binding: direct
+    confidence: high
+  - tool: list_workout_logs
+    category: workout_logs
+    rest: [workoutlog_list]
+    binding: direct
+    confidence: high
+  - tool: get_workout_log
+    category: workout_logs
+    rest: [workoutlog_retrieve]
+    binding: direct
+    confidence: high
+  - tool: update_workout_log
+    category: workout_logs
+    rest: [workoutlog_partial_update]
+    binding: direct
+    confidence: high
+  - tool: delete_workout_log
+    category: workout_logs
+    rest: [workoutlog_destroy]
+    binding: direct
+    confidence: high
+  - tool: log_workout_session
+    category: workout_sessions
+    rest: [workoutsession_create]
+    binding: direct
+    confidence: high
+  - tool: list_workout_sessions
+    category: workout_sessions
+    rest: [workoutsession_list]
+    binding: direct
+    confidence: high
+  - tool: get_workout_session
+    category: workout_sessions
+    rest: [workoutsession_retrieve]
+    binding: direct
+    confidence: high
+  - tool: update_workout_session
+    category: workout_sessions
+    rest: [workoutsession_partial_update]
+    binding: direct
+    confidence: high
+  - tool: delete_workout_session
+    category: workout_sessions
+    rest: [workoutsession_destroy]
+    binding: direct
+    confidence: high
+    note: deleting a session takes its logged sets with it
+  - tool: log_body_weight
+    category: body_weight
+    rest: [weightentry_create]
+    binding: direct
+    confidence: high
+  - tool: get_body_weight_history
+    category: body_weight
+    rest: [weightentry_list]
+    binding: direct
+    confidence: high
+  - tool: update_body_weight_entry
+    category: body_weight
+    rest: [weightentry_partial_update]
+    binding: direct
+    confidence: high
+  - tool: delete_body_weight_entry
+    category: body_weight
+    rest: [weightentry_destroy]
+    binding: direct
+    confidence: high
+  - tool: list_measurement_categories
+    category: measurements
+    rest: [measurement_category_list]
+    binding: direct
+    confidence: high
+  - tool: get_measurement_category
+    category: measurements
+    rest: [measurement_category_retrieve]
+    binding: direct
+    confidence: high
+  - tool: create_measurement_category
+    category: measurements
+    rest: [measurement_category_create]
+    binding: direct
+    confidence: high
+  - tool: update_measurement_category
+    category: measurements
+    rest: [measurement_category_partial_update]
+    binding: direct
+    confidence: high
+  - tool: delete_measurement_category
+    category: measurements
+    rest: [measurement_category_destroy]
+    binding: direct
+    confidence: high
+  - tool: log_measurement
+    category: measurements
+    rest: [measurement_create]
+    binding: direct
+    confidence: high
+  - tool: list_measurements
+    category: measurements
+    rest: [measurement_list]
+    binding: direct
+    confidence: high
+  - tool: get_measurement
+    category: measurements
+    rest: [measurement_retrieve]
+    binding: direct
+    confidence: high
+  - tool: update_measurement
+    category: measurements
+    rest: [measurement_partial_update]
+    binding: direct
+    confidence: high
+  - tool: delete_measurement
+    category: measurements
+    rest: [measurement_destroy]
+    binding: direct
+    confidence: high
+  - tool: search_exercises
+    category: exercises
+    rest: [exercise_list, exerciseinfo_list]
+    binding: direct
+    confidence: medium
+    note: name search over the exercise catalog with a language filter
+  - tool: search_exercises_batch
+    category: exercises
+    rest: [exercise_list, exerciseinfo_list]
+    binding: composite
+    confidence: medium
+    note: batches many name lookups into one tool call; no batch REST operation exists
+  - tool: search_exercises_by_filter
+    category: exercises
+    rest: [exercise_list, exerciseinfo_list]
+    binding: direct
+    confidence: high
+    note: uses the documented equipment / muscle / category query filters
+  - tool: get_exercise
+    category: exercises
+    rest: [exerciseinfo_retrieve, exerciseimage_thumbnails_retrieve]
+    binding: composite
+    confidence: high
+  - tool: list_categories
+    category: exercises
+    rest: [exercisecategory_list]
+    binding: direct
+    confidence: high
+  - tool: list_equipment
+    category: exercises
+    rest: [equipment_list]
+    binding: direct
+    confidence: high
+  - tool: list_muscles
+    category: exercises
+    rest: [muscle_list]
+    binding: direct
+    confidence: high
+  - tool: search_ingredients
+    category: nutrition
+    rest: [ingredient_list, ingredientinfo_list]
+    binding: direct
+    confidence: high
+  - tool: search_ingredient_by_barcode
+    category: nutrition
+    rest: [ingredient_list]
+    binding: direct
+    confidence: high
+    note: uses the documented ?code= exact-match filter
+  - tool: get_ingredient
+    category: nutrition
+    rest: [ingredientinfo_retrieve]
+    binding: direct
+    confidence: high
+  - tool: list_nutrition_plans
+    category: nutrition
+    rest: [nutritionplan_list]
+    binding: direct
+    confidence: high
+  - tool: get_nutrition_plan
+    category: nutrition
+    rest: [nutritionplaninfo_retrieve]
+    binding: direct
+    confidence: medium
+  - tool: create_nutrition_plan
+    category: nutrition
+    rest: [nutritionplan_create]
+    binding: direct
+    confidence: high
+  - tool: update_nutrition_plan
+    category: nutrition
+    rest: [nutritionplan_partial_update]
+    binding: direct
+    confidence: high
+  - tool: delete_nutrition_plan
+    category: nutrition
+    rest: [nutritionplan_destroy]
+    binding: direct
+    confidence: high
+  - tool: create_meal
+    category: nutrition
+    rest: [meal_create]
+    binding: direct
+    confidence: high
+  - tool: create_recipe
+    category: nutrition
+    rest: [meal_create]
+    binding: alias
+    confidence: high
+    note: >-
+      the provider states wger has no separate Recipe entity; the recipe tools
+      are semantic aliases over meal/ + mealitem/
+  - tool: get_recipe
+    category: nutrition
+    rest: [meal_retrieve, meal_nutritional_values_retrieve]
+    binding: alias
+    confidence: high
+  - tool: add_ingredient_to_recipe
+    category: nutrition
+    rest: [mealitem_create]
+    binding: alias
+    confidence: high
+  - tool: log_ingredient
+    category: nutrition
+    rest: [nutritiondiary_create]
+    binding: direct
+    confidence: high
+  - tool: list_ingredient_units
+    category: nutrition
+    rest: [ingredientweightunit_list]
+    binding: direct
+    confidence: high
+  - tool: update_log_item
+    category: nutrition
+    rest: [nutritiondiary_partial_update]
+    binding: direct
+    confidence: high
+  - tool: list_log_items
+    category: nutrition
+    rest: [nutritiondiary_list]
+    binding: direct
+    confidence: high
+  - tool: delete_log_item
+    category: nutrition
+    rest: [nutritiondiary_destroy]
+    binding: direct
+    confidence: high
+  - tool: nutrition_summary
+    category: nutrition
+    rest: [nutritiondiary_list, ingredientweightunit_list, nutritionplan_nutritional_values_retrieve]
+    binding: composite
+    confidence: medium
+    note: >-
+      recomputes the daily total client-side, scaling portion-unit entries the
+      way wger does, rather than reading one REST aggregate
+mcp_only:
+  - tool: calculate_daily_calories
+    reason: >-
+      Mifflin-St Jeor TDEE + macro split computed in the server. Its inputs are
+      auto-filled from userprofile_retrieve and the latest weightentry_list, and
+      with apply_to_profile=True the result is PATCHed back via
+      userprofile_partial_update, but the calculation itself has no REST operation.
+  - tool: weekly_summary
+    reason: >-
+      analytics aggregate over workoutlog_list — sets, reps and volume per
+      exercise. wger exposes routine_stats_retrieve for a single routine, but no
+      cross-routine weekly aggregate.
+  - tool: exercise_history
+    reason: per-session aggregates for one exercise, computed from workoutlog_list
+  - tool: personal_records
+    reason: >-
+      max weight, max reps and Epley-estimated 1RM per exercise. The 1RM
+      estimate exists only in the MCP server.
+  - tool: volume_trend
+    reason: >-
+      day/week/month bucketed volume with group_by none/exercise/muscle/category,
+      computed from workoutlog_list plus cached exercise metadata
+  - tool: compare_periods
+    reason: rolling window A vs B with delta and delta%, computed in the server
+  - tool: lookup_food_by_barcode
+    reason: >-
+      calls Open Food Facts, a third-party database, not wger. Returns a
+      normalised wger_ingredient_payload for information only.
+  - tool: lookup_foods_by_barcodes
+    reason: batch Open Food Facts lookup with concurrency cap and 429 retry
+rest_only:
+  - operations: [exercise_create, exercise_update, exercise_partial_update, exercise_destroy, exercise_submission_create]
+    reason: >-
+      contributing to the community exercise database. The MCP server reads the
+      catalog but does not expose submission or moderation.
+  - operations: [exercise_translation_list, exercise_translation_create, exercise_translation_retrieve, exercise_translation_update, exercise_translation_partial_update, exercise_translation_destroy]
+    reason: exercise translation authoring is not exposed as a tool
+  - operations: [exercisealias_list, exercisealias_create, exercisealias_retrieve, exercisealias_update, exercisealias_partial_update, exercisealias_destroy]
+    reason: exercise aliases not exposed
+  - operations: [exercisecomment_list, exercisecomment_create, exercisecomment_retrieve, exercisecomment_update, exercisecomment_partial_update, exercisecomment_destroy]
+    reason: exercise comments/instructions authoring not exposed
+  - operations: [exerciseimage_list, exerciseimage_create, exerciseimage_retrieve, exerciseimage_update, exerciseimage_partial_update, exerciseimage_destroy]
+    reason: image upload not exposed; get_exercise returns image URLs read-only
+  - operations: [video_list, video_create, video_retrieve, video_update, video_partial_update, video_destroy]
+    reason: exercise video upload/management not exposed
+  - operations: [gallery_list, gallery_create, gallery_retrieve, gallery_update, gallery_partial_update, gallery_destroy]
+    reason: the user progress-photo gallery has no tool
+  - operations: [trophy_list, trophy_retrieve, trophy_progress_list, user_trophy_list, user_trophy_retrieve]
+    reason: gamification/trophies have no tools
+  - operations: [user_statistics_list, user_statistics_retrieve]
+    reason: >-
+      wger's own server-side user statistics are not surfaced; the analytics
+      tools recompute from the logs instead
+  - operations: [templates_list, templates_retrieve, public_templates_list, public_templates_retrieve]
+    reason: >-
+      routine templates are readable over REST; the MCP server exposes
+      is_template / is_public on create_routine but no template browse tool
+  - operations: [ingredient_sync_list, ingredient_sync_retrieve]
+    reason: >-
+      the cursor-paginated bulk ingredient sync feed is an instance-to-instance
+      catalog replication surface, not an agent surface
+  - operations: [ingredient_image_list, ingredient_image_retrieve]
+    reason: ingredient images not exposed
+  - operations: [deletion_log_list, deletion_log_retrieve]
+    reason: tombstone feed for offline clients; not an agent surface
+  - operations: [powersync_keys_retrieve, powersync_token_retrieve, upload_powersync_data_update, upload_powersync_data_partial_update, upload_powersync_data_destroy]
+    reason: PowerSync offline-replication surface for the mobile apps
+  - operations: [token_refresh_create, token_verify_create, issue_refresh_token_create]
+    reason: >-
+      JWT lifecycle. The MCP server handles credentials itself (API key, or OIDC
+      token exchange) and does not expose token operations as tools.
+  - operations: [userprofile_verify_email_create, check_permission_retrieve, check_language_create]
+    reason: account/permission plumbing
+  - operations: [version_retrieve, min_app_version_retrieve, min_server_version_retrieve, schema_retrieve]
+    reason: instance metadata and self-description
+  - operations: [language_list, language_retrieve, license_list, license_retrieve, setting_repetitionunit_list, setting_repetitionunit_retrieve, setting_weightunit_list, setting_weightunit_retrieve]
+    reason: >-
+      reference vocabularies. The tools take the human-facing values (kg/lb,
+      ISO 639-1 codes) directly instead of exposing the id lookups.

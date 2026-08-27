@@ -1,0 +1,188 @@
+generated: '2026-08-27'
+method: searched
+source: https://wger.readthedocs.io/en/latest/api/api.html
+docs: https://wger.readthedocs.io/en/latest/api/api.html
+spec: openapi/wger-openapi.yml
+note: >-
+  Cross-cutting runtime semantics for the wger REST API, read from the project's
+  "Using the API" documentation and from the info.description block of the
+  OpenAPI schema the server generates for itself, then cross-checked against
+  openapi/wger-openapi.yml. wger is Django REST Framework, and most conventions
+  below are DRF conventions the project has documented rather than bespoke ones.
+base:
+  url: https://wger.de/api/v2
+  self_hosted: true
+  self_hosted_note: >-
+    Every convention here applies to any wger instance; wger.de is the project's
+    own public deployment. The spec's servers[] carries both "/" (this server)
+    and https://wger.de (the official upstream instance).
+auth:
+  style: Authorization header
+  order: Token -> Bearer JWT -> session cookie
+  anonymous_read: true
+  detail: authentication/wger-authentication.yml
+pagination:
+  style: limit/offset
+  params:
+    limit: page size, default 20
+    offset: row offset
+  response_fields: [count, next, previous, results]
+  exception:
+    endpoint: /api/v2/ingredient-sync/
+    style: cursor
+    detail: >-
+      The bulk ingredient sync feed uses cursor pagination so syncing stays fast
+      no matter how deep the client has paginated. Its response carries no
+      count; clients follow next instead of choosing an offset.
+  source: https://wger.readthedocs.io/en/latest/api/api.html
+filtering:
+  style: query parameter per field
+  combination: AND-joined
+  booleans: 'True / False, case-sensitive; 1, 0 and false are ignored'
+  multi_value: not supported (cannot ask for category 1 OR 2)
+  multi_value_discrepancy: >-
+    The narrative docs state multi-value filtering is not supported, but the
+    generated schema disagrees for some collections: /api/v2/ingredient/ and
+    /api/v2/ingredientinfo/ publish id__in, nutriscore__in and language__in,
+    and both publish the full django-filter lookup suffixes __gt/__gte/__lt/__lte
+    on id, nutriscore, created, last_update and last_imported. Trust the schema
+    per endpoint, not the prose. Verified against openapi/wger-openapi.yml on
+    2026-08-27.
+  source: https://wger.readthedocs.io/en/latest/api/api.html
+ordering:
+  param: ordering
+  multiple: comma-separated
+  descending: '-field'
+  source: https://wger.readthedocs.io/en/latest/api/api.html
+content_negotiation:
+  default: application/json
+  accept_variants:
+    - application/json
+    - 'application/json; indent=4'
+  url_suffixes:
+    - '.json — raw JSON'
+    - '.api — the browsable DRF HTML view'
+  source: https://wger.readthedocs.io/en/latest/api/api.html
+field_expansion:
+  supported: partial
+  detail: >-
+    Not a generic expand= parameter. wger instead publishes paired endpoints —
+    a lean resource and an "info" sibling that embeds its related objects:
+    exercise/ vs exerciseinfo/, ingredient/ vs ingredientinfo/, nutritionplan/
+    vs nutritionplaninfo/. Choosing the info variant is how a client avoids the
+    N+1.
+  spec_evidence:
+    - exerciseinfo_list
+    - ingredientinfo_list
+    - nutritionplaninfo_list
+sub_resources:
+  detail: >-
+    Computed read-only sub-resources hang off a parent id rather than being
+    query flags — /routine/{id}/structure/, /routine/{id}/logs/,
+    /routine/{id}/stats/, /routine/{id}/date-sequence-display/,
+    /routine/{id}/date-sequence-gym/, and the nutritional_values/ sibling on
+    meal, mealitem, nutritiondiary, nutritionplan and nutritionplaninfo.
+metadata:
+  custom_fields: false
+  note: no generic metadata bag; resources carry fixed fields plus free-text comment/notes fields
+request_id_tracing:
+  supported: false
+  note: >-
+    No request-id, trace-id or correlation header was observed on a live
+    response (probed 2026-08-27). Response headers were limited to allow,
+    content-language, content-type, vary, via and x-frame-options.
+idempotency:
+  supported: false
+  keys: false
+  header: null
+  scope: null
+  retention: null
+  note: >-
+    wger publishes NO idempotency mechanism — no Idempotency-Key header, no
+    request-replay window, nothing in the OpenAPI schema or the API docs. A
+    retried POST creates a second row. The safe patterns are the standard REST
+    ones: PUT/PATCH on a known id are naturally idempotent, and a client that
+    retries a create must reconcile by listing first. Recorded as a real absence
+    rather than an unchecked field; no Idempotency pointer is emitted in
+    apis.yml because the provider does not implement it.
+  checked:
+    - openapi/wger-openapi.yml
+    - https://wger.readthedocs.io/en/latest/api/api.html
+versioning:
+  style: path
+  current: v2
+  path_prefix: /api/v2/
+  server_version_endpoints:
+    - version_retrieve
+    - min_server_version_retrieve
+    - min_app_version_retrieve
+  note: >-
+    The API version in the path (v2) is stable and separate from the wger
+    release version, which the spec reports in info.version (2.7.0a2 on wger.de
+    as of 2026-08-27) and which /api/v2/version/ returns at runtime. Because
+    every instance is self-hosted and independently upgraded, min-app-version
+    and min-server-version exist so a client can negotiate compatibility with
+    whatever instance it was pointed at — a convention specific to self-hosted
+    APIs and the single most important thing an agent should read first.
+  detail: lifecycle/wger-lifecycle.yml
+errors:
+  envelope: DRF default
+  format: not RFC 9457
+  detail: errors/wger-problem-types.yml
+rate_limit_signaling:
+  proactive_headers: false
+  exhaustion: 429 + Retry-After
+  detail: rate-limits/wger-rate-limits.yml
+reversibility:
+  applicable: true
+  grade: none
+  summary: >-
+    wger has a large write surface — 254 operations across create, update,
+    partial update and destroy on routines, days, slots, slot entries, ten
+    per-iteration config collections, workout logs, sessions, weight entries,
+    measurements, nutrition plans, meals, meal items and diary entries — and
+    publishes NO reversal operation and NO window for any of it. There is no
+    cancel, no undo, no restore, no trash, no soft-delete flag in the schema.
+  write_surface:
+    create_operations: 37
+    update_operations: 64
+    destroy_operations: 31
+  reversal_paths: []
+  windows: []
+  destructive_notes:
+    - operation: routine_destroy
+      effect: >-
+        Deletes the routine and cascades to its days, slots, slot entries and
+        every per-iteration config. Not recoverable through the API.
+      source: https://github.com/wger-project/mcp-server#tools
+    - operation: day_destroy
+      effect: cascades to the day's slots, entries and configs
+    - operation: slot_destroy
+      effect: cascades to the slot's entries and configs
+    - operation: workoutsession_destroy
+      effect: >-
+        deletes the session AND the sets logged inside it — the provider's own
+        MCP documentation states "Deleting takes its logged sets with it"
+      source: https://github.com/wger-project/mcp-server#tools
+    - operation: measurement_category_destroy
+      effect: deletes the category with all of its entries
+  compensating_action: >-
+    The only way back from a destroy is to re-create the object from data the
+    caller kept. /api/v2/deletion-log/ records tombstones for offline client
+    sync — it tells a client that something WAS deleted, it does not restore it.
+  agent_guidance: >-
+    Treat every *_destroy operation as terminal. Read the object (and its
+    children, for the cascading four above) before deleting, and prefer
+    partial_update to clear a value over destroy. Because no reversal exists,
+    a destroy is the point at which an agent should escalate to a human rather
+    than one it can rehearse and roll back.
+  evidence:
+    - openapi/wger-openapi.yml
+    - https://wger.readthedocs.io/en/latest/api/api.html
+    - https://github.com/wger-project/mcp-server#tools
+dry_run_mode:
+  supported: false
+  note: >-
+    No dry-run, preview, validate-only or simulate parameter exists in the
+    schema. check-permission/ and check-language/ validate a precondition, not a
+    proposed write.

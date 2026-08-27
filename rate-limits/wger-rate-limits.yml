@@ -1,0 +1,70 @@
+generated: '2026-08-27'
+method: searched
+source: https://wger.readthedocs.io/en/latest/api/api.html#rate-limiting
+docs: https://wger.readthedocs.io/en/latest/api/api.html
+limit_count: 5
+note: >-
+  wger throttles only a handful of sensitive or expensive endpoints; the
+  documentation states explicitly that "All other endpoints are unthrottled".
+  These are the defaults shipped by the project — a self-hosted instance can
+  change them, so the numbers below describe wger.de and any instance running
+  stock settings. Probed 2026-08-27: an unauthenticated GET
+  https://wger.de/api/v2/ingredient/?limit=1 returned 200 with NO RateLimit-*
+  or X-RateLimit-* headers, so an agent gets no remaining-quota signal ahead of
+  time; the only runtime signal is the 429 + Retry-After on exhaustion.
+headers:
+  request: []
+  response:
+    - name: Retry-After
+      when: on 429 only
+      source: https://wger.readthedocs.io/en/latest/api/api.html
+  proactive_signal: false
+  proactive_signal_note: >-
+    No RateLimit-* (RFC 9331 draft) or X-RateLimit-* headers observed on a live
+    200 response. Confirmed by probe on 2026-08-27.
+exhaustion:
+  status: 429
+  body: standard DRF throttle response
+  retry_header: Retry-After
+rate_limits:
+  - endpoint: /allauth/app/v1/auth/login
+    purpose: authentication
+    limit: 10
+    window: 1m
+    scope: per-IP for anonymous callers, per-user for authenticated
+  - endpoint: /allauth/app/v1/auth/2fa/authenticate
+    purpose: authentication (2FA step)
+    limit: 10
+    window: 1m
+    scope: per-IP for anonymous callers, per-user for authenticated
+  - endpoint: /api/v2/userprofile/
+    purpose: registration
+    limit: 5
+    window: 1m
+    scope: per-IP for anonymous callers, per-user for authenticated
+  - endpoint: /api/v2/ingredient/ and /api/v2/ingredientinfo/ (list)
+    purpose: ingredient catalog list
+    limit: 120
+    window: 1m
+    scope: per-IP for anonymous callers, per-user for authenticated
+  - endpoint: /api/v2/ingredient/{id}/ and /api/v2/ingredientinfo/{id}/ (detail)
+    purpose: ingredient catalog detail
+    limit: 300
+    window: 1m
+    scope: per-IP for anonymous callers, per-user for authenticated
+  - endpoint: /api/v2/ingredient-sync/
+    purpose: bulk catalog sync
+    limit: 600
+    window: 1m
+    scope: per-IP for anonymous callers, per-user for authenticated
+unthrottled:
+  statement: All other endpoints are unthrottled.
+  source: https://wger.readthedocs.io/en/latest/api/api.html
+pagination_caps:
+  default_page_size: 20
+  limit_param: limit
+  hard_cap: >-
+    The OpenAPI description states limit is capped at 999; the narrative docs say
+    there is no hard cap but very large pages are slow. Recorded as the spec
+    states it, with the discrepancy noted.
+  spec_source: openapi/wger-openapi.yml (info.description)

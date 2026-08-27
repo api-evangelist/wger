@@ -1,0 +1,78 @@
+generated: '2026-08-27'
+method: generated
+source: openapi/wger-openapi.yml
+note: >-
+  Packaged Agent Skills for the wger REST API. SEARCH first found no
+  provider-published skills, AGENTS.md or skills/ directory anywhere in the
+  wger-project GitHub organization, so these are generated. Every operationId,
+  request field name, query parameter and enum value referenced was grepped out
+  of openapi/wger-openapi.yml before being written down; nothing is invented.
+  The cross-cutting rules each skill repeats (no idempotency key, no
+  reversibility, DRF error envelope, which endpoints are throttled) come from
+  conventions/wger-conventions.yml, errors/wger-problem-types.yml and
+  rate-limits/wger-rate-limits.yml.
+provider_published_skills:
+  found: false
+  checked:
+    - https://github.com/wger-project/wger
+    - https://github.com/wger-project (14 public repositories)
+  checked_date: '2026-08-27'
+skills:
+  - file: wger-log-a-workout.md
+    name: wger-log-a-workout
+    description: >-
+      Log a training session against a routine so the sets attach to the plan
+      they came from rather than landing freestanding and invisible.
+    operations:
+      - routine_list
+      - routine_structure_retrieve
+      - routine_date_sequence_display_list
+      - workoutsession_create
+      - workoutlog_create
+      - workoutlog_list
+      - workoutsession_list
+  - file: wger-build-a-routine.md
+    name: wger-build-a-routine
+    description: >-
+      Create a routine end to end — days, slots, slot entries and the
+      per-iteration progression configs that make weight and reps advance.
+    operations:
+      - routine_create
+      - day_create
+      - slot_create
+      - slot_entry_create
+      - sets_config_create
+      - repetitions_config_create
+      - max_repetitions_config_create
+      - weight_config_create
+      - rir_config_create
+      - routine_structure_retrieve
+      - exerciseinfo_list
+  - file: wger-log-food-by-barcode.md
+    name: wger-log-food-by-barcode
+    description: >-
+      Resolve a retail barcode against the ingredient catalog and log it to the
+      nutrition diary in the portion the user actually ate.
+    operations:
+      - ingredientinfo_list
+      - ingredientweightunit_list
+      - nutritionplan_list
+      - nutritionplan_create
+      - nutritiondiary_create
+      - nutritiondiary_list
+      - nutritionplan_nutritional_values_retrieve
+  - file: wger-track-body-metrics.md
+    name: wger-track-body-metrics
+    description: >-
+      Record and read body weight and tape measurements, including creating the
+      user-owned measurement categories entries hang off.
+    operations:
+      - weightentry_create
+      - weightentry_list
+      - weightentry_partial_update
+      - measurement_category_list
+      - measurement_category_create
+      - measurement_list
+      - measurement_create
+      - userprofile_retrieve
+      - userprofile_partial_update

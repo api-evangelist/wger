@@ -1,22 +1,40 @@
 aid: wger
 accessModel:
-  pricing: unknown
-  onboarding: unknown
+  pricing: free
+  onboarding: self-service
   trial: false
-  try_now: false
-  public: false
-  label: Unknown
-  confidence: low
-  source: []
-  generated: '2026-07-22'
-  method: derived
+  try_now: true
+  public: true
+  label: Free / Open Source
+  confidence: high
+  source:
+    - https://wger.readthedocs.io/en/latest/api/api.html
+    - https://wger.de/api/v2/schema
+  generated: '2026-08-27'
+  method: searched
 image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/icons/wger.png
 name: Wger
-description: "Workout manager data as exercises, muscles or equipment"
+description: >-
+  wger (wger Workout Manager) is a self-hosted, free and open source (AGPL-3.0)
+  fitness, workout, nutrition and body-weight tracker written in Django. Its
+  REST API is served under /api/v2/ on any wger instance — including the
+  project's own hosted instance at wger.de — and publishes a complete OpenAPI
+  3.0.3 schema generated from the code at /api/v2/schema, covering 129 paths and
+  254 operations across routines, days, slots and per-iteration progression
+  configs, workout logs and sessions, the community exercise database
+  (exercises, translations, images, videos, muscles, equipment, categories), the
+  ingredient and nutrition-plan catalog with an incremental ingredient-sync
+  feed, body weight, body measurements, galleries and gamification trophies.
+  System-wide reference data (exercises, ingredients, units) is readable without
+  authentication; user-owned data takes a personal API token, a JWT issued via
+  allauth-headless, an OAuth2/OIDC access token, or the session cookie. The
+  project also ships a first-party Python API client, a first-party MCP server
+  exposing 85 tools over the same API, React components, Flutter and Android
+  apps, and Docker/Helm deployment stacks.
 url: https://wger.de/en/software/api
 specificationVersion: '0.23'
 created: '2026-05-28'
-modified: '2026-05-28'
+modified: '2026-08-27'
 x-source: public-apis/public-apis
 x-category: "Sports & Fitness"
 x-tier: 3
@@ -24,23 +42,123 @@ x-tier-reason: bulk-registered-from-public-apis
 tags:
   - Sports And Fitness
   - Public APIs
+  - Fitness
+  - Nutrition
+  - Health
+  - Open Source
+  - Self Hosted
+  - Workout Tracking
+  - Django
+  - REST
 apis:
-  - name: Wger
-    description: "Workout manager data as exercises, muscles or equipment"
-    humanURL: https://wger.de/en/software/api
-    baseURL: https://wger.de/en/software/api
+  - name: Wger REST API v2
+    description: >-
+      The wger REST API, served under /api/v2/ on every wger instance. Returns
+      JSON by default, uses limit/offset pagination (cursor pagination on
+      /api/v2/ingredient-sync/), supports ordering and field filtering, and
+      documents itself with a drf-spectacular generated OpenAPI 3.0.3 schema at
+      /api/v2/schema. Public reference data is anonymous; user data requires a
+      Token, JWT Bearer, OAuth2/OIDC token or session cookie.
+    humanURL: https://wger.readthedocs.io/en/latest/api/api.html
+    baseURL: https://wger.de/api/v2
     tags:
       - Sports And Fitness
+      - Fitness
+      - Nutrition
+      - Workout Tracking
     properties:
+      - type: OpenAPI
+        url: openapi/wger-openapi.yml
       - type: Documentation
-        url: https://wger.de/en/software/api
+        url: https://wger.readthedocs.io/en/latest/api/api.html
+      - type: APIReference
+        url: https://wger.de/api/v2/schema/ui
+      - type: GettingStarted
+        url: https://wger.readthedocs.io/en/latest/api/api.html
+      - type: Authentication
+        url: authentication/wger-authentication.yml
+      - type: OAuthScopes
+        url: scopes/wger-scopes.yml
+      - type: RateLimits
+        url: rate-limits/wger-rate-limits.yml
+      - type: ErrorCatalog
+        url: errors/wger-problem-types.yml
+      - type: Conventions
+        url: conventions/wger-conventions.yml
+      - type: DataModel
+        url: data-model/wger-data-model.yml
+      - type: Overlay
+        url: overlays/wger-openapi-overlay.yaml
+      - type: Sandbox
+        url: sandbox/wger-sandbox.yml
+      - type: Conformance
+        url: conformance/wger-conformance.yml
 common:
+  - type: Website
+    url: https://wger.de
+  - type: DeveloperPortal
+    url: https://wger.de/en/software/api
+  - type: Documentation
+    url: https://wger.readthedocs.io/en/latest/
+  - type: APIReference
+    url: https://wger.de/api/v2/schema/ui
+  - type: GettingStarted
+    url: https://wger.readthedocs.io/en/latest/api/api.html
+  - type: GitHubOrganization
+    url: https://github.com/wger-project
+  - type: SourceCode
+    url: https://github.com/wger-project/wger
+  - type: Support
+    url: https://github.com/wger-project/wger/discussions
+  - type: Community
+    url: https://discord.gg/rPWFv6W
+  - type: SignUp
+    url: https://wger.de/en/user/registration
+  - type: Login
+    url: https://wger.de/en/user/login
+  - type: TermsOfService
+    url: https://wger.de/en/software/terms-of-service
+  - type: ChangeLog
+    url: changelog/wger-changelog.yml
+  - type: Lifecycle
+    url: lifecycle/wger-lifecycle.yml
+  - type: Deprecation
+    url: lifecycle/wger-lifecycle.yml
+  - type: Packages
+    url: packages/wger-packages.yml
+  - type: SDKs
+    url: packages/wger-packages.yml
+  - type: CLI
+    url: cli/wger-cli.yml
+  - type: Components
+    url: components/wger-components.yml
+  - type: MCPServer
+    url: mcp/wger-mcp.yml
+  - type: ToolCrosswalk
+    url: mcp/wger-tool-crosswalk.yml
+  - type: AgentSkill
+    url: skills/_index.yml
+  - type: LLMsTxt
+    url: llms/wger-llms.txt
+  - type: WellKnown
+    url: well-known/wger-well-known.yml
   - type: DomainSecurity
     url: security/wger-domain-security.yml
-  - type: Website
-    url: https://wger.de/en/software/api
+  - type: VulnerabilityDisclosure
+    url: security/wger-vulnerability-disclosure.yml
+  - type: Security
+    url: security/wger-vulnerability-disclosure.yml
+  - type: Plans
+    url: plans/wger-plans-pricing.yml
+  - type: RateLimits
+    url: rate-limits/wger-rate-limits.yml
   - type: PublicAPIsListing
     url: https://github.com/public-apis/public-apis
 maintainers:
   - FN: Kin Lane
     email: kin@apievangelist.com
+x-enrichment:
+  date: '2026-08-27'
+  status: enriched
+  artifacts_added: 28
+  pass: local-v1

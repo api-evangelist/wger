@@ -1,0 +1,51 @@
+generated: '2026-08-27'
+method: searched
+source: https://wger.de/.well-known/openid-configuration
+docs: https://wger.readthedocs.io/en/latest/administration/oauth2_provider.html
+spec: openapi/wger-openapi.yml
+note: >-
+  Baseline derived from the oidcAuth securityScheme in
+  openapi/wger-openapi.yml, then upgraded from the live OIDC discovery
+  document at https://wger.de/.well-known/openid-configuration (HTTP 200,
+  probed 2026-08-27), which advertises three scopes the OpenAPI securityScheme
+  does not list (openid, profile, email). wger acts as its own OAuth2/OIDC
+  provider (django-oauth-toolkit); the provider is off by default on a
+  self-hosted instance until configured.
+schemes:
+  - name: oidcAuth
+    source: openapi/wger-openapi.yml
+    issuer: https://wger.de
+    flows:
+      - flow: authorizationCode
+        authorizationUrl: https://wger.de/identity/o/authorize
+        tokenUrl: https://wger.de/identity/o/api/token
+        code_challenge_methods: [S256]
+    description: Access token issued by the OAuth2/OIDC provider
+scopes:
+  - scope: api:read
+    description: View your training, nutrition and body data
+    flows: [authorizationCode]
+    sources:
+      - openapi/wger-openapi.yml
+      - https://wger.de/.well-known/openid-configuration
+  - scope: api:write
+    description: Add and change your training, nutrition and body data
+    flows: [authorizationCode]
+    sources:
+      - openapi/wger-openapi.yml
+      - https://wger.de/.well-known/openid-configuration
+  - scope: openid
+    description: Standard OIDC scope; requests an ID token for the signed-in wger user
+    flows: [authorizationCode]
+    sources:
+      - https://wger.de/.well-known/openid-configuration
+  - scope: profile
+    description: Standard OIDC scope; basic profile claims at the userinfo endpoint
+    flows: [authorizationCode]
+    sources:
+      - https://wger.de/.well-known/openid-configuration
+  - scope: email
+    description: Standard OIDC scope; the account's email address
+    flows: [authorizationCode]
+    sources:
+      - https://wger.de/.well-known/openid-configuration

@@ -1,0 +1,160 @@
+generated: '2026-08-27'
+method: derived
+source: openapi/wger-openapi.yml
+docs: https://wger.readthedocs.io/en/latest/api/api.html
+note: >-
+  Standards asserted only where the contract or the provider's own
+  documentation demonstrates them. Where a check is false it is recorded as
+  false with the evidence, because an honest negative is what makes the
+  positives worth reading.
+conformance:
+  - id: openapi
+    conforms: true
+    version: 3.0.3
+    evidence: >-
+      openapi/wger-openapi.yml, fetched HTTP 200 from
+      https://wger.de/api/v2/schema (content-type
+      application/vnd.oai.openapi). 129 paths, 254 operations, 217 component
+      schemas, unique operationIds throughout, generated from the code by
+      drf-spectacular.
+  - id: oauth2
+    conforms: true
+    evidence: >-
+      components.securitySchemes.oidcAuth declares an authorizationCode flow
+      with authorizationUrl https://wger.de/identity/o/authorize and tokenUrl
+      https://wger.de/identity/o/api/token. wger 2.7 adds a full OAuth2
+      provider (django-oauth-toolkit).
+  - id: oidc
+    conforms: true
+    evidence: >-
+      https://wger.de/.well-known/openid-configuration returns HTTP 200 with
+      issuer, authorization_endpoint, token_endpoint, userinfo_endpoint,
+      jwks_uri, end_session_endpoint, revocation_endpoint,
+      id_token_signing_alg_values_supported [RS256] and
+      subject_types_supported [public]. Probed 2026-08-27.
+    caveat: >-
+      The advertised jwks_uri (https://wger.de/.well-known/jwks.json) returns
+      HTTP 200 with an EMPTY key set — {"keys": []} — so an RP cannot today
+      validate an id_token signature against wger.de's published keys.
+  - id: rfc8414
+    name: OAuth 2.0 Authorization Server Metadata
+    conforms: partial
+    evidence: >-
+      Metadata is published, but at /.well-known/openid-configuration only;
+      /.well-known/oauth-authorization-server returns 404 (probed 2026-08-27).
+  - id: rfc7636
+    name: PKCE
+    conforms: true
+    evidence: code_challenge_methods_supported [S256] in the discovery document
+  - id: rfc8628
+    name: OAuth 2.0 Device Authorization Grant
+    conforms: true
+    evidence: >-
+      grant_types_supported includes urn:ietf:params:oauth:grant-type:device_code
+      and device_authorization_endpoint is https://wger.de/identity/o/api/device/code
+  - id: rfc8693
+    name: OAuth 2.0 Token Exchange
+    conforms: true
+    scope: mcp-server
+    evidence: >-
+      The first-party MCP server performs an RFC 8693 token exchange to obtain
+      a wger-audienced access token, documented in ADR 0001 —
+      https://github.com/wger-project/mcp-server/blob/master/docs/adr/0001-multi-user-auth-via-oidc-token-exchange.md
+  - id: jwt
+    conforms: true
+    evidence: >-
+      securitySchemes jwtAuth and headlessJwtAuth are http/bearer with
+      bearerFormat JWT; /api/v2/token/refresh and /api/v2/token/verify are
+      published operations with refresh-token rotation and blacklisting.
+  - id: rfc9457
+    name: Problem Details for HTTP APIs
+    conforms: false
+    evidence: >-
+      No application/problem+json anywhere in the contract; errors use the
+      Django REST Framework envelope. See errors/wger-problem-types.yml.
+  - id: pagination
+    conforms: true
+    evidence: >-
+      limit/offset with count/next/previous/results on every list endpoint,
+      documented at https://wger.readthedocs.io/en/latest/api/api.html; cursor
+      pagination on /api/v2/ingredient-sync/.
+  - id: idempotency
+    conforms: false
+    evidence: >-
+      No Idempotency-Key header and no replay semantics in the schema or docs.
+      See conventions/wger-conventions.yml.
+  - id: rfc9116
+    name: security.txt
+    conforms: false
+    evidence: https://wger.de/.well-known/security.txt returned 404 on 2026-08-27
+  - id: rfc8594
+    name: Sunset / Deprecation headers
+    conforms: false
+    evidence: >-
+      No Sunset or Deprecation response headers. Deprecation is expressed in
+      the contract instead (deprecated: true on userprofile_update_legacy).
+  - id: mcp
+    name: Model Context Protocol
+    conforms: true
+    evidence: >-
+      First-party MCP server at https://github.com/wger-project/mcp-server,
+      published as wger-mcp on PyPI, exposing 85 tools over stdio and
+      Streamable HTTP with MCP-native OAuth discovery via
+      /.well-known/oauth-protected-resource. See mcp/wger-mcp.yml.
+  - id: prometheus
+    name: Prometheus exposition
+    conforms: true
+    scope: server-operations
+    evidence: >-
+      "Export prometheus metrics" shipped in wger 2.3 —
+      https://wger.readthedocs.io/en/latest/changelog.html
+domain_standards:
+  note: >-
+    REWARD-ONLY check. Consumer fitness and nutrition tracking has no
+    ratified interchange standard the way healthcare has HL7/FHIR or finance
+    has ISO 20022, and wger is not a clinical or regulated system — it does not
+    claim FHIR, and asserting one would be inventing a conformance to fill a
+    slot. What it DOES do is bind to the de facto reference database for its
+    domain, which is the closest real analogue and is visible in the contract
+    rather than in marketing prose.
+  standards:
+    - id: open-food-facts
+      name: Open Food Facts
+      kind: reference-data-interop
+      conforms: true
+      evidence: >-
+        The ingredient catalog is imported and continuously synced from Open
+        Food Facts, carrying OFF-native fields into the contract:
+        components.schemas ingredient exposes code (EAN/UPC barcode), and
+        wger 2.5 added is_vegan, is_vegetarian and nutriscore, with wger 2.6 adding
+        range lookups (gt/gte/lt/lte) on nutriscore. Serving sizes are imported
+        from OFF into ingredientweightunit. The first-party MCP server exposes
+        OFF barcode lookup directly (lookup_food_by_barcode) and returns a
+        normalised wger_ingredient_payload.
+      spec_locations:
+        - components.schemas.Ingredient.code
+        - components.schemas.Ingredient.nutriscore
+        - /api/v2/ingredient/?code={barcode}
+        - /api/v2/ingredientweightunit/
+      source: https://github.com/wger-project/wger/releases/tag/2.5
+    - id: gtin-ean-upc
+      name: GTIN / EAN / UPC barcodes
+      kind: identifier-scheme
+      conforms: true
+      evidence: >-
+        Ingredients are addressable by their retail barcode through the
+        documented ?code= exact-match filter, which is the identifier scheme
+        the grocery domain actually runs on.
+    - id: iso-639-1
+      name: ISO 639-1 language codes
+      kind: identifier-scheme
+      conforms: true
+      evidence: >-
+        /api/v2/language/ and the language filters on exercise and ingredient
+        search use ISO 639-1 two-letter codes.
+compliance_certifications: []
+compliance_note: >-
+  No SOC 2, ISO 27001, PCI, HIPAA or GDPR-certification claims are published by
+  the project, and none is expected of a volunteer-run AGPL project. No
+  Compliance pointer is emitted in apis.yml, because there is no published
+  compliance program to point at.

@@ -1,0 +1,286 @@
+generated: '2026-08-27'
+method: derived
+source: openapi/wger-openapi.yml
+docs: https://wger.readthedocs.io/en/latest/api/routines.html
+note: >-
+  Entity-relationship graph derived from components.schemas in
+  openapi/wger-openapi.yml — every relationship below is a field that exists in
+  the schema, named as the schema names it. wger's ids are plain integers with
+  no type prefix, so an id is only meaningful together with its collection.
+  There is no polymorphic id and no global object namespace.
+id_scheme:
+  style: integer primary key
+  prefixed: false
+  uuid_present: true
+  uuid_note: >-
+    Catalog entities that sync between instances also carry a uuid — Exercise,
+    ExerciseInfo, Ingredient, IngredientInfo, Trophy. This is what makes
+    federation of the community database possible: the integer id is local to
+    an instance, the uuid is stable across all of them. An integrator syncing
+    between two wger deployments must join on uuid, never on id.
+domains:
+  - name: training
+    root: Routine
+    description: >-
+      The plan tree. This is wger's deepest structure and the one an agent will
+      spend most of its calls in.
+  - name: logging
+    root: WorkoutSession
+    description: What actually happened, and what it was prescribed against.
+  - name: exercise-catalog
+    root: Exercise
+    description: >-
+      Community-maintained, mostly read-only, shared across instances by uuid.
+  - name: nutrition
+    root: NutritionPlan
+    description: Plans, meals, recipes and the diary.
+  - name: body
+    root: WeightEntry
+    description: Body weight, tape measurements and the progress-photo gallery.
+  - name: gamification
+    root: Trophy
+    description: Trophies and per-user awards.
+  - name: sync
+    root: DeletionLog
+    description: >-
+      Tombstones and the PowerSync surface that let the offline mobile app
+      reconcile. Not a user-facing domain.
+entities:
+  - name: Routine
+    collection: /api/v2/routine/
+    fields: [id, name, description, created, start, end, fit_in_week, is_template, is_public]
+    relationships:
+      - has_many: Day
+        via: Day.routine
+      - has_many: WorkoutSession
+        via: WorkoutSession.routine
+      - has_many: WorkoutLog
+        via: WorkoutLog.routine
+    computed_sub_resources:
+      - /api/v2/routine/{id}/structure/
+      - /api/v2/routine/{id}/logs/
+      - /api/v2/routine/{id}/stats/
+      - /api/v2/routine/{id}/date-sequence-display/
+      - /api/v2/routine/{id}/date-sequence-gym/
+    notes: >-
+      is_template makes the routine a reusable blueprint (readable at
+      /api/v2/templates/); is_public additionally offers it to every user of the
+      instance (/api/v2/public-templates/).
+  - name: Day
+    collection: /api/v2/day/
+    relationships:
+      - belongs_to: Routine
+        via: routine
+      - has_many: Slot
+        via: Slot.day
+  - name: Slot
+    collection: /api/v2/slot/
+    relationships:
+      - belongs_to: Day
+        via: day
+      - has_many: SlotEntry
+        via: SlotEntry.slot
+    notes: A slot is one position in a day; a superset shares one slot across entries.
+  - name: SlotEntry
+    collection: /api/v2/slot-entry/
+    fields_seen: [slot, exercise, repetition_unit, weight_unit]
+    relationships:
+      - belongs_to: Slot
+        via: slot
+      - has_one: Exercise
+        via: exercise
+      - has_one: RepetitionUnit
+        via: repetition_unit
+      - has_one: WeightUnit
+        via: weight_unit
+      - has_many: 'Config (ten collections)'
+        via: '<config>.slot_entry'
+  - name: Config
+    kind: polymorphic-family
+    collections:
+      - /api/v2/sets-config/
+      - /api/v2/max-sets-config/
+      - /api/v2/repetitions-config/
+      - /api/v2/max-repetitions-config/
+      - /api/v2/weight-config/
+      - /api/v2/max-weight-config/
+      - /api/v2/rir-config/
+      - /api/v2/max-rir-config/
+      - /api/v2/rest-config/
+      - /api/v2/max-rest-config/
+    schemas: [SetNrConfig, MaxSetNrConfig, RepetitionsConfig, MaxRepetitionsConfig, WeightConfig, MaxWeightConfig, RiRConfig, MaxRiRConfig, RestConfig, MaxRestConfig]
+    relationships:
+      - belongs_to: SlotEntry
+        via: slot_entry
+    notes: >-
+      THE MODELLING DECISION AN INTEGRATOR MUST UNDERSTAND. Progression is not a
+      field on the entry; it is a per-iteration record in one of ten parallel
+      collections, each with the same shape (slot_entry, iteration, value,
+      operation, step, repeat, requirements). Every prescribed quantity — sets,
+      reps, weight, RiR, rest — has both a base and a max collection, so a range
+      ("8-12 reps") is two records. A `requirements` list gates the step on what
+      was actually logged, which is how wger expresses autoregulation.
+  - name: WorkoutSession
+    collection: /api/v2/workoutsession/
+    fields_seen: [routine, day]
+    relationships:
+      - belongs_to: Routine
+        via: routine
+      - has_one: Day
+        via: day
+      - has_many: WorkoutLog
+        via: WorkoutLog.session
+    notes: >-
+      One session per routine per date. Deleting a session cascades to the sets
+      logged inside it.
+  - name: WorkoutLog
+    collection: /api/v2/workoutlog/
+    fields_seen: [session, routine, slot_entry, exercise, weight_unit]
+    relationships:
+      - belongs_to: WorkoutSession
+        via: session
+      - belongs_to: Routine
+        via: routine
+      - has_one: SlotEntry
+        via: slot_entry
+      - has_one: Exercise
+        via: exercise
+      - has_one: WeightUnit
+        via: weight_unit
+    notes: >-
+      The join between plan and reality. A log with no routine/slot_entry is
+      freestanding and invisible to every routine view and routine statistic —
+      the most common integration mistake against this API.
+  - name: Exercise
+    collection: /api/v2/exercise/
+    fields: [id, uuid, created, last_update, category, muscles, muscles_secondary, equipment, variation_group, license_author]
+    relationships:
+      - has_one: ExerciseCategory
+        via: category
+      - has_many: Muscle
+        via: muscles
+      - has_many: Muscle
+        via: muscles_secondary
+      - has_many: Equipment
+        via: equipment
+      - has_many: ExerciseTranslation
+        via: ExerciseTranslation.exercise
+      - has_many: ExerciseImage
+        via: ExerciseImage.exercise
+      - has_many: ExerciseVideo
+        via: exercise
+      - has_many: ExerciseAlias
+      - has_many: ExerciseComment
+    notes: >-
+      Exercise carries no name — names live on ExerciseTranslation, one per
+      language. Read /api/v2/exerciseinfo/ instead of /api/v2/exercise/ unless
+      you want to make that join yourself.
+  - name: ExerciseInfo
+    collection: /api/v2/exerciseinfo/
+    kind: read-projection
+    notes: Exercise with its translations, images, videos, muscles and equipment embedded.
+  - name: Ingredient
+    collection: /api/v2/ingredient/
+    fields: [id, uuid, remote_id, source_name, source_url, code, name, common_name, brand, energy, protein, carbohydrates, carbohydrates_sugar, fat, fat_saturated, fiber, sodium, is_vegan, is_vegetarian, weight_units, nutriscore, license, language]
+    relationships:
+      - has_many: IngredientWeightUnit
+        via: weight_units
+      - has_one: Language
+        via: language
+      - has_one: License
+        via: license
+    notes: >-
+      Read-only over REST. code is the retail barcode (GTIN/EAN/UPC) and
+      remote_id / source_name / source_url record the Open Food Facts
+      provenance.
+  - name: NutritionPlan
+    collection: /api/v2/nutritionplan/
+    relationships:
+      - has_many: Meal
+        via: Meal.plan
+      - has_many: LogItem
+        via: LogItem.plan
+    computed_sub_resources:
+      - /api/v2/nutritionplan/{id}/nutritional_values/
+  - name: Meal
+    collection: /api/v2/meal/
+    fields: [id, plan, order, time, name]
+    relationships:
+      - belongs_to: NutritionPlan
+        via: plan
+      - has_many: MealItem
+        via: MealItem.meal
+    notes: >-
+      Doubles as the recipe entity — wger has no separate Recipe model, which is
+      why the MCP server's recipe tools are aliases over meal/ and mealitem/.
+  - name: MealItem
+    collection: /api/v2/mealitem/
+    fields: [id, meal, ingredient, weight_unit, order, amount]
+    relationships:
+      - belongs_to: Meal
+        via: meal
+      - has_one: Ingredient
+        via: ingredient
+      - has_one: IngredientWeightUnit
+        via: weight_unit
+  - name: LogItem
+    collection: /api/v2/nutritiondiary/
+    fields: [id, plan, meal, ingredient, weight_unit, datetime, amount]
+    relationships:
+      - belongs_to: NutritionPlan
+        via: plan
+      - has_one: Meal
+        via: meal
+      - has_one: Ingredient
+        via: ingredient
+      - has_one: IngredientWeightUnit
+        via: weight_unit
+    notes: >-
+      amount is grams unless weight_unit is set, in which case it counts
+      portions — two slices, not two grams.
+  - name: WeightEntry
+    collection: /api/v2/weightentry/
+    relationships: []
+  - name: Measurement
+    collection: /api/v2/measurement/
+    fields: [id, category, date, value, notes]
+    relationships:
+      - belongs_to: MeasurementCategory
+        via: category
+  - name: MeasurementCategory
+    collection: /api/v2/measurement-category/
+    relationships:
+      - has_many: Measurement
+        via: Measurement.category
+  - name: Image
+    collection: /api/v2/gallery/
+    fields: [id, date, image, description, height, width]
+    notes: the user's own progress-photo gallery
+  - name: Trophy
+    collection: /api/v2/trophy/
+    fields: [id, uuid, name, description, image, trophy_type, is_hidden, is_progressive, is_repeatable, order]
+    relationships:
+      - has_many: UserTrophy
+  - name: DeletionLog
+    collection: /api/v2/deletion-log/
+    kind: tombstone-feed
+    notes: >-
+      Records that an object was deleted so an offline client can reconcile. It
+      does NOT restore anything — see the reversibility block in
+      conventions/wger-conventions.yml.
+reference_vocabularies:
+  - Language — /api/v2/language/ (ISO 639-1)
+  - License — /api/v2/license/
+  - ExerciseCategory — /api/v2/exercisecategory/
+  - Muscle — /api/v2/muscle/
+  - Equipment — /api/v2/equipment/
+  - RepetitionUnit — /api/v2/setting-repetitionunit/ (carries unit_type and multiplier since 2.5)
+  - WeightUnit — /api/v2/setting-weightunit/
+  - IngredientWeightUnit — /api/v2/ingredientweightunit/
+traversal_depth:
+  path: Routine -> Day -> Slot -> SlotEntry -> Config
+  levels: 5
+  note: >-
+    Five levels to reach a prescribed number. The MCP server's
+    add_exercise_with_sets and get_workout_for_date exist precisely to collapse
+    this, and any client should consider the same convenience.

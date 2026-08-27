@@ -1,0 +1,39 @@
+generated: '2026-08-27'
+method: searched
+source: https://www.npmjs.com/package/@wger-project/react-components
+repository: https://github.com/wger-project/react
+note: >-
+  wger publishes the React component library that its own web application is
+  built from. This is a genuine embeddable client-side surface — distinct from
+  the SDKs in packages/wger-packages.yml, which call the API from server or
+  script code — but it is published as "the components used in the wger
+  application" rather than as a documented embed product: there is no hosted
+  loader script, no widget documentation page, and no drop-in <script> tag. A
+  consumer imports them into a React build.
+families:
+  - name: '@wger-project/react-components'
+    registry: npm
+    url: https://www.npmjs.com/package/@wger-project/react-components
+    version: 26.8.12
+    published: '2026-08-12'
+    versioning: calendar (YY.M.D), independent of the wger server release train
+    install: npm install @wger-project/react-components
+    framework: react
+    official: true
+    description: React components for the wger fitness and nutrition manager
+    repository: https://github.com/wger-project/react
+loader_libraries: []
+hosted_surfaces:
+  - name: Browsable API (DRF)
+    url: https://wger.de/api/v2/
+    kind: server-rendered
+    description: >-
+      Opening any /api/v2/ endpoint in a browser renders the Django REST
+      Framework browsable HTML view, with forms for the write operations. The
+      .api URL suffix requests it explicitly.
+  - name: Swagger UI
+    url: https://wger.de/api/v2/schema/ui
+    kind: api-console
+  - name: ReDoc
+    url: https://wger.de/api/v2/schema/redoc
+    kind: api-reference

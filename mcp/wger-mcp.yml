@@ -1,0 +1,180 @@
+generated: '2026-08-27'
+method: searched
+source: https://github.com/wger-project/mcp-server
+name: wger MCP server
+status: published
+official: true
+maturity: alpha
+maturity_note: >-
+  The project's own README opens with "This is still a WIP, not all things might
+  work correctly yet". Recorded as published because it is first-party, released
+  on PyPI (wger-mcp 0.2.0, 2026-08-26) and shipped as a container image.
+description: >-
+  First-party MCP server, maintained in the wger-project GitHub organization,
+  that exposes the wger (>= 2.6) fitness/nutrition REST API as MCP tools —
+  routines, workout logging, sessions, the exercise and ingredient catalogs,
+  nutrition plans/meals/recipes/diary, body weight, body measurements,
+  equipment, volume/PR analytics, a daily-calorie calculator, and Open Food
+  Facts barcode lookup. It is a separate service that talks to a wger instance
+  over the public REST API and requires no changes to wger itself.
+repository: https://github.com/wger-project/mcp-server
+license: AGPL-3.0
+requires:
+  wger: '>=2.6'
+  python: '>=3.11'
+deployment:
+  mode: local-stdio
+  endpoint: null
+  install: uvx wger-mcp
+  package: https://pypi.org/project/wger-mcp/
+  auth: api-key
+  verified: searched
+deployment_note: >-
+  The wger project publishes NO hosted/remote MCP endpoint. The server ships two
+  transports, chosen with --transport: stdio (the documented default for a local
+  server an MCP client spawns) and Streamable HTTP (FastMCP), which is intended
+  for an operator to SELF-HOST for a shared deployment — the README's example URL
+  is the placeholder https://wger-mcp.example.com/mcp, not a wger-operated host.
+  Because no vendor-operated URL exists, mode is recorded as local-stdio rather
+  than remote or both. A self-hosted HTTP deployment listens on
+  http://0.0.0.0:8765 with the MCP endpoint at /mcp.
+transports:
+  - name: stdio
+    default_for: local single-user
+    auth: wger API key via WGER_API_KEY (MCP_AUTH does not apply)
+    config_example: |
+      {
+        "mcpServers": {
+          "wger": {
+            "command": "uvx",
+            "args": ["wger-mcp", "--transport", "stdio"],
+            "env": {
+              "WGER_BASE_URL": "https://wger.de",
+              "WGER_API_KEY": "<your wger API key>"
+            }
+          }
+        }
+      }
+  - name: streamable-http
+    default_for: shared self-hosted deployment
+    listen: http://0.0.0.0:8765
+    path: /mcp
+    auth: >-
+      MCP_AUTH=oidc (multi-user, any OIDC IdP, RFC 8693 token exchange to a
+      wger JWT, discovered via {issuer}/.well-known/openid-configuration) or
+      MCP_AUTH=static_token (single-user shared secret + a wger API key)
+    oauth_discovery: /.well-known/oauth-protected-resource
+distribution:
+  pypi: https://pypi.org/project/wger-mcp/
+  pypi_version: 0.2.0
+  pypi_published: '2026-08-26'
+  container: ghcr.io/wger-project/mcp-server
+tools:
+  count: 85
+  schema_tokens: ~18.6k
+  source: https://github.com/wger-project/mcp-server#tools
+  note: >-
+    Tool names and descriptions read from the provider's own README tool tables.
+    Full inputSchemas were NOT introspected — there is no anonymous hosted
+    endpoint to run tools/list against, so schemas require running the server
+    locally with a wger credential. Registration can be narrowed with MCP_TOOLS.
+  groups:
+    - name: profile
+      tools: [whoami, update_user_profile]
+    - name: routines_read
+      count: 9
+      tools:
+        - list_routines
+        - get_routine
+        - list_routine_days
+        - get_routine_day
+        - list_slots
+        - list_slot_entries
+        - get_slot_entry
+        - list_slot_entry_configs
+        - get_workout_for_date
+    - name: routines_write
+      count: 16
+      tools:
+        - create_routine
+        - update_routine
+        - delete_routine
+        - add_routine_day
+        - update_routine_day
+        - delete_routine_day
+        - add_slot_to_day
+        - update_slot
+        - delete_slot
+        - attach_exercise_to_slot
+        - update_slot_entry
+        - delete_slot_entry
+        - set_slot_entry_config
+        - update_slot_entry_config
+        - delete_slot_entry_config
+        - add_exercise_with_sets
+    - name: workout_logs
+      tools: [log_set, list_workout_logs, get_workout_log, update_workout_log, delete_workout_log]
+    - name: workout_sessions
+      tools:
+        - log_workout_session
+        - list_workout_sessions
+        - get_workout_session
+        - update_workout_session
+        - delete_workout_session
+    - name: body_weight
+      tools: [log_body_weight, get_body_weight_history, update_body_weight_entry, delete_body_weight_entry]
+    - name: measurements
+      tools:
+        - list_measurement_categories
+        - get_measurement_category
+        - create_measurement_category
+        - update_measurement_category
+        - delete_measurement_category
+        - log_measurement
+        - list_measurements
+        - get_measurement
+        - update_measurement
+        - delete_measurement
+    - name: exercises
+      tools:
+        - search_exercises
+        - search_exercises_batch
+        - search_exercises_by_filter
+        - get_exercise
+        - list_categories
+        - list_equipment
+        - list_muscles
+    - name: equipment
+      note: gym equipment tools, registered as their own group
+    - name: nutrition
+      tools:
+        - search_ingredients
+        - search_ingredient_by_barcode
+        - get_ingredient
+        - list_nutrition_plans
+        - get_nutrition_plan
+        - create_nutrition_plan
+        - update_nutrition_plan
+        - delete_nutrition_plan
+        - create_meal
+        - create_recipe
+        - get_recipe
+        - add_ingredient_to_recipe
+        - log_ingredient
+        - list_ingredient_units
+        - update_log_item
+        - list_log_items
+        - delete_log_item
+        - nutrition_summary
+        - calculate_daily_calories
+    - name: analytics
+      tools: [weekly_summary, exercise_history, personal_records, volume_trend, compare_periods]
+    - name: 'off'
+      description: Open Food Facts barcode lookup (external food database)
+      tools: [lookup_food_by_barcode, lookup_foods_by_barcodes]
+architecture_decisions:
+  - https://github.com/wger-project/mcp-server/blob/master/docs/adr/0001-multi-user-auth-via-oidc-token-exchange.md
+  - https://github.com/wger-project/mcp-server/blob/master/docs/adr/0002-opaque-string-resource-ids.md
+  - https://github.com/wger-project/mcp-server/blob/master/docs/adr/0003-oauth-authorization-server-facade.md
+  - https://github.com/wger-project/mcp-server/blob/master/docs/adr/0004-static-token-strategy-for-single-user.md
+changelog: https://github.com/wger-project/mcp-server/blob/master/CHANGELOG.md

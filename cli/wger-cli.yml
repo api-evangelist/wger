@@ -1,0 +1,64 @@
+generated: '2026-08-27'
+method: searched
+source: https://github.com/wger-project/wger/blob/master/wger/tasks.py
+docs: https://wger.readthedocs.io/en/latest/installation/
+name: wger
+scope: server-operations
+scope_note: >-
+  IMPORTANT SCOPE CAVEAT, recorded so this artifact is not read as more than it
+  is: the `wger` CLI operates a self-hosted wger INSTANCE. It is not an API
+  client — there is no `wger get routines` or `wger login`. An integrator
+  calling the REST API does not use it; an operator standing up the server
+  does. It is nonetheless a genuine first-party command-line surface, shipped as
+  the console entry point of the wger PyPI distribution, so it is recorded here
+  with its scope stated rather than omitted or overclaimed.
+install:
+  - method: pip
+    command: pip install wger
+    provides: the `wger` console script
+    registry_version: '2.1'
+    registry_published: '2022-10-11'
+    caveat: >-
+      the PyPI distribution is five releases behind the project (see
+      packages/wger-packages.yml); Docker is the project's current recommended
+      install path
+  - method: source
+    command: git clone https://github.com/wger-project/wger.git
+implementation: >-
+  A thin wrapper (wger/__main__.py) around the invoke task collection in
+  wger/tasks.py — `make_program().run()`. Every task takes an optional
+  --settings-path.
+commands:
+  - name: bootstrap
+    args: [--settings-path, --process-static]
+    purpose: >-
+      One-shot first run: create the settings file, initialise the database,
+      load fixtures and collect static assets.
+  - name: start
+    args: [--address, --port, --settings-path, --extra-args]
+    purpose: Start the development server (defaults localhost:8000)
+  - name: migrate-db
+    args: [--settings-path]
+    purpose: Run outstanding database migrations
+  - name: create-or-reset-admin
+    args: [--settings-path]
+    purpose: Create the admin account, or reset its password
+  - name: load-fixtures
+    args: [--settings-path]
+    purpose: Load the bundled initial data (exercises, categories, units, languages)
+  - name: load-online-fixtures
+    args: [--settings-path]
+    purpose: >-
+      Download and load the full community dataset from the wger data
+      repository, with a progress bar
+django_management_commands:
+  note: >-
+    Beyond the `wger` wrapper, the server exposes Django management commands
+    that operators run directly and that the release notes reference as upgrade
+    steps.
+  examples:
+    - python manage.py migrate
+    - python manage.py collectstatic
+    - python manage.py recalculate_statistics --all --active-only
+    - python manage.py evaluate_trophies --all
+  source: https://github.com/wger-project/wger/releases/tag/2.4

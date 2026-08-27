@@ -1,0 +1,120 @@
+generated: '2026-08-27'
+method: searched
+source: https://github.com/wger-project/wger/releases
+docs: https://wger.readthedocs.io/en/latest/changelog.html
+scheme: semver-ish (major.minor, no patch on the release train)
+current_version: '2.6'
+current_version_date: '2026-06-17'
+in_development: 2.7.0a2
+in_development_source: >-
+  info.version of the schema served by wger.de on 2026-08-27; the unreleased
+  section lives at
+  https://github.com/wger-project/wger/blob/master/CHANGELOG.md
+surfaces:
+  - kind: release-notes
+    url: https://github.com/wger-project/wger/releases
+    dated: true
+    canonical: true
+  - kind: docs-changelog
+    url: https://wger.readthedocs.io/en/latest/changelog.html
+    dated: true
+    note: >-
+      Carries dated entries back to 1.0. From 2.4 onward each entry is a
+      one-line pointer to the matching GitHub release tag rather than the full
+      body.
+  - kind: repo-changelog
+    url: https://github.com/wger-project/wger/blob/master/CHANGELOG.md
+    dated: false
+    note: holds the "next release" section — currently 2.7
+api_change_communication: >-
+  Breaking API changes are called out by name in the release notes, including
+  the exact endpoints removed. The project does not run a separate API
+  changelog, so an integrator reads the product release notes.
+entries:
+  - version: '2.7'
+    date: null
+    status: unreleased
+    breaking: []
+    additions:
+      - >-
+        Improved OpenAPI spec — "The spec now properly describes the different
+        parts of the API and can be used to generate clients". This is the
+        change that makes the schema at /api/v2/schema worth harvesting.
+      - >-
+        wger can now act as an OAuth2 provider itself, so other applications can
+        let their users sign in with a wger account and call the API on their
+        behalf. Off by default until configured.
+      - Emails sent asynchronously via the celery queue
+      - Argon2 password hashing, migrated on next login
+    fixes:
+      - Ingredient and exercise search now rank by relevance on long names
+      - >-
+        Gated progressions (configs with requirements) advance exactly one step
+        per qualifying workout and reach later-iteration configs
+    source: https://github.com/wger-project/wger/blob/master/CHANGELOG.md
+  - version: '2.6'
+    date: '2026-06-17'
+    status: released
+    breaking:
+      - >-
+        Release is flagged "several breaking changes, please read carefully";
+        the auth rework requires re-login on the website.
+    additions:
+      - >-
+        Offline mode for the mobile app — backend sync surface backed by a local
+        sqlite database (the /api/v2/upload-powersync-data, powersync-keys and
+        powersync-token operations, plus /api/v2/deletion-log/)
+      - Social login (Google, Facebook, …) and two-factor auth including passkeys
+      - >-
+        Exercise image API now exposes thumbnails with small and medium URLs,
+        consistent with the ingredient API
+      - >-
+        Ingredient filter supports range lookups on nutriscore (gt/gte/lt/lte)
+        alongside exact and in — "better than C" queries
+    source: https://github.com/wger-project/wger/releases/tag/2.6
+  - version: '2.5'
+    date: '2026-04-15'
+    status: released
+    breaking:
+      - 'endpoint removed: /api/v2/ingredient/search/ — use /api/v2/ingredientinfo/'
+    additions:
+      - >-
+        Ingredient sync now prefers a pre-generated database dump over the
+        paginated API (SYNC_INGREDIENTS_CELERY), falling back to the API
+      - >-
+        Serving-size support — log food in portions ("1 Cup", "1 Serving
+        (2 biscuits)") imported from Open Food Facts
+      - vegan, vegetarian and nutriscore fields on the ingredient model
+      - '"warmup" added to the set types'
+      - >-
+        setting-repetitionunit now exposes unit_type and multiplier so clients
+        can handle time-based units properly
+      - Exercise variation moved onto the exercise model
+    source: https://github.com/wger-project/wger/releases/tag/2.5
+  - version: '2.4'
+    date: '2026-01-18'
+    status: released
+    breaking:
+      - >-
+        Default location of the settings file changed — non-Docker deployments
+        must update it
+    additions:
+      - Auth-proxy header support
+      - Trophies / gamification, with a manual evaluation step on upgrade
+      - Requirements moved to pyproject.toml
+    source: https://github.com/wger-project/wger/releases/tag/2.4
+  - version: '2.3'
+    date: '2025-04-05'
+    status: released
+    breaking: []
+    additions:
+      - Ingredient sync method added
+      - Full-text search
+      - Prometheus metrics export
+      - Fiber goal support in nutrition plans
+    source: https://wger.readthedocs.io/en/latest/changelog.html
+related:
+  - component: MCP server
+    changelog: https://github.com/wger-project/mcp-server/blob/master/CHANGELOG.md
+  - component: Python API client
+    changelog: https://github.com/wger-project/api-client/blob/master/CHANGELOG.md

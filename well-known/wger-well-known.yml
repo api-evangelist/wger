@@ -1,0 +1,43 @@
+generated: '2026-08-27'
+method: searched
+source: live probes of https://wger.de/.well-known/* on 2026-08-27
+note: >-
+  wger.de serves a real RFC 8414 / OIDC discovery document because wger 2.6+ can
+  act as its own OAuth2/OIDC provider. The linked jwks_uri answers 200 but with
+  an EMPTY key set ({"keys": []}) — saved verbatim as the honest record. Every
+  other probed path returns a hard 404, so there is no catch-all inflating this
+  index. Separately, wger.de fronts all HTML responses with an Anubis
+  ("Making sure you're not a bot!") interstitial, but the /.well-known/ JSON
+  paths are served directly and were not challenged.
+hit_count: 2
+hosts:
+  - host: https://wger.de
+    documents:
+      - path: /.well-known/openid-configuration
+        status: 200
+        file: wger-openid-configuration.json
+        content_type: application/json
+      - path: /.well-known/jwks.json
+        status: 200
+        file: wger-jwks.json
+        content_type: application/json
+        note: 'served but empty — {"keys": []}'
+      - path: /.well-known/security.txt
+        status: 404
+      - path: /.well-known/oauth-authorization-server
+        status: 404
+      - path: /.well-known/api-catalog
+        status: 404
+      - path: /.well-known/ai-plugin.json
+        status: 404
+      - path: /.well-known/agent-card.json
+        status: 404
+      - path: /.well-known/agent.json
+        status: 404
+  - host: https://wger.de/identity/o
+    documents:
+      - path: /identity/o/.well-known/openid-configuration
+        status: 404
+        note: >-
+          The OIDC provider is mounted at /identity/o/ but its discovery
+          document is published at the site root, not under the mount point.

@@ -1,0 +1,106 @@
+generated: '2026-08-27'
+method: searched
+source: https://wger.readthedocs.io/en/latest/changelog.html
+docs: https://wger.readthedocs.io/en/latest/
+versioning:
+  api_version: v2
+  style: path prefix (/api/v2/)
+  stability: >-
+    v2 has carried the API since wger 1.7; no v3 is announced. The API version
+    and the product version move independently.
+  product_version_current: 2.7.0a2
+  product_version_source: >-
+    info.version of the OpenAPI schema served by wger.de on 2026-08-27
+    (https://wger.de/api/v2/schema)
+  latest_release: '2.6'
+  latest_release_date: '2026-06-17'
+  runtime_version_endpoints:
+    - operationId: version_retrieve
+      path: /api/v2/version/
+      purpose: what release this instance is running
+    - operationId: min_server_version_retrieve
+      path: /api/v2/min-server-version/
+      purpose: the minimum server version a client should require
+    - operationId: min_app_version_retrieve
+      path: /api/v2/min-app-version/
+      purpose: the minimum app version this server will accept
+  self_hosted_note: >-
+    This is the defining lifecycle fact about wger and the one an integrator
+    must plan for: there is no single deployed version. Every instance is
+    upgraded by whoever runs it, so a client can meet 2.3 and 2.7 in the same
+    week. wger addresses it in the contract rather than in prose — the three
+    version endpoints above exist so a client can negotiate at connect time,
+    and the first-party Python client encodes the same rule in its version
+    numbers (wger-api-client 2.6.x targets a 2.6 server).
+release_cadence:
+  observed: roughly two to three releases a year, with a long gap in 2024
+  releases:
+    - version: '2.6'
+      date: '2026-06-17'
+    - version: '2.5'
+      date: '2026-04-15'
+    - version: '2.4'
+      date: '2026-01-18'
+    - version: '2.3'
+      date: '2025-04-05'
+    - version: '2.2'
+      date: '2023-12-06'
+    - version: '2.1'
+      date: '2022-10-11'
+    - version: '2.0'
+      date: '2021-05-01'
+  source: https://github.com/wger-project/wger/releases
+deprecation:
+  policy_published: true
+  policy_kind: rolling-release
+  policy_text: >-
+    "While we do have versions and releases, wger is developed and deployed like
+    a rolling release. Currently we don't have the resources to support older
+    versions."
+  policy_url: https://github.com/wger-project/wger/blob/master/SECURITY.md
+  supported_versions: latest only
+  sunset_header: false
+  deprecation_header: false
+  rfc8594: false
+  note: >-
+    wger publishes an explicit support policy — only the current release is
+    supported — but no RFC 8594 Sunset/Deprecation headers and no dated
+    removal schedule. Deprecation is instead marked in the contract itself:
+    the OpenAPI schema carries deprecated: true on the operations below, which
+    is the machine-readable signal a client can actually act on.
+  deprecated_operations:
+    - operationId: userprofile_update_legacy
+      path: /api/v2/userprofile/
+      method: put
+      source: openapi/wger-openapi.yml
+      note: >-
+        Superseded by userprofile_update / userprofile_partial_update on the
+        same path. The only operation in the 254-operation surface flagged
+        deprecated.
+  upgrade_notes: >-
+    The changelog carries explicit "Upgrade steps from <previous>" sections for
+    releases that need them (2.2 and 2.3 have them), covering dependency,
+    migration and static-asset steps for self-hosted operators.
+status_page:
+  exists: false
+  probes:
+    - url: https://status.wger.de
+      status: '<no response> — DNS does not resolve'
+      checked: '2026-08-27'
+  note: >-
+    No status page was found for wger.de, and a self-hosted product has no
+    single uptime surface to publish. The project does export Prometheus
+    metrics from the server (added in 2.3), which is the operator-side
+    equivalent, but that is per-instance and not a public status page. No
+    StatusPage pointer is emitted.
+sla:
+  published: false
+  note: >-
+    Free AGPL software and a volunteer-run public instance; no service-level
+    agreement is offered or implied.
+support:
+  channels:
+    - https://github.com/wger-project/wger/issues
+    - https://github.com/wger-project/wger/discussions
+    - https://discord.gg/rPWFv6W
+    - https://fosstodon.org/@wger
