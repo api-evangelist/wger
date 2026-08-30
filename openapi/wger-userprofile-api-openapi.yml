@@ -1,0 +1,702 @@
+openapi: 3.2.0
+info:
+  title: wger Userprofile API
+  version: 2.7.0a2
+  description: "Self hosted FLOSS workout and fitness tracker.\n\n## Authentication\n\nSystem-wide data such as the exercise database, ingredients and units can be\nread without authenticating. Everything tied to a user account needs one of the\nfollowing, which are tried in this order:\n\n* `Authorization: Token <key>` with a personal API key. Users create one on the\n  API key page of their profile, e.g. `/en/user/api-key`.\n* `Authorization: Bearer <token>` with a JWT access token.\n* The session cookie, which is what a logged-in browser uses.\n\n## Pagination\n\nList endpoints take `limit` and `offset`, and answer with `count`, `next`,\n`previous` and `results`. The default page size is 20 and `limit` is capped\nat 999.\n\n`/api/v2/ingredient-sync/` is the exception. It uses cursor pagination so that\nsyncing the catalogue stays fast no matter how far a client has paginated. That\nresponse carries no `count`, and clients follow `next` instead of picking an\noffset.\n\n## Filtering and ordering\n\nMost list endpoints accept filters on a subset of their fields, plus `ordering`\nwith a field name that can be prefixed with `-` to reverse it. Both are listed\nper endpoint.\n\n## Unknown fields are dropped on write\n\nA field that the endpoint does not declare is ignored instead of rejected. Such\na request still answers 200 or 201, and the unknown field simply has no effect,\nso check a write against the response body rather than the status code.\n\n## Rate limits\n\nThe ingredient endpoints are rate limited because the catalogue holds millions\nof rows, and creating exercises is capped as well. Limits count per user for\nauthenticated callers and per IP otherwise. Exceeding one answers 429.\n"
+  license:
+    name: AGPL-3.0-or-later
+    url: https://www.gnu.org/licenses/agpl-3.0.html
+servers:
+- url: /
+  description: This server
+- url: https://wger.de
+  description: The "official" upstream wger instance
+tags:
+- name: userprofile
+paths:
+  /api/v2/userprofile/:
+    get:
+      operationId: userprofile_retrieve
+      description: 'API endpoint for the user profile
+
+
+        Every user has exactly one profile, so this endpoint has no list and no
+
+        detail route: it always reads and writes the profile of the logged-in user.
+
+        Updating it takes a PATCH since wger 2.7; up to 2.6 it took a POST.'
+      tags:
+      - userprofile
+      security:
+      - cookieAuth: []
+      - tokenAuth: []
+      - headlessJwtAuth: []
+      - oidcAuth: []
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Userprofile'
+          description: ''
+    post:
+      operationId: userprofile_update_legacy
+      description: 'Updates the profile of the logged-in user, exactly like PATCH does.
+
+
+        Use this if your client needs to work with wger 2.6 or older, which accept only POST on this endpoint. Servers from 2.7 on accept both, so prefer PATCH in this case.'
+      summary: Update the profile of servers up to wger 2.6
+      tags:
+      - userprofile
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserprofileRequest'
+      security:
+      - cookieAuth: []
+      - tokenAuth: []
+      - headlessJwtAuth: []
+      - oidcAuth: []
+      - jwtAuth: []
+      deprecated: true
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Userprofile'
+          description: ''
+    put:
+      operationId: userprofile_update
+      description: 'API endpoint for the user profile
+
+
+        Every user has exactly one profile, so this endpoint has no list and no
+
+        detail route: it always reads and writes the profile of the logged-in user.
+
+        Updating it takes a PATCH since wger 2.7; up to 2.6 it took a POST.'
+      tags:
+      - userprofile
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserprofileRequest'
+      security:
+      - cookieAuth: []
+      - tokenAuth: []
+      - headlessJwtAuth: []
+      - oidcAuth: []
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Userprofile'
+          description: ''
+    patch:
+      operationId: userprofile_partial_update
+      description: 'API endpoint for the user profile
+
+
+        Every user has exactly one profile, so this endpoint has no list and no
+
+        detail route: it always reads and writes the profile of the logged-in user.
+
+        Updating it takes a PATCH since wger 2.7; up to 2.6 it took a POST.'
+      tags:
+      - userprofile
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchedUserprofileRequest'
+      security:
+      - cookieAuth: []
+      - tokenAuth: []
+      - headlessJwtAuth: []
+      - oidcAuth: []
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Userprofile'
+          description: ''
+  /api/v2/userprofile/verify-email/:
+    post:
+      operationId: userprofile_verify_email_create
+      description: 'Verify the user''s email address
+
+
+        POST only, a GET must not send out emails as a side effect'
+      tags:
+      - userprofile
+      security:
+      - cookieAuth: []
+      - tokenAuth: []
+      - headlessJwtAuth: []
+      - oidcAuth: []
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VerifyEmailResponse'
+          description: ''
+components:
+  schemas:
+    Userprofile:
+      type: object
+      description: Workout session serializer
+      properties:
+        username:
+          type: string
+          readOnly: true
+        email:
+          type: string
+          format: email
+          readOnly: true
+        email_verified:
+          type: boolean
+          readOnly: true
+        is_trustworthy:
+          type: boolean
+          readOnly: true
+        date_joined:
+          type: string
+          format: date-time
+          readOnly: true
+        gym:
+          type:
+          - integer
+          - 'null'
+          readOnly: true
+        weight_rounding:
+          type:
+          - string
+          - 'null'
+          format: decimal
+          pattern: ^-?\d{0,2}(?:\.\d{0,2})?$
+        repetitions_rounding:
+          type:
+          - string
+          - 'null'
+          format: decimal
+          pattern: ^-?\d{0,2}(?:\.\d{0,2})?$
+        is_temporary:
+          type: boolean
+          readOnly: true
+        workout_reminder_active:
+          type: boolean
+          title: Activate workout reminders
+          description: Check to activate automatic reminders for workouts. You need to provide a valid email for this to work.
+        workout_reminder:
+          type: integer
+          maximum: 30
+          minimum: 1
+          title: Remind before expiration
+          description: The number of days you want to be reminded before a workout expires.
+        workout_duration:
+          type: integer
+          maximum: 30
+          minimum: 1
+          title: Default duration of workouts
+          description: Default duration in weeks of workouts not in a schedule. Used for email workout reminders.
+        last_workout_notification:
+          type:
+          - string
+          - 'null'
+          format: date
+          readOnly: true
+        notification_language:
+          type: integer
+          description: Language to use when sending you email notifications, e.g. email reminders for workouts. This does not affect the language used on the website.
+        age:
+          type:
+          - integer
+          - 'null'
+          maximum: 100
+          minimum: 10
+        birthdate:
+          type:
+          - string
+          - 'null'
+          format: date
+          title: Date of Birth
+        height:
+          type:
+          - integer
+          - 'null'
+          maximum: 230
+          minimum: 140
+          title: Height (cm)
+        gender:
+          oneOf:
+          - $ref: '#/components/schemas/GenderEnum'
+          - $ref: '#/components/schemas/NullEnum'
+        sleep_hours:
+          type:
+          - integer
+          - 'null'
+          maximum: 10
+          minimum: 4
+          title: Hours of sleep
+          description: The average hours of sleep per day
+        work_hours:
+          type:
+          - integer
+          - 'null'
+          maximum: 15
+          minimum: 1
+          title: Work
+          description: Average hours per day
+        work_intensity:
+          title: Physical intensity
+          description: 'Approximately
+
+
+            * `1` - Low
+
+            * `2` - Medium
+
+            * `3` - High'
+          oneOf:
+          - $ref: '#/components/schemas/IntensityEnum'
+          - $ref: '#/components/schemas/NullEnum'
+        sport_hours:
+          type:
+          - integer
+          - 'null'
+          maximum: 30
+          minimum: 1
+          title: Sport
+          description: Average hours per week
+        sport_intensity:
+          title: Physical intensity
+          description: 'Approximately
+
+
+            * `1` - Low
+
+            * `2` - Medium
+
+            * `3` - High'
+          oneOf:
+          - $ref: '#/components/schemas/IntensityEnum'
+          - $ref: '#/components/schemas/NullEnum'
+        freetime_hours:
+          type:
+          - integer
+          - 'null'
+          maximum: 15
+          minimum: 1
+          title: Free time
+          description: Average hours per day
+        freetime_intensity:
+          title: Physical intensity
+          description: 'Approximately
+
+
+            * `1` - Low
+
+            * `2` - Medium
+
+            * `3` - High'
+          oneOf:
+          - $ref: '#/components/schemas/IntensityEnum'
+          - $ref: '#/components/schemas/NullEnum'
+        calories:
+          type:
+          - integer
+          - 'null'
+          maximum: 5000
+          minimum: 1500
+          title: Total daily calories
+          description: Total caloric intake, including e.g. any surplus
+        weight_unit:
+          $ref: '#/components/schemas/WeightUnitEnum'
+        num_days_weight_reminder:
+          type: integer
+          maximum: 30
+          minimum: 0
+          title: Automatic reminders for weight entries
+          description: Number of days after the last weight entry (enter 0 to deactivate)
+      required:
+      - date_joined
+      - email
+      - email_verified
+      - gym
+      - is_temporary
+      - is_trustworthy
+      - last_workout_notification
+      - username
+    VerifyEmailResponse:
+      type: object
+      properties:
+        status:
+          type: string
+        result:
+          type: string
+        message:
+          type: string
+      required:
+      - message
+    IntensityEnum:
+      enum:
+      - '1'
+      - '2'
+      - '3'
+      type: string
+      description: '* `1` - Low
+
+        * `2` - Medium
+
+        * `3` - High'
+    NullEnum:
+      enum:
+      - null
+    UserprofileRequest:
+      type: object
+      description: Workout session serializer
+      properties:
+        weight_rounding:
+          type:
+          - string
+          - 'null'
+          format: decimal
+          pattern: ^-?\d{0,2}(?:\.\d{0,2})?$
+        repetitions_rounding:
+          type:
+          - string
+          - 'null'
+          format: decimal
+          pattern: ^-?\d{0,2}(?:\.\d{0,2})?$
+        workout_reminder_active:
+          type: boolean
+          title: Activate workout reminders
+          description: Check to activate automatic reminders for workouts. You need to provide a valid email for this to work.
+        workout_reminder:
+          type: integer
+          maximum: 30
+          minimum: 1
+          title: Remind before expiration
+          description: The number of days you want to be reminded before a workout expires.
+        workout_duration:
+          type: integer
+          maximum: 30
+          minimum: 1
+          title: Default duration of workouts
+          description: Default duration in weeks of workouts not in a schedule. Used for email workout reminders.
+        notification_language:
+          type: integer
+          description: Language to use when sending you email notifications, e.g. email reminders for workouts. This does not affect the language used on the website.
+        age:
+          type:
+          - integer
+          - 'null'
+          maximum: 100
+          minimum: 10
+        birthdate:
+          type:
+          - string
+          - 'null'
+          format: date
+          title: Date of Birth
+        height:
+          type:
+          - integer
+          - 'null'
+          maximum: 230
+          minimum: 140
+          title: Height (cm)
+        gender:
+          oneOf:
+          - $ref: '#/components/schemas/GenderEnum'
+          - $ref: '#/components/schemas/NullEnum'
+        sleep_hours:
+          type:
+          - integer
+          - 'null'
+          maximum: 10
+          minimum: 4
+          title: Hours of sleep
+          description: The average hours of sleep per day
+        work_hours:
+          type:
+          - integer
+          - 'null'
+          maximum: 15
+          minimum: 1
+          title: Work
+          description: Average hours per day
+        work_intensity:
+          title: Physical intensity
+          description: 'Approximately
+
+
+            * `1` - Low
+
+            * `2` - Medium
+
+            * `3` - High'
+          oneOf:
+          - $ref: '#/components/schemas/IntensityEnum'
+          - $ref: '#/components/schemas/NullEnum'
+        sport_hours:
+          type:
+          - integer
+          - 'null'
+          maximum: 30
+          minimum: 1
+          title: Sport
+          description: Average hours per week
+        sport_intensity:
+          title: Physical intensity
+          description: 'Approximately
+
+
+            * `1` - Low
+
+            * `2` - Medium
+
+            * `3` - High'
+          oneOf:
+          - $ref: '#/components/schemas/IntensityEnum'
+          - $ref: '#/components/schemas/NullEnum'
+        freetime_hours:
+          type:
+          - integer
+          - 'null'
+          maximum: 15
+          minimum: 1
+          title: Free time
+          description: Average hours per day
+        freetime_intensity:
+          title: Physical intensity
+          description: 'Approximately
+
+
+            * `1` - Low
+
+            * `2` - Medium
+
+            * `3` - High'
+          oneOf:
+          - $ref: '#/components/schemas/IntensityEnum'
+          - $ref: '#/components/schemas/NullEnum'
+        calories:
+          type:
+          - integer
+          - 'null'
+          maximum: 5000
+          minimum: 1500
+          title: Total daily calories
+          description: Total caloric intake, including e.g. any surplus
+        weight_unit:
+          $ref: '#/components/schemas/WeightUnitEnum'
+        num_days_weight_reminder:
+          type: integer
+          maximum: 30
+          minimum: 0
+          title: Automatic reminders for weight entries
+          description: Number of days after the last weight entry (enter 0 to deactivate)
+    GenderEnum:
+      enum:
+      - '1'
+      - '2'
+      type: string
+      description: '* `1` - Male
+
+        * `2` - Female'
+    PatchedUserprofileRequest:
+      type: object
+      description: Workout session serializer
+      properties:
+        weight_rounding:
+          type:
+          - string
+          - 'null'
+          format: decimal
+          pattern: ^-?\d{0,2}(?:\.\d{0,2})?$
+        repetitions_rounding:
+          type:
+          - string
+          - 'null'
+          format: decimal
+          pattern: ^-?\d{0,2}(?:\.\d{0,2})?$
+        workout_reminder_active:
+          type: boolean
+          title: Activate workout reminders
+          description: Check to activate automatic reminders for workouts. You need to provide a valid email for this to work.
+        workout_reminder:
+          type: integer
+          maximum: 30
+          minimum: 1
+          title: Remind before expiration
+          description: The number of days you want to be reminded before a workout expires.
+        workout_duration:
+          type: integer
+          maximum: 30
+          minimum: 1
+          title: Default duration of workouts
+          description: Default duration in weeks of workouts not in a schedule. Used for email workout reminders.
+        notification_language:
+          type: integer
+          description: Language to use when sending you email notifications, e.g. email reminders for workouts. This does not affect the language used on the website.
+        age:
+          type:
+          - integer
+          - 'null'
+          maximum: 100
+          minimum: 10
+        birthdate:
+          type:
+          - string
+          - 'null'
+          format: date
+          title: Date of Birth
+        height:
+          type:
+          - integer
+          - 'null'
+          maximum: 230
+          minimum: 140
+          title: Height (cm)
+        gender:
+          oneOf:
+          - $ref: '#/components/schemas/GenderEnum'
+          - $ref: '#/components/schemas/NullEnum'
+        sleep_hours:
+          type:
+          - integer
+          - 'null'
+          maximum: 10
+          minimum: 4
+          title: Hours of sleep
+          description: The average hours of sleep per day
+        work_hours:
+          type:
+          - integer
+          - 'null'
+          maximum: 15
+          minimum: 1
+          title: Work
+          description: Average hours per day
+        work_intensity:
+          title: Physical intensity
+          description: 'Approximately
+
+
+            * `1` - Low
+
+            * `2` - Medium
+
+            * `3` - High'
+          oneOf:
+          - $ref: '#/components/schemas/IntensityEnum'
+          - $ref: '#/components/schemas/NullEnum'
+        sport_hours:
+          type:
+          - integer
+          - 'null'
+          maximum: 30
+          minimum: 1
+          title: Sport
+          description: Average hours per week
+        sport_intensity:
+          title: Physical intensity
+          description: 'Approximately
+
+
+            * `1` - Low
+
+            * `2` - Medium
+
+            * `3` - High'
+          oneOf:
+          - $ref: '#/components/schemas/IntensityEnum'
+          - $ref: '#/components/schemas/NullEnum'
+        freetime_hours:
+          type:
+          - integer
+          - 'null'
+          maximum: 15
+          minimum: 1
+          title: Free time
+          description: Average hours per day
+        freetime_intensity:
+          title: Physical intensity
+          description: 'Approximately
+
+
+            * `1` - Low
+
+            * `2` - Medium
+
+            * `3` - High'
+          oneOf:
+          - $ref: '#/components/schemas/IntensityEnum'
+          - $ref: '#/components/schemas/NullEnum'
+        calories:
+          type:
+          - integer
+          - 'null'
+          maximum: 5000
+          minimum: 1500
+          title: Total daily calories
+          description: Total caloric intake, including e.g. any surplus
+        weight_unit:
+          $ref: '#/components/schemas/WeightUnitEnum'
+        num_days_weight_reminder:
+          type: integer
+          maximum: 30
+          minimum: 0
+          title: Automatic reminders for weight entries
+          description: Number of days after the last weight entry (enter 0 to deactivate)
+    WeightUnitEnum:
+      enum:
+      - kg
+      - lb
+      type: string
+      description: '* `kg` - Metric (kilogram)
+
+        * `lb` - Imperial (pound)'
+  securitySchemes:
+    cookieAuth:
+      type: apiKey
+      in: cookie
+      name: sessionid
+    headlessJwtAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+      description: Access token issued by the allauth headless endpoints
+    jwtAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+    oidcAuth:
+      type: oauth2
+      description: Access token issued by the OAuth2/OIDC provider
+      flows:
+        authorizationCode:
+          authorizationUrl: https://wger.de/identity/o/authorize
+          tokenUrl: https://wger.de/identity/o/api/token
+          scopes:
+            api:read: View your training, nutrition and body data
+            api:write: Add and change your training, nutrition and body data
+    tokenAuth:
+      type: apiKey
+      in: header
+      name: Authorization
+      description: Token-based authentication with required prefix "Token"
+externalDocs:
+  url: https://wger.readthedocs.io
+  description: wger documentation

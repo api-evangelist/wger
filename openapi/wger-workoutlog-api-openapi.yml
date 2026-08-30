@@ -1,0 +1,761 @@
+openapi: 3.2.0
+info:
+  title: wger Workoutlog API
+  version: 2.7.0a2
+  description: "Self hosted FLOSS workout and fitness tracker.\n\n## Authentication\n\nSystem-wide data such as the exercise database, ingredients and units can be\nread without authenticating. Everything tied to a user account needs one of the\nfollowing, which are tried in this order:\n\n* `Authorization: Token <key>` with a personal API key. Users create one on the\n  API key page of their profile, e.g. `/en/user/api-key`.\n* `Authorization: Bearer <token>` with a JWT access token.\n* The session cookie, which is what a logged-in browser uses.\n\n## Pagination\n\nList endpoints take `limit` and `offset`, and answer with `count`, `next`,\n`previous` and `results`. The default page size is 20 and `limit` is capped\nat 999.\n\n`/api/v2/ingredient-sync/` is the exception. It uses cursor pagination so that\nsyncing the catalogue stays fast no matter how far a client has paginated. That\nresponse carries no `count`, and clients follow `next` instead of picking an\noffset.\n\n## Filtering and ordering\n\nMost list endpoints accept filters on a subset of their fields, plus `ordering`\nwith a field name that can be prefixed with `-` to reverse it. Both are listed\nper endpoint.\n\n## Unknown fields are dropped on write\n\nA field that the endpoint does not declare is ignored instead of rejected. Such\na request still answers 200 or 201, and the unknown field simply has no effect,\nso check a write against the response body rather than the status code.\n\n## Rate limits\n\nThe ingredient endpoints are rate limited because the catalogue holds millions\nof rows, and creating exercises is capped as well. Limits count per user for\nauthenticated callers and per IP otherwise. Exceeding one answers 429.\n"
+  license:
+    name: AGPL-3.0-or-later
+    url: https://www.gnu.org/licenses/agpl-3.0.html
+servers:
+- url: /
+  description: This server
+- url: https://wger.de
+  description: The "official" upstream wger instance
+tags:
+- name: workoutlog
+paths:
+  /api/v2/workoutlog/:
+    get:
+      operationId: workoutlog_list
+      description: API endpoint for workout log objects
+      parameters:
+      - in: query
+        name: date
+        schema:
+          type: string
+          format: date-time
+      - in: query
+        name: date__date
+        schema:
+          type: string
+          format: date
+      - in: query
+        name: date__gt
+        schema:
+          type: string
+          format: date-time
+      - in: query
+        name: date__gte
+        schema:
+          type: string
+          format: date-time
+      - in: query
+        name: date__lt
+        schema:
+          type: string
+          format: date-time
+      - in: query
+        name: date__lte
+        schema:
+          type: string
+          format: date-time
+      - in: query
+        name: exercise
+        schema:
+          type: integer
+      - in: query
+        name: exercise__in
+        schema:
+          type: array
+          items:
+            type: integer
+        description: Multiple values may be separated by commas.
+        explode: false
+        style: form
+      - in: query
+        name: iteration
+        schema:
+          type: integer
+      - in: query
+        name: iteration__in
+        schema:
+          type: array
+          items:
+            type: integer
+        description: Multiple values may be separated by commas.
+        explode: false
+        style: form
+      - name: limit
+        required: false
+        in: query
+        description: Number of results to return per page.
+        schema:
+          type: integer
+      - name: offset
+        required: false
+        in: query
+        description: The initial index from which to return the results.
+        schema:
+          type: integer
+      - name: ordering
+        required: false
+        in: query
+        description: Which field to use when ordering the results.
+        schema:
+          type: string
+      - in: query
+        name: repetitions
+        schema:
+          type: number
+      - in: query
+        name: repetitions__gt
+        schema:
+          type: number
+      - in: query
+        name: repetitions__gte
+        schema:
+          type: number
+      - in: query
+        name: repetitions__lt
+        schema:
+          type: number
+      - in: query
+        name: repetitions__lte
+        schema:
+          type: number
+      - in: query
+        name: repetitions_target
+        schema:
+          type: number
+      - in: query
+        name: repetitions_target__gt
+        schema:
+          type: number
+      - in: query
+        name: repetitions_target__gte
+        schema:
+          type: number
+      - in: query
+        name: repetitions_target__lt
+        schema:
+          type: number
+      - in: query
+        name: repetitions_target__lte
+        schema:
+          type: number
+      - in: query
+        name: repetitions_unit
+        schema:
+          type: integer
+      - in: query
+        name: repetitions_unit__in
+        schema:
+          type: array
+          items:
+            type: integer
+        description: Multiple values may be separated by commas.
+        explode: false
+        style: form
+      - in: query
+        name: rir
+        schema:
+          type: number
+      - in: query
+        name: rir__gt
+        schema:
+          type: number
+      - in: query
+        name: rir__gte
+        schema:
+          type: number
+      - in: query
+        name: rir__in
+        schema:
+          type: array
+          items:
+            type: number
+        description: Multiple values may be separated by commas.
+        explode: false
+        style: form
+      - in: query
+        name: rir__lt
+        schema:
+          type: number
+      - in: query
+        name: rir__lte
+        schema:
+          type: number
+      - in: query
+        name: rir_target
+        schema:
+          type: number
+      - in: query
+        name: rir_target__gt
+        schema:
+          type: number
+      - in: query
+        name: rir_target__gte
+        schema:
+          type: number
+      - in: query
+        name: rir_target__in
+        schema:
+          type: array
+          items:
+            type: number
+        description: Multiple values may be separated by commas.
+        explode: false
+        style: form
+      - in: query
+        name: rir_target__lt
+        schema:
+          type: number
+      - in: query
+        name: rir_target__lte
+        schema:
+          type: number
+      - in: query
+        name: routine
+        schema:
+          type: integer
+      - in: query
+        name: session
+        schema:
+          type: string
+          format: uuid
+      - in: query
+        name: weight
+        schema:
+          type: number
+      - in: query
+        name: weight__gt
+        schema:
+          type: number
+      - in: query
+        name: weight__gte
+        schema:
+          type: number
+      - in: query
+        name: weight__lt
+        schema:
+          type: number
+      - in: query
+        name: weight__lte
+        schema:
+          type: number
+      - in: query
+        name: weight_target
+        schema:
+          type: number
+      - in: query
+        name: weight_target__gt
+        schema:
+          type: number
+      - in: query
+        name: weight_target__gte
+        schema:
+          type: number
+      - in: query
+        name: weight_target__lt
+        schema:
+          type: number
+      - in: query
+        name: weight_target__lte
+        schema:
+          type: number
+      - in: query
+        name: weight_unit
+        schema:
+          type: integer
+      - in: query
+        name: weight_unit__in
+        schema:
+          type: array
+          items:
+            type: integer
+        description: Multiple values may be separated by commas.
+        explode: false
+        style: form
+      tags:
+      - workoutlog
+      security:
+      - cookieAuth: []
+      - tokenAuth: []
+      - headlessJwtAuth: []
+      - oidcAuth: []
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedWorkoutLogList'
+          description: ''
+    post:
+      operationId: workoutlog_create
+      description: API endpoint for workout log objects
+      tags:
+      - workoutlog
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/WorkoutLogRequest'
+        required: true
+      security:
+      - cookieAuth: []
+      - tokenAuth: []
+      - headlessJwtAuth: []
+      - oidcAuth: []
+      - jwtAuth: []
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WorkoutLog'
+          description: ''
+  /api/v2/workoutlog/{id}/:
+    get:
+      operationId: workoutlog_retrieve
+      description: API endpoint for workout log objects
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+          format: uuid
+        description: A UUID string identifying this workout log.
+        required: true
+      tags:
+      - workoutlog
+      security:
+      - cookieAuth: []
+      - tokenAuth: []
+      - headlessJwtAuth: []
+      - oidcAuth: []
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WorkoutLog'
+          description: ''
+    put:
+      operationId: workoutlog_update
+      description: API endpoint for workout log objects
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+          format: uuid
+        description: A UUID string identifying this workout log.
+        required: true
+      tags:
+      - workoutlog
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/WorkoutLogRequest'
+        required: true
+      security:
+      - cookieAuth: []
+      - tokenAuth: []
+      - headlessJwtAuth: []
+      - oidcAuth: []
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WorkoutLog'
+          description: ''
+    patch:
+      operationId: workoutlog_partial_update
+      description: API endpoint for workout log objects
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+          format: uuid
+        description: A UUID string identifying this workout log.
+        required: true
+      tags:
+      - workoutlog
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchedWorkoutLogRequest'
+      security:
+      - cookieAuth: []
+      - tokenAuth: []
+      - headlessJwtAuth: []
+      - oidcAuth: []
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WorkoutLog'
+          description: ''
+    delete:
+      operationId: workoutlog_destroy
+      description: API endpoint for workout log objects
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+          format: uuid
+        description: A UUID string identifying this workout log.
+        required: true
+      tags:
+      - workoutlog
+      security:
+      - cookieAuth: []
+      - tokenAuth: []
+      - headlessJwtAuth: []
+      - oidcAuth: []
+      - jwtAuth: []
+      responses:
+        '204':
+          description: No response body
+components:
+  schemas:
+    PatchedWorkoutLogRequest:
+      type: object
+      description: Workout log serializer
+      properties:
+        id:
+          type: string
+          format: uuid
+        date:
+          type: string
+          format: date-time
+        session:
+          type:
+          - string
+          - 'null'
+          format: uuid
+        routine:
+          type:
+          - integer
+          - 'null'
+          title: Workout
+        iteration:
+          type:
+          - integer
+          - 'null'
+          maximum: 2147483647
+          minimum: 0
+        slot_entry:
+          type:
+          - integer
+          - 'null'
+        next_log:
+          type:
+          - string
+          - 'null'
+          format: uuid
+        exercise:
+          type: integer
+        repetitions_unit:
+          type:
+          - integer
+          - 'null'
+        repetitions:
+          type:
+          - string
+          - 'null'
+          format: decimal
+          pattern: ^-?\d{0,4}(?:\.\d{0,2})?$
+        repetitions_target:
+          type:
+          - string
+          - 'null'
+          format: decimal
+          pattern: ^-?\d{0,4}(?:\.\d{0,2})?$
+        weight_unit:
+          type:
+          - integer
+          - 'null'
+        weight:
+          type:
+          - string
+          - 'null'
+          format: decimal
+          pattern: ^-?\d{0,4}(?:\.\d{0,2})?$
+        weight_target:
+          type:
+          - string
+          - 'null'
+          format: decimal
+          pattern: ^-?\d{0,4}(?:\.\d{0,2})?$
+        rir:
+          type:
+          - string
+          - 'null'
+          format: decimal
+          pattern: ^-?\d{0,1}(?:\.\d{0,1})?$
+        rir_target:
+          type:
+          - string
+          - 'null'
+          format: decimal
+          pattern: ^-?\d{0,1}(?:\.\d{0,1})?$
+        rest:
+          type:
+          - integer
+          - 'null'
+          maximum: 2147483647
+          minimum: 0
+        rest_target:
+          type:
+          - integer
+          - 'null'
+          maximum: 2147483647
+          minimum: 0
+    PaginatedWorkoutLogList:
+      type: object
+      required:
+      - count
+      - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?offset=400&limit=100
+        previous:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?offset=200&limit=100
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/WorkoutLog'
+    WorkoutLogRequest:
+      type: object
+      description: Workout log serializer
+      properties:
+        id:
+          type: string
+          format: uuid
+        date:
+          type: string
+          format: date-time
+        session:
+          type:
+          - string
+          - 'null'
+          format: uuid
+        routine:
+          type:
+          - integer
+          - 'null'
+          title: Workout
+        iteration:
+          type:
+          - integer
+          - 'null'
+          maximum: 2147483647
+          minimum: 0
+        slot_entry:
+          type:
+          - integer
+          - 'null'
+        next_log:
+          type:
+          - string
+          - 'null'
+          format: uuid
+        exercise:
+          type: integer
+        repetitions_unit:
+          type:
+          - integer
+          - 'null'
+        repetitions:
+          type:
+          - string
+          - 'null'
+          format: decimal
+          pattern: ^-?\d{0,4}(?:\.\d{0,2})?$
+        repetitions_target:
+          type:
+          - string
+          - 'null'
+          format: decimal
+          pattern: ^-?\d{0,4}(?:\.\d{0,2})?$
+        weight_unit:
+          type:
+          - integer
+          - 'null'
+        weight:
+          type:
+          - string
+          - 'null'
+          format: decimal
+          pattern: ^-?\d{0,4}(?:\.\d{0,2})?$
+        weight_target:
+          type:
+          - string
+          - 'null'
+          format: decimal
+          pattern: ^-?\d{0,4}(?:\.\d{0,2})?$
+        rir:
+          type:
+          - string
+          - 'null'
+          format: decimal
+          pattern: ^-?\d{0,1}(?:\.\d{0,1})?$
+        rir_target:
+          type:
+          - string
+          - 'null'
+          format: decimal
+          pattern: ^-?\d{0,1}(?:\.\d{0,1})?$
+        rest:
+          type:
+          - integer
+          - 'null'
+          maximum: 2147483647
+          minimum: 0
+        rest_target:
+          type:
+          - integer
+          - 'null'
+          maximum: 2147483647
+          minimum: 0
+      required:
+      - exercise
+    WorkoutLog:
+      type: object
+      description: Workout log serializer
+      properties:
+        id:
+          type: string
+          format: uuid
+        date:
+          type: string
+          format: date-time
+        session:
+          type:
+          - string
+          - 'null'
+          format: uuid
+        routine:
+          type:
+          - integer
+          - 'null'
+          title: Workout
+        iteration:
+          type:
+          - integer
+          - 'null'
+          maximum: 2147483647
+          minimum: 0
+        slot_entry:
+          type:
+          - integer
+          - 'null'
+        next_log:
+          type:
+          - string
+          - 'null'
+          format: uuid
+        exercise:
+          type: integer
+        repetitions_unit:
+          type:
+          - integer
+          - 'null'
+        repetitions:
+          type:
+          - string
+          - 'null'
+          format: decimal
+          pattern: ^-?\d{0,4}(?:\.\d{0,2})?$
+        repetitions_target:
+          type:
+          - string
+          - 'null'
+          format: decimal
+          pattern: ^-?\d{0,4}(?:\.\d{0,2})?$
+        weight_unit:
+          type:
+          - integer
+          - 'null'
+        weight:
+          type:
+          - string
+          - 'null'
+          format: decimal
+          pattern: ^-?\d{0,4}(?:\.\d{0,2})?$
+        weight_target:
+          type:
+          - string
+          - 'null'
+          format: decimal
+          pattern: ^-?\d{0,4}(?:\.\d{0,2})?$
+        rir:
+          type:
+          - string
+          - 'null'
+          format: decimal
+          pattern: ^-?\d{0,1}(?:\.\d{0,1})?$
+        rir_target:
+          type:
+          - string
+          - 'null'
+          format: decimal
+          pattern: ^-?\d{0,1}(?:\.\d{0,1})?$
+        rest:
+          type:
+          - integer
+          - 'null'
+          maximum: 2147483647
+          minimum: 0
+        rest_target:
+          type:
+          - integer
+          - 'null'
+          maximum: 2147483647
+          minimum: 0
+      required:
+      - exercise
+  securitySchemes:
+    cookieAuth:
+      type: apiKey
+      in: cookie
+      name: sessionid
+    headlessJwtAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+      description: Access token issued by the allauth headless endpoints
+    jwtAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+    oidcAuth:
+      type: oauth2
+      description: Access token issued by the OAuth2/OIDC provider
+      flows:
+        authorizationCode:
+          authorizationUrl: https://wger.de/identity/o/authorize
+          tokenUrl: https://wger.de/identity/o/api/token
+          scopes:
+            api:read: View your training, nutrition and body data
+            api:write: Add and change your training, nutrition and body data
+    tokenAuth:
+      type: apiKey
+      in: header
+      name: Authorization
+      description: Token-based authentication with required prefix "Token"
+externalDocs:
+  url: https://wger.readthedocs.io
+  description: wger documentation

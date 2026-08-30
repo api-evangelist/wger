@@ -1,0 +1,300 @@
+openapi: 3.2.0
+info:
+  title: wger Exercise Submission API
+  version: 2.7.0a2
+  description: "Self hosted FLOSS workout and fitness tracker.\n\n## Authentication\n\nSystem-wide data such as the exercise database, ingredients and units can be\nread without authenticating. Everything tied to a user account needs one of the\nfollowing, which are tried in this order:\n\n* `Authorization: Token <key>` with a personal API key. Users create one on the\n  API key page of their profile, e.g. `/en/user/api-key`.\n* `Authorization: Bearer <token>` with a JWT access token.\n* The session cookie, which is what a logged-in browser uses.\n\n## Pagination\n\nList endpoints take `limit` and `offset`, and answer with `count`, `next`,\n`previous` and `results`. The default page size is 20 and `limit` is capped\nat 999.\n\n`/api/v2/ingredient-sync/` is the exception. It uses cursor pagination so that\nsyncing the catalogue stays fast no matter how far a client has paginated. That\nresponse carries no `count`, and clients follow `next` instead of picking an\noffset.\n\n## Filtering and ordering\n\nMost list endpoints accept filters on a subset of their fields, plus `ordering`\nwith a field name that can be prefixed with `-` to reverse it. Both are listed\nper endpoint.\n\n## Unknown fields are dropped on write\n\nA field that the endpoint does not declare is ignored instead of rejected. Such\na request still answers 200 or 201, and the unknown field simply has no effect,\nso check a write against the response body rather than the status code.\n\n## Rate limits\n\nThe ingredient endpoints are rate limited because the catalogue holds millions\nof rows, and creating exercises is capped as well. Limits count per user for\nauthenticated callers and per IP otherwise. Exceeding one answers 429.\n"
+  license:
+    name: AGPL-3.0-or-later
+    url: https://www.gnu.org/licenses/agpl-3.0.html
+servers:
+- url: /
+  description: This server
+- url: https://wger.de
+  description: The "official" upstream wger instance
+tags:
+- name: exercise-submission
+paths:
+  /api/v2/exercise-submission/:
+    post:
+      operationId: exercise_submission_create
+      description: API endpoint for submitting new exercises
+      tags:
+      - exercise-submission
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ExerciseSubmissionRequest'
+        required: true
+      security:
+      - cookieAuth: []
+      - tokenAuth: []
+      - headlessJwtAuth: []
+      - oidcAuth: []
+      - jwtAuth: []
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ExerciseSubmission'
+          description: ''
+components:
+  schemas:
+    ExerciseTranslationSubmissionRequest:
+      type: object
+      description: "Translation serializer used as a nested child of ``ExerciseSubmissionSerializer``.\n\nDiffers from the regular serializer only because:\n- the ``exercise`` FK isn't known until the parent creates it (passed via ``create()`` kwargs);\n- the payload also accepts nested ``aliases`` and ``comments`` lists,\n  which the regular CRUD endpoint doesn't;\n- those take their ``translation`` from the parent, so they don't accept one."
+      properties:
+        name:
+          type: string
+          minLength: 1
+          maxLength: 200
+        description_source:
+          type: string
+          minLength: 40
+          title: Description (Source)
+        language:
+          type: integer
+        aliases:
+          type: array
+          items:
+            $ref: '#/components/schemas/ExerciseSubmissionAliasRequest'
+        comments:
+          type: array
+          items:
+            $ref: '#/components/schemas/ExerciseSubmissionCommentRequest'
+        license_author:
+          type: string
+          title: Author(s)
+          description: If you are not the author, enter the name or source here.
+          maxLength: 3500
+      required:
+      - description_source
+      - language
+      - name
+    ExerciseSubmission:
+      type: object
+      description: Exercise submission serializer
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        category:
+          type: integer
+        muscles:
+          type: array
+          items:
+            type: integer
+        muscles_secondary:
+          type: array
+          items:
+            type: integer
+        equipment:
+          type: array
+          items:
+            type: integer
+        variation_group:
+          type:
+          - string
+          - 'null'
+          format: uuid
+        license:
+          type: integer
+        license_author:
+          type: string
+          title: Author(s)
+          description: If you are not the author, enter the name or source here.
+          maxLength: 3500
+        translations:
+          type: array
+          items:
+            $ref: '#/components/schemas/ExerciseTranslationSubmission'
+      required:
+      - category
+      - id
+      - translations
+    ExerciseSubmissionCommentRequest:
+      type: object
+      description: 'Comment serializer without ``translation``, for use inside a submission.
+
+
+        See ExerciseSubmissionAliasSerializer for why this is a subclass.'
+      properties:
+        comment:
+          type: string
+          minLength: 1
+          description: A comment about how to correctly do this exercise.
+          maxLength: 200
+      required:
+      - comment
+    ExerciseSubmissionComment:
+      type: object
+      description: 'Comment serializer without ``translation``, for use inside a submission.
+
+
+        See ExerciseSubmissionAliasSerializer for why this is a subclass.'
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        uuid:
+          type: string
+          format: uuid
+          readOnly: true
+        comment:
+          type: string
+          description: A comment about how to correctly do this exercise.
+          maxLength: 200
+      required:
+      - comment
+      - id
+      - uuid
+    ExerciseSubmissionRequest:
+      type: object
+      description: Exercise submission serializer
+      properties:
+        category:
+          type: integer
+        muscles:
+          type: array
+          items:
+            type: integer
+        muscles_secondary:
+          type: array
+          items:
+            type: integer
+        equipment:
+          type: array
+          items:
+            type: integer
+        variation_group:
+          type:
+          - string
+          - 'null'
+          format: uuid
+        variations_connect_to:
+          type:
+          - integer
+          - 'null'
+          writeOnly: true
+          description: If provided, the created exercise will be added to the selected variation set.
+        license:
+          type: integer
+        license_author:
+          type: string
+          title: Author(s)
+          description: If you are not the author, enter the name or source here.
+          maxLength: 3500
+        translations:
+          type: array
+          items:
+            $ref: '#/components/schemas/ExerciseTranslationSubmissionRequest'
+      required:
+      - category
+      - translations
+    ExerciseSubmissionAliasRequest:
+      type: object
+      description: 'Alias serializer without ``translation``, for use inside a submission.
+
+
+        A subclass rather than a modified instance of the parent: both would be named
+
+        ExerciseAlias in the schema, and the narrower one would win for the alias
+
+        endpoint too.'
+      properties:
+        alias:
+          type: string
+          minLength: 1
+          title: Alias for an exercise
+          maxLength: 200
+      required:
+      - alias
+    ExerciseTranslationSubmission:
+      type: object
+      description: "Translation serializer used as a nested child of ``ExerciseSubmissionSerializer``.\n\nDiffers from the regular serializer only because:\n- the ``exercise`` FK isn't known until the parent creates it (passed via ``create()`` kwargs);\n- the payload also accepts nested ``aliases`` and ``comments`` lists,\n  which the regular CRUD endpoint doesn't;\n- those take their ``translation`` from the parent, so they don't accept one."
+      properties:
+        name:
+          type: string
+          maxLength: 200
+        description_source:
+          type: string
+          title: Description (Source)
+          minLength: 40
+        language:
+          type: integer
+        aliases:
+          type: array
+          items:
+            $ref: '#/components/schemas/ExerciseSubmissionAlias'
+        comments:
+          type: array
+          items:
+            $ref: '#/components/schemas/ExerciseSubmissionComment'
+        license_author:
+          type: string
+          title: Author(s)
+          description: If you are not the author, enter the name or source here.
+          maxLength: 3500
+      required:
+      - description_source
+      - language
+      - name
+    ExerciseSubmissionAlias:
+      type: object
+      description: 'Alias serializer without ``translation``, for use inside a submission.
+
+
+        A subclass rather than a modified instance of the parent: both would be named
+
+        ExerciseAlias in the schema, and the narrower one would win for the alias
+
+        endpoint too.'
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        uuid:
+          type: string
+          format: uuid
+          readOnly: true
+        alias:
+          type: string
+          title: Alias for an exercise
+          maxLength: 200
+      required:
+      - alias
+      - id
+      - uuid
+  securitySchemes:
+    cookieAuth:
+      type: apiKey
+      in: cookie
+      name: sessionid
+    headlessJwtAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+      description: Access token issued by the allauth headless endpoints
+    jwtAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+    oidcAuth:
+      type: oauth2
+      description: Access token issued by the OAuth2/OIDC provider
+      flows:
+        authorizationCode:
+          authorizationUrl: https://wger.de/identity/o/authorize
+          tokenUrl: https://wger.de/identity/o/api/token
+          scopes:
+            api:read: View your training, nutrition and body data
+            api:write: Add and change your training, nutrition and body data
+    tokenAuth:
+      type: apiKey
+      in: header
+      name: Authorization
+      description: Token-based authentication with required prefix "Token"
+externalDocs:
+  url: https://wger.readthedocs.io
+  description: wger documentation
