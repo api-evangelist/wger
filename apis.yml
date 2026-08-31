@@ -57,6 +57,17 @@ tags:
   - Fitness
   - Nutrition
   - Health
+  - Open-Source
+  - Self-Hosted
+  - Workout Tracking
+  - Django
+  - REST
+tags_raw:
+  - Sports And Fitness
+  - Public APIs
+  - Fitness
+  - Nutrition
+  - Health
   - Open Source
   - Self Hosted
   - Workout Tracking
@@ -197,6 +208,8 @@ apis:
   humanURL: https://wger.readthedocs.io/en/latest/api/api.html
   baseURL: https://wger.de/api/v2
   tags:
+  - Equipment
+  tags_raw:
   - equipment
   properties:
   - type: OpenAPI
@@ -231,6 +244,8 @@ apis:
   humanURL: https://wger.readthedocs.io/en/latest/api/api.html
   baseURL: https://wger.de/api/v2
   tags:
+  - Exercise
+  tags_raw:
   - exercise
   properties:
   - type: OpenAPI
@@ -490,6 +505,8 @@ apis:
   humanURL: https://wger.readthedocs.io/en/latest/api/api.html
   baseURL: https://wger.de/api/v2
   tags:
+  - Gallery
+  tags_raw:
   - gallery
   properties:
   - type: OpenAPI
@@ -720,6 +737,8 @@ apis:
   humanURL: https://wger.readthedocs.io/en/latest/api/api.html
   baseURL: https://wger.de/api/v2
   tags:
+  - Language
+  tags_raw:
   - language
   properties:
   - type: OpenAPI
@@ -752,6 +771,8 @@ apis:
   humanURL: https://wger.readthedocs.io/en/latest/api/api.html
   baseURL: https://wger.de/api/v2
   tags:
+  - License
+  tags_raw:
   - license
   properties:
   - type: OpenAPI
@@ -1008,6 +1029,8 @@ apis:
   humanURL: https://wger.readthedocs.io/en/latest/api/api.html
   baseURL: https://wger.de/api/v2
   tags:
+  - Measurements
+  tags_raw:
   - measurement
   properties:
   - type: OpenAPI
@@ -1491,6 +1514,8 @@ apis:
   humanURL: https://wger.readthedocs.io/en/latest/api/api.html
   baseURL: https://wger.de/api/v2
   tags:
+  - Schema
+  tags_raw:
   - schema
   properties:
   - type: OpenAPI
@@ -1619,6 +1644,8 @@ apis:
   humanURL: https://wger.readthedocs.io/en/latest/api/api.html
   baseURL: https://wger.de/api/v2
   tags:
+  - Slot
+  tags_raw:
   - slot
   properties:
   - type: OpenAPI
@@ -1684,6 +1711,8 @@ apis:
   humanURL: https://wger.readthedocs.io/en/latest/api/api.html
   baseURL: https://wger.de/api/v2
   tags:
+  - Templates
+  tags_raw:
   - templates
   properties:
   - type: OpenAPI
@@ -1716,6 +1745,8 @@ apis:
   humanURL: https://wger.readthedocs.io/en/latest/api/api.html
   baseURL: https://wger.de/api/v2
   tags:
+  - Token
+  tags_raw:
   - token
   properties:
   - type: OpenAPI
@@ -1876,6 +1907,8 @@ apis:
   humanURL: https://wger.readthedocs.io/en/latest/api/api.html
   baseURL: https://wger.de/api/v2
   tags:
+  - User Profile
+  tags_raw:
   - userprofile
   properties:
   - type: OpenAPI
@@ -1908,6 +1941,8 @@ apis:
   humanURL: https://wger.readthedocs.io/en/latest/api/api.html
   baseURL: https://wger.de/api/v2
   tags:
+  - Version
+  tags_raw:
   - version
   properties:
   - type: OpenAPI
@@ -1940,6 +1975,8 @@ apis:
   humanURL: https://wger.readthedocs.io/en/latest/api/api.html
   baseURL: https://wger.de/api/v2
   tags:
+  - Video
+  tags_raw:
   - video
   properties:
   - type: OpenAPI
