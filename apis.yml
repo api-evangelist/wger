@@ -2132,6 +2132,9 @@ apis:
   - type: Conformance
     url: conformance/wger-conformance.yml
 common:
+  - type: License
+    name: AGPL-3.0
+    url: https://github.com/wger-project/wger/blob/master/LICENSE
   - type: Overlay
     url: overlays/wger-openapi-overlay.yaml
   - type: Website
