@@ -1,17 +1,17 @@
 ---
 kin_checks:
   slug: wger
-  schema_version: 0.17.2
-  scored_at: '2026-09-01'
-  run_ts: 2026-09-01T063623
+  schema_version: 0.18.2
+  scored_at: '2026-09-04'
+  run_ts: 2026-09-04T062714
   note: Actionable checks only (missed + partial). earned/na are every other check
-    in rubric/scoring-0.17.2.yml; counts below let you verify that.
+    in rubric/scoring-0.18.2.yml; counts below let you verify that.
   counts:
-    total: 130
-    earned: 40
-    partial: 10
-    missed: 61
-    na: 19
+    total: 132
+    earned: 39
+    partial: 13
+    missed: 59
+    na: 21
   checks:
   - id: maintainer_present
     status: missed
@@ -34,8 +34,6 @@ kin_checks:
   - id: info_complete
     status: missed
     detail: 0 of 63 openapi documents pass
-  - id: servers_resolvable
-    status: missed
   - id: operations_summary_coverage
     status: missed
     detail: 0 of 63 openapi documents pass
@@ -55,8 +53,6 @@ kin_checks:
   - id: json_ld_class_depth
     status: missed
   - id: json_ld_property_depth
-    status: missed
-  - id: lifecycle_documented
     status: missed
   - id: domain_standard_conformance
     status: missed
@@ -159,10 +155,16 @@ kin_checks:
     status: partial
     earned: 2.95
     detail: 62 of 63 openapi documents pass
+  - id: conformance_declared
+    status: partial
+    earned: 1.5
   - id: github_org_present
     status: partial
     earned: 1.0
     detail: pointer liveness 0.5
+  - id: agent_skill_present
+    status: partial
+    earned: 0.75
   - id: sign_up_present
     status: partial
     earned: 2.5
@@ -183,3 +185,7 @@ kin_checks:
     status: partial
     earned: 3.5
     detail: 'grade: documented'
+  - id: agent_skills
+    status: partial
+    earned: 1.25
+    detail: 'authorship: derived'
