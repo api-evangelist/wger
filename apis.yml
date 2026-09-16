@@ -1901,40 +1901,6 @@ apis:
     url: sandbox/wger-sandbox.yml
   - type: Conformance
     url: conformance/wger-conformance.yml
-- aid: wger:wger-userprofile-api
-  name: Wger Userprofile API
-  description: The userprofile API from Wger — 2 operation(s) for userprofile.
-  humanURL: https://wger.readthedocs.io/en/latest/api/api.html
-  baseURL: https://wger.de/api/v2
-  tags:
-  - User Profile
-  tags_raw:
-  - userprofile
-  properties:
-  - type: OpenAPI
-    url: openapi/wger-userprofile-api-openapi.yml
-  - type: Documentation
-    url: https://wger.readthedocs.io/en/latest/api/api.html
-  - type: APIReference
-    url: https://wger.de/api/v2/schema/ui
-  - type: GettingStarted
-    url: https://wger.readthedocs.io/en/latest/api/api.html
-  - type: Authentication
-    url: authentication/wger-authentication.yml
-  - type: OAuthScopes
-    url: scopes/wger-scopes.yml
-  - type: RateLimits
-    url: rate-limits/wger-rate-limits.yml
-  - type: ErrorCatalog
-    url: errors/wger-problem-types.yml
-  - type: Conventions
-    url: conventions/wger-conventions.yml
-  - type: DataModel
-    url: data-model/wger-data-model.yml
-  - type: Sandbox
-    url: sandbox/wger-sandbox.yml
-  - type: Conformance
-    url: conformance/wger-conformance.yml
 - aid: wger:wger-version-api
   name: Wger Version API
   description: The version API from Wger — 1 operation(s) for version.
@@ -2109,6 +2075,38 @@ apis:
   properties:
   - type: OpenAPI
     url: openapi/wger-workoutsession-api-openapi.yml
+  - type: Documentation
+    url: https://wger.readthedocs.io/en/latest/api/api.html
+  - type: APIReference
+    url: https://wger.de/api/v2/schema/ui
+  - type: GettingStarted
+    url: https://wger.readthedocs.io/en/latest/api/api.html
+  - type: Authentication
+    url: authentication/wger-authentication.yml
+  - type: OAuthScopes
+    url: scopes/wger-scopes.yml
+  - type: RateLimits
+    url: rate-limits/wger-rate-limits.yml
+  - type: ErrorCatalog
+    url: errors/wger-problem-types.yml
+  - type: Conventions
+    url: conventions/wger-conventions.yml
+  - type: DataModel
+    url: data-model/wger-data-model.yml
+  - type: Sandbox
+    url: sandbox/wger-sandbox.yml
+  - type: Conformance
+    url: conformance/wger-conformance.yml
+- aid: wger:wger-user-profile-api
+  name: Wger User Profile API
+  description: The User Profile API from Wger — 2 operation(s) for user profile.
+  humanURL: https://wger.readthedocs.io/en/latest/api/api.html
+  baseURL: https://wger.de/api/v2
+  tags:
+  - User Profile
+  properties:
+  - type: OpenAPI
+    url: openapi/wger-user-profile-api-openapi.yml
   - type: Documentation
     url: https://wger.readthedocs.io/en/latest/api/api.html
   - type: APIReference
