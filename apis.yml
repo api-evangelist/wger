@@ -1745,7 +1745,7 @@ apis:
   humanURL: https://wger.readthedocs.io/en/latest/api/api.html
   baseURL: https://wger.de/api/v2
   tags:
-  - Token
+  - Tokens
   tags_raw:
   - token
   properties:
