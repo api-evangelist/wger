@@ -2,7 +2,7 @@ openapi: 3.2.0
 info:
   title: wger Exerciseimage API
   version: 2.7.0a2
-  description: "Self hosted FLOSS workout and fitness tracker.\n\n## Authentication\n\nSystem-wide data such as the exercise database, ingredients and units can be\nread without authenticating. Everything tied to a user account needs one of the\nfollowing, which are tried in this order:\n\n* `Authorization: Token <key>` with a personal API key. Users create one on the\n  API key page of their profile, e.g. `/en/user/api-key`.\n* `Authorization: Bearer <token>` with a JWT access token.\n* The session cookie, which is what a logged-in browser uses.\n\n## Pagination\n\nList endpoints take `limit` and `offset`, and answer with `count`, `next`,\n`previous` and `results`. The default page size is 20 and `limit` is capped\nat 999.\n\n`/api/v2/ingredient-sync/` is the exception. It uses cursor pagination so that\nsyncing the catalogue stays fast no matter how far a client has paginated. That\nresponse carries no `count`, and clients follow `next` instead of picking an\noffset.\n\n## Filtering and ordering\n\nMost list endpoints accept filters on a subset of their fields, plus `ordering`\nwith a field name that can be prefixed with `-` to reverse it. Both are listed\nper endpoint.\n\n## Unknown fields are dropped on write\n\nA field that the endpoint does not declare is ignored instead of rejected. Such\na request still answers 200 or 201, and the unknown field simply has no effect,\nso check a write against the response body rather than the status code.\n\n## Rate limits\n\nThe ingredient endpoints are rate limited because the catalogue holds millions\nof rows, and creating exercises is capped as well. Limits count per user for\nauthenticated callers and per IP otherwise. Exceeding one answers 429.\n"
+  description: Self hosted FLOSS workout and fitness tracker.
   license:
     name: AGPL-3.0-or-later
     url: https://www.gnu.org/licenses/agpl-3.0.html
@@ -68,6 +68,8 @@ paths:
               schema:
                 $ref: '#/components/schemas/PaginatedExerciseImageList'
           description: ''
+      summary: Exerciseimage list
+      x-summary-source: derived
     post:
       operationId: exerciseimage_create
       description: API endpoint for exercise image objects
@@ -92,6 +94,8 @@ paths:
               schema:
                 $ref: '#/components/schemas/ExerciseImage'
           description: ''
+      summary: Exerciseimage create
+      x-summary-source: derived
   /api/v2/exerciseimage/{id}/:
     get:
       operationId: exerciseimage_retrieve
@@ -118,6 +122,8 @@ paths:
               schema:
                 $ref: '#/components/schemas/ExerciseImage'
           description: ''
+      summary: Exerciseimage retrieve
+      x-summary-source: derived
     put:
       operationId: exerciseimage_update
       description: API endpoint for exercise image objects
@@ -149,6 +155,8 @@ paths:
               schema:
                 $ref: '#/components/schemas/ExerciseImage'
           description: ''
+      summary: Exerciseimage update
+      x-summary-source: derived
     patch:
       operationId: exerciseimage_partial_update
       description: API endpoint for exercise image objects
@@ -179,6 +187,8 @@ paths:
               schema:
                 $ref: '#/components/schemas/ExerciseImage'
           description: ''
+      summary: Exerciseimage partial update
+      x-summary-source: derived
     delete:
       operationId: exerciseimage_destroy
       description: API endpoint for exercise image objects
@@ -200,6 +210,8 @@ paths:
       responses:
         '204':
           description: No response body
+      summary: Exerciseimage destroy
+      x-summary-source: derived
   /api/v2/exerciseimage/{id}/thumbnails/:
     get:
       operationId: exerciseimage_thumbnails_retrieve
@@ -226,6 +238,8 @@ paths:
               schema:
                 $ref: '#/components/schemas/ImageThumbnails'
           description: ''
+      summary: Exerciseimage thumbnails retrieve
+      x-summary-source: derived
 components:
   schemas:
     ExerciseImage:
@@ -324,6 +338,77 @@ components:
       - image
       - thumbnails
       - uuid
+    ExerciseImageRequest:
+      type: object
+      description: ExerciseImage serializer
+      properties:
+        exercise:
+          type: integer
+        image:
+          type: string
+          format: binary
+          description: Only JPEG, PNG and WebP formats are supported
+        is_main:
+          type: boolean
+          title: Is main picture
+        style:
+          allOf:
+          - $ref: '#/components/schemas/StyleEnum'
+          description: 'The art style of your image
+
+
+            * `1` - Line
+
+            * `2` - 3D
+
+            * `3` - Low-poly
+
+            * `4` - Photo
+
+            * `5` - Other'
+        license:
+          type: integer
+        license_title:
+          type: string
+          title: The original title of this object, if available
+          maxLength: 300
+        license_object_url:
+          title: Link to original object, if available
+          oneOf:
+          - type: string
+            format: uri
+            maxLength: 200
+          - type: string
+            maxLength: 0
+        license_author:
+          type: string
+          title: Author(s)
+          description: If you are not the author, enter the name or source here.
+          maxLength: 3500
+        license_author_url:
+          title: Link to author profile, if available
+          oneOf:
+          - type: string
+            format: uri
+            maxLength: 200
+          - type: string
+            maxLength: 0
+        license_derivative_source_url:
+          title: Link to the original source, if this is a derivative work
+          description: Note that a derivative work is one which is not only based on a previous work, but which also contains sufficient new, creative content to entitle it to its own copyright.
+          oneOf:
+          - type: string
+            format: uri
+            maxLength: 200
+          - type: string
+            maxLength: 0
+        is_ai_generated:
+          type: boolean
+          title: AI Generated
+          description: Check if this image was generated by AI
+      required:
+      - exercise
+      - image
     ImageThumbnails:
       type: object
       description: An image's thumbnails, one entry per available size, plus the original.
@@ -407,90 +492,26 @@ components:
           type: boolean
           title: AI Generated
           description: Check if this image was generated by AI
-    ThumbnailAlias:
+    Thumbnails:
       type: object
-      description: 'One generated thumbnail: where it is and the size it was generated for.'
+      description: 'Shape of the ``thumbnails`` field, used for schema generation only.
+
+
+        The aliases are read from settings.THUMBNAIL_ALIASES and are the same for
+
+        every thumbnailed image in the API. Without this, the generated schema falls
+
+        back to a plain string for the dict the method fields return.'
       properties:
-        url:
+        small:
           type: string
           format: uri
-        settings:
-          type: object
-          additionalProperties: {}
+        medium:
+          type: string
+          format: uri
       required:
-      - settings
-      - url
-    ExerciseImageRequest:
-      type: object
-      description: ExerciseImage serializer
-      properties:
-        exercise:
-          type: integer
-        image:
-          type: string
-          format: binary
-          description: Only JPEG, PNG and WebP formats are supported
-        is_main:
-          type: boolean
-          title: Is main picture
-        style:
-          allOf:
-          - $ref: '#/components/schemas/StyleEnum'
-          description: 'The art style of your image
-
-
-            * `1` - Line
-
-            * `2` - 3D
-
-            * `3` - Low-poly
-
-            * `4` - Photo
-
-            * `5` - Other'
-        license:
-          type: integer
-        license_title:
-          type: string
-          title: The original title of this object, if available
-          maxLength: 300
-        license_object_url:
-          title: Link to original object, if available
-          oneOf:
-          - type: string
-            format: uri
-            maxLength: 200
-          - type: string
-            maxLength: 0
-        license_author:
-          type: string
-          title: Author(s)
-          description: If you are not the author, enter the name or source here.
-          maxLength: 3500
-        license_author_url:
-          title: Link to author profile, if available
-          oneOf:
-          - type: string
-            format: uri
-            maxLength: 200
-          - type: string
-            maxLength: 0
-        license_derivative_source_url:
-          title: Link to the original source, if this is a derivative work
-          description: Note that a derivative work is one which is not only based on a previous work, but which also contains sufficient new, creative content to entitle it to its own copyright.
-          oneOf:
-          - type: string
-            format: uri
-            maxLength: 200
-          - type: string
-            maxLength: 0
-        is_ai_generated:
-          type: boolean
-          title: AI Generated
-          description: Check if this image was generated by AI
-      required:
-      - exercise
-      - image
+      - medium
+      - small
     StyleEnum:
       enum:
       - '1'
@@ -533,26 +554,19 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/ExerciseImage'
-    Thumbnails:
+    ThumbnailAlias:
       type: object
-      description: 'Shape of the ``thumbnails`` field, used for schema generation only.
-
-
-        The aliases are read from settings.THUMBNAIL_ALIASES and are the same for
-
-        every thumbnailed image in the API. Without this, the generated schema falls
-
-        back to a plain string for the dict the method fields return.'
+      description: 'One generated thumbnail: where it is and the size it was generated for.'
       properties:
-        small:
+        url:
           type: string
           format: uri
-        medium:
-          type: string
-          format: uri
+        settings:
+          type: object
+          additionalProperties: {}
       required:
-      - medium
-      - small
+      - settings
+      - url
   securitySchemes:
     cookieAuth:
       type: apiKey

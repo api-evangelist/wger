@@ -2,7 +2,7 @@ openapi: 3.2.0
 info:
   title: wger Routine API
   version: 2.7.0a2
-  description: "Self hosted FLOSS workout and fitness tracker.\n\n## Authentication\n\nSystem-wide data such as the exercise database, ingredients and units can be\nread without authenticating. Everything tied to a user account needs one of the\nfollowing, which are tried in this order:\n\n* `Authorization: Token <key>` with a personal API key. Users create one on the\n  API key page of their profile, e.g. `/en/user/api-key`.\n* `Authorization: Bearer <token>` with a JWT access token.\n* The session cookie, which is what a logged-in browser uses.\n\n## Pagination\n\nList endpoints take `limit` and `offset`, and answer with `count`, `next`,\n`previous` and `results`. The default page size is 20 and `limit` is capped\nat 999.\n\n`/api/v2/ingredient-sync/` is the exception. It uses cursor pagination so that\nsyncing the catalogue stays fast no matter how far a client has paginated. That\nresponse carries no `count`, and clients follow `next` instead of picking an\noffset.\n\n## Filtering and ordering\n\nMost list endpoints accept filters on a subset of their fields, plus `ordering`\nwith a field name that can be prefixed with `-` to reverse it. Both are listed\nper endpoint.\n\n## Unknown fields are dropped on write\n\nA field that the endpoint does not declare is ignored instead of rejected. Such\na request still answers 200 or 201, and the unknown field simply has no effect,\nso check a write against the response body rather than the status code.\n\n## Rate limits\n\nThe ingredient endpoints are rate limited because the catalogue holds millions\nof rows, and creating exercises is capped as well. Limits count per user for\nauthenticated callers and per IP otherwise. Exceeding one answers 429.\n"
+  description: Self hosted FLOSS workout and fitness tracker.
   license:
     name: AGPL-3.0-or-later
     url: https://www.gnu.org/licenses/agpl-3.0.html
@@ -84,6 +84,8 @@ paths:
               schema:
                 $ref: '#/components/schemas/PaginatedRoutineList'
           description: ''
+      summary: Routine list
+      x-summary-source: derived
     post:
       operationId: routine_create
       description: API endpoint for routine objects
@@ -108,6 +110,8 @@ paths:
               schema:
                 $ref: '#/components/schemas/Routine'
           description: ''
+      summary: Routine create
+      x-summary-source: derived
   /api/v2/routine/{id}/:
     get:
       operationId: routine_retrieve
@@ -134,6 +138,8 @@ paths:
               schema:
                 $ref: '#/components/schemas/Routine'
           description: ''
+      summary: Routine retrieve
+      x-summary-source: derived
     put:
       operationId: routine_update
       description: API endpoint for routine objects
@@ -165,6 +171,8 @@ paths:
               schema:
                 $ref: '#/components/schemas/Routine'
           description: ''
+      summary: Routine update
+      x-summary-source: derived
     patch:
       operationId: routine_partial_update
       description: API endpoint for routine objects
@@ -195,6 +203,8 @@ paths:
               schema:
                 $ref: '#/components/schemas/Routine'
           description: ''
+      summary: Routine partial update
+      x-summary-source: derived
     delete:
       operationId: routine_destroy
       description: API endpoint for routine objects
@@ -216,6 +226,8 @@ paths:
       responses:
         '204':
           description: No response body
+      summary: Routine destroy
+      x-summary-source: derived
   /api/v2/routine/{id}/date-sequence-display/:
     get:
       operationId: routine_date_sequence_display_list
@@ -281,6 +293,8 @@ paths:
                 items:
                   $ref: '#/components/schemas/WorkoutDayDataDisplayMode'
           description: ''
+      summary: Routine date sequence display list
+      x-summary-source: derived
   /api/v2/routine/{id}/date-sequence-gym/:
     get:
       operationId: routine_date_sequence_gym_list
@@ -346,6 +360,8 @@ paths:
                 items:
                   $ref: '#/components/schemas/WorkoutDayDataGymMode'
           description: ''
+      summary: Routine date sequence gym list
+      x-summary-source: derived
   /api/v2/routine/{id}/logs/:
     get:
       operationId: routine_logs_list
@@ -411,6 +427,8 @@ paths:
                 items:
                   $ref: '#/components/schemas/LogDisplay'
           description: ''
+      summary: Routine logs list
+      x-summary-source: derived
   /api/v2/routine/{id}/stats/:
     get:
       operationId: routine_stats_retrieve
@@ -437,6 +455,8 @@ paths:
               schema:
                 $ref: '#/components/schemas/LogStatsData'
           description: ''
+      summary: Routine stats retrieve
+      x-summary-source: derived
   /api/v2/routine/{id}/structure/:
     get:
       operationId: routine_structure_retrieve
@@ -463,9 +483,99 @@ paths:
               schema:
                 $ref: '#/components/schemas/RoutineStructure'
           description: ''
+      summary: Routine structure retrieve
+      x-summary-source: derived
 components:
   schemas:
-    RiRConfig:
+    RoutineStructure:
+      type: object
+      description: Routine structure serializer
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        name:
+          type: string
+          maxLength: 25
+        description:
+          type: string
+          maxLength: 1000
+        created:
+          type: string
+          format: date-time
+          readOnly: true
+          title: Creation date
+        start:
+          type: string
+          format: date
+          title: Start date
+        end:
+          type: string
+          format: date
+          title: End date
+        fit_in_week:
+          type: boolean
+        days:
+          type: array
+          items:
+            $ref: '#/components/schemas/DayStructure'
+      required:
+      - created
+      - days
+      - end
+      - id
+      - start
+    PatchedRoutineRequest:
+      type: object
+      description: Routine serializer
+      properties:
+        name:
+          type: string
+          maxLength: 25
+        description:
+          type: string
+          maxLength: 1000
+        start:
+          type: string
+          format: date
+          title: Start date
+        end:
+          type: string
+          format: date
+          title: End date
+        fit_in_week:
+          type: boolean
+        is_template:
+          type: boolean
+          title: Workout template
+          description: Marking a workout as a template will freeze it and allow you to make copies of it
+        is_public:
+          type: boolean
+          title: Public template
+          description: A public template is available to other users
+    StepEnum:
+      enum:
+      - na
+      - abs
+      - percent
+      type: string
+      description: '* `na` - Not Applicable
+
+        * `abs` - Absolute
+
+        * `percent` - Percent'
+    ImpressionEnum:
+      enum:
+      - '1'
+      - '2'
+      - '3'
+      type: string
+      description: '* `1` - Bad
+
+        * `2` - Neutral
+
+        * `3` - Good'
+    MaxRiRConfig:
       type: object
       description: RiR Config serializer
       properties:
@@ -494,6 +604,113 @@ components:
       - iteration
       - slot_entry
       - value
+    ExerciseTypeEnum:
+      enum:
+      - normal
+      - warmup
+      - dropset
+      - myo
+      - partial
+      - forced
+      - tut
+      - iso
+      - jump
+      type: string
+      description: '* `normal` - Normal
+
+        * `warmup` - Warmup
+
+        * `dropset` - Dropset
+
+        * `myo` - Myo
+
+        * `partial` - Partial
+
+        * `forced` - Forced
+
+        * `tut` - Tut
+
+        * `iso` - Iso Hold
+
+        * `jump` - Jump'
+    LogStatsData:
+      type: object
+      description: Log Stats Data serializer
+      properties:
+        intensity:
+          $ref: '#/components/schemas/GroupedLogData'
+        sets:
+          $ref: '#/components/schemas/GroupedLogData'
+        volume:
+          $ref: '#/components/schemas/GroupedLogData'
+      required:
+      - intensity
+      - sets
+      - volume
+    GroupedLogData:
+      type: object
+      description: Log Stats Data serializer
+      properties:
+        iteration:
+          type: object
+          additionalProperties:
+            $ref: '#/components/schemas/LogData'
+        weekly:
+          type: object
+          additionalProperties:
+            $ref: '#/components/schemas/LogData'
+        daily:
+          type: object
+          additionalProperties:
+            $ref: '#/components/schemas/LogData'
+        mesocycle:
+          $ref: '#/components/schemas/LogData'
+      required:
+      - daily
+      - iteration
+      - mesocycle
+      - weekly
+    Routine:
+      type: object
+      description: Routine serializer
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        name:
+          type: string
+          maxLength: 25
+        description:
+          type: string
+          maxLength: 1000
+        created:
+          type: string
+          format: date-time
+          readOnly: true
+          title: Creation date
+        start:
+          type: string
+          format: date
+          title: Start date
+        end:
+          type: string
+          format: date
+          title: End date
+        fit_in_week:
+          type: boolean
+        is_template:
+          type: boolean
+          title: Workout template
+          description: Marking a workout as a template will freeze it and allow you to make copies of it
+        is_public:
+          type: boolean
+          title: Public template
+          description: A public template is available to other users
+      required:
+      - created
+      - end
+      - id
+      - start
     SetNrConfig:
       type: object
       description: Set Nr config serializer
@@ -523,20 +740,349 @@ components:
       - iteration
       - slot_entry
       - value
-    LogStatsData:
+    DayTypeEnum:
+      enum:
+      - custom
+      - enom
+      - amrap
+      - hiit
+      - tabata
+      - edt
+      - rft
+      - afap
+      type: string
+      description: '* `custom` - Custom
+
+        * `enom` - Enom
+
+        * `amrap` - Amrap
+
+        * `hiit` - Hiit
+
+        * `tabata` - Tabata
+
+        * `edt` - Edt
+
+        * `rft` - Rft
+
+        * `afap` - Afap'
+    LogDisplay:
       type: object
-      description: Log Stats Data serializer
+      description: Log Display Data serializer
       properties:
-        intensity:
-          $ref: '#/components/schemas/GroupedLogData'
-        sets:
-          $ref: '#/components/schemas/GroupedLogData'
-        volume:
-          $ref: '#/components/schemas/GroupedLogData'
+        session:
+          $ref: '#/components/schemas/WorkoutSession'
+        logs:
+          type: array
+          items:
+            $ref: '#/components/schemas/WorkoutLog'
       required:
-      - intensity
+      - logs
+      - session
+    SlotData:
+      type: object
+      description: Slot Data serializer
+      properties:
+        comment:
+          type: string
+        is_superset:
+          type: boolean
+        exercises:
+          type: array
+          items:
+            type: integer
+        sets:
+          type: array
+          items:
+            $ref: '#/components/schemas/SetConfigData'
+      required:
+      - comment
+      - exercises
+      - is_superset
       - sets
-      - volume
+    WorkoutDayDataGymMode:
+      type: object
+      description: WorkoutDayData serializer - gym mode
+      properties:
+        iteration:
+          type: integer
+        date:
+          type: string
+          format: date
+        label:
+          type: string
+        day:
+          $ref: '#/components/schemas/Day'
+        slots:
+          type: array
+          items:
+            $ref: '#/components/schemas/SlotData'
+      required:
+      - date
+      - day
+      - iteration
+      - label
+      - slots
+    SetConfigData:
+      type: object
+      description: SetConfigData serializer
+      properties:
+        slot_entry_id:
+          type: integer
+        exercise:
+          type: integer
+        sets:
+          type: integer
+        max_sets:
+          type:
+          - integer
+          - 'null'
+        weight:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,4}(?:\.\d{0,2})?$
+        max_weight:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,4}(?:\.\d{0,2})?$
+        weight_unit:
+          type:
+          - integer
+          - 'null'
+        weight_rounding:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,2}(?:\.\d{0,2})?$
+        repetitions:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,4}(?:\.\d{0,2})?$
+        max_repetitions:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,4}(?:\.\d{0,2})?$
+        repetitions_unit:
+          type:
+          - integer
+          - 'null'
+        repetitions_rounding:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,2}(?:\.\d{0,2})?$
+        rir:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,1}(?:\.\d{0,1})?$
+        max_rir:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,1}(?:\.\d{0,1})?$
+        rpe:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,2}(?:\.\d{0,1})?$
+        rest:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,4}(?:\.\d{0,2})?$
+        max_rest:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,4}(?:\.\d{0,2})?$
+        type:
+          type: string
+        text_repr:
+          type: string
+        comment:
+          type: string
+      required:
+      - comment
+      - exercise
+      - max_repetitions
+      - max_rest
+      - max_rir
+      - max_sets
+      - max_weight
+      - repetitions
+      - repetitions_rounding
+      - repetitions_unit
+      - rest
+      - rir
+      - rpe
+      - sets
+      - slot_entry_id
+      - text_repr
+      - type
+      - weight
+      - weight_rounding
+      - weight_unit
+    SlotStructure:
+      type: object
+      description: Slot
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        day:
+          type: integer
+          title: Exercise day
+        order:
+          type: integer
+          maximum: 2147483647
+          minimum: 0
+        comment:
+          type: string
+          maxLength: 200
+        entries:
+          type: array
+          items:
+            $ref: '#/components/schemas/SlotEntryStructure'
+        config: {}
+      required:
+      - day
+      - entries
+      - id
+    MaxSetNrConfig:
+      type: object
+      description: Max Set Nr config serializer
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        slot_entry:
+          type: integer
+        iteration:
+          type: integer
+          maximum: 2147483647
+          minimum: 0
+        value:
+          type: integer
+          maximum: 50
+          minimum: 0
+        operation:
+          $ref: '#/components/schemas/OperationEnum'
+        step:
+          $ref: '#/components/schemas/StepEnum'
+        repeat:
+          type: boolean
+        requirements: {}
+      required:
+      - id
+      - iteration
+      - slot_entry
+      - value
+    RoutineRequest:
+      type: object
+      description: Routine serializer
+      properties:
+        name:
+          type: string
+          maxLength: 25
+        description:
+          type: string
+          maxLength: 1000
+        start:
+          type: string
+          format: date
+          title: Start date
+        end:
+          type: string
+          format: date
+          title: End date
+        fit_in_week:
+          type: boolean
+        is_template:
+          type: boolean
+          title: Workout template
+          description: Marking a workout as a template will freeze it and allow you to make copies of it
+        is_public:
+          type: boolean
+          title: Public template
+          description: A public template is available to other users
+      required:
+      - end
+      - start
+    OperationEnum:
+      enum:
+      - +
+      - '-'
+      - r
+      type: string
+      description: '* `+` - Plus
+
+        * `-` - Minus
+
+        * `r` - Replace'
+    WorkoutDayDataDisplayMode:
+      type: object
+      description: WorkoutDayData serializer - display mode
+      properties:
+        iteration:
+          type: integer
+        date:
+          type: string
+          format: date
+        label:
+          type: string
+        day:
+          $ref: '#/components/schemas/Day'
+        slots:
+          type: array
+          items:
+            $ref: '#/components/schemas/SlotData'
+      required:
+      - date
+      - day
+      - iteration
+      - label
+      - slots
+    WorkoutSession:
+      type: object
+      description: Workout session serializer
+      properties:
+        id:
+          type: string
+          format: uuid
+        routine:
+          type:
+          - integer
+          - 'null'
+        day:
+          type:
+          - integer
+          - 'null'
+        date:
+          type: string
+          format: date
+        notes:
+          type:
+          - string
+          - 'null'
+          description: Any notes you might want to save about this workout session.
+        impression:
+          allOf:
+          - $ref: '#/components/schemas/ImpressionEnum'
+          title: General impression
+          description: 'Your impression about this workout session. Did you exercise as well as you could?
+
+
+            * `1` - Bad
+
+            * `2` - Neutral
+
+            * `3` - Good'
+        time_start:
+          type:
+          - string
+          - 'null'
+          format: time
+          title: Start time
+        time_end:
+          type:
+          - string
+          - 'null'
+          format: time
+          title: Finish time
     DayStructure:
       type: object
       description: Day serializer
@@ -571,58 +1117,299 @@ components:
       - id
       - routine
       - slots
-    ExerciseTypeEnum:
-      enum:
-      - normal
-      - warmup
-      - dropset
-      - myo
-      - partial
-      - forced
-      - tut
-      - iso
-      - jump
-      type: string
-      description: '* `normal` - Normal
-
-        * `warmup` - Warmup
-
-        * `dropset` - Dropset
-
-        * `myo` - Myo
-
-        * `partial` - Partial
-
-        * `forced` - Forced
-
-        * `tut` - Tut
-
-        * `iso` - Iso Hold
-
-        * `jump` - Jump'
-    WorkoutDayDataGymMode:
+    Day:
       type: object
-      description: WorkoutDayData serializer - gym mode
+      description: Day serializer
       properties:
-        iteration:
+        id:
           type: integer
-        date:
+          readOnly: true
+        routine:
+          type: integer
+        order:
+          type: integer
+          maximum: 2147483647
+          minimum: 0
+        name:
           type: string
-          format: date
-        label:
+          maxLength: 20
+        description:
           type: string
-        day:
-          $ref: '#/components/schemas/Day'
-        slots:
+          maxLength: 1000
+        is_rest:
+          type: boolean
+        need_logs_to_advance:
+          type: boolean
+        type:
+          $ref: '#/components/schemas/DayTypeEnum'
+        config: {}
+      required:
+      - id
+      - routine
+    PaginatedRoutineList:
+      type: object
+      required:
+      - count
+      - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?offset=400&limit=100
+        previous:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?offset=200&limit=100
+        results:
           type: array
           items:
-            $ref: '#/components/schemas/SlotData'
+            $ref: '#/components/schemas/Routine'
+    WeightConfig:
+      type: object
+      description: Weight Config serializer
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        slot_entry:
+          type: integer
+        iteration:
+          type: integer
+          maximum: 2147483647
+          minimum: 0
+        value:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,4}(?:\.\d{0,2})?$
+        operation:
+          $ref: '#/components/schemas/OperationEnum'
+        step:
+          $ref: '#/components/schemas/StepEnum'
+        repeat:
+          type: boolean
+        requirements: {}
       required:
-      - date
-      - day
+      - id
       - iteration
-      - label
-      - slots
+      - slot_entry
+      - value
+    RepetitionsConfig:
+      type: object
+      description: Repetition Config serializer
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        slot_entry:
+          type: integer
+        iteration:
+          type: integer
+          maximum: 2147483647
+          minimum: 0
+        value:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,4}(?:\.\d{0,2})?$
+        operation:
+          $ref: '#/components/schemas/OperationEnum'
+        step:
+          $ref: '#/components/schemas/StepEnum'
+        repeat:
+          type: boolean
+        requirements: {}
+      required:
+      - id
+      - iteration
+      - slot_entry
+      - value
+    RiRConfig:
+      type: object
+      description: RiR Config serializer
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        slot_entry:
+          type: integer
+        iteration:
+          type: integer
+          maximum: 2147483647
+          minimum: 0
+        value:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,1}(?:\.\d{0,1})?$
+        operation:
+          $ref: '#/components/schemas/OperationEnum'
+        step:
+          $ref: '#/components/schemas/StepEnum'
+        repeat:
+          type: boolean
+        requirements: {}
+      required:
+      - id
+      - iteration
+      - slot_entry
+      - value
+    RestConfig:
+      type: object
+      description: Rest Config serializer
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        slot_entry:
+          type: integer
+        iteration:
+          type: integer
+          maximum: 2147483647
+          minimum: 0
+        value:
+          type: integer
+          maximum: 1800
+          minimum: 0
+        operation:
+          $ref: '#/components/schemas/OperationEnum'
+        step:
+          $ref: '#/components/schemas/StepEnum'
+        repeat:
+          type: boolean
+        requirements: {}
+      required:
+      - id
+      - iteration
+      - slot_entry
+      - value
+    LogData:
+      type: object
+      description: Log Stats Data serializer
+      properties:
+        exercises:
+          type: object
+          additionalProperties: {}
+        muscle:
+          type: object
+          additionalProperties: {}
+        upper_body:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,8}(?:\.\d{0,2})?$
+        lower_body:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,8}(?:\.\d{0,2})?$
+        total:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,8}(?:\.\d{0,2})?$
+      required:
+      - exercises
+      - lower_body
+      - muscle
+      - total
+      - upper_body
+    WorkoutLog:
+      type: object
+      description: Workout log serializer
+      properties:
+        id:
+          type: string
+          format: uuid
+        date:
+          type: string
+          format: date-time
+        session:
+          type:
+          - string
+          - 'null'
+          format: uuid
+        routine:
+          type:
+          - integer
+          - 'null'
+          title: Workout
+        iteration:
+          type:
+          - integer
+          - 'null'
+          maximum: 2147483647
+          minimum: 0
+        slot_entry:
+          type:
+          - integer
+          - 'null'
+        next_log:
+          type:
+          - string
+          - 'null'
+          format: uuid
+        exercise:
+          type: integer
+        repetitions_unit:
+          type:
+          - integer
+          - 'null'
+        repetitions:
+          type:
+          - string
+          - 'null'
+          format: decimal
+          pattern: ^-?\d{0,4}(?:\.\d{0,2})?$
+        repetitions_target:
+          type:
+          - string
+          - 'null'
+          format: decimal
+          pattern: ^-?\d{0,4}(?:\.\d{0,2})?$
+        weight_unit:
+          type:
+          - integer
+          - 'null'
+        weight:
+          type:
+          - string
+          - 'null'
+          format: decimal
+          pattern: ^-?\d{0,4}(?:\.\d{0,2})?$
+        weight_target:
+          type:
+          - string
+          - 'null'
+          format: decimal
+          pattern: ^-?\d{0,4}(?:\.\d{0,2})?$
+        rir:
+          type:
+          - string
+          - 'null'
+          format: decimal
+          pattern: ^-?\d{0,1}(?:\.\d{0,1})?$
+        rir_target:
+          type:
+          - string
+          - 'null'
+          format: decimal
+          pattern: ^-?\d{0,1}(?:\.\d{0,1})?$
+        rest:
+          type:
+          - integer
+          - 'null'
+          maximum: 2147483647
+          minimum: 0
+        rest_target:
+          type:
+          - integer
+          - 'null'
+          maximum: 2147483647
+          minimum: 0
+      required:
+      - exercise
     SlotEntryStructure:
       type: object
       description: Slot entry
@@ -724,771 +1511,6 @@ components:
       - set_nr_configs
       - slot
       - weight_configs
-    MaxSetNrConfig:
-      type: object
-      description: Max Set Nr config serializer
-      properties:
-        id:
-          type: integer
-          readOnly: true
-        slot_entry:
-          type: integer
-        iteration:
-          type: integer
-          maximum: 2147483647
-          minimum: 0
-        value:
-          type: integer
-          maximum: 50
-          minimum: 0
-        operation:
-          $ref: '#/components/schemas/OperationEnum'
-        step:
-          $ref: '#/components/schemas/StepEnum'
-        repeat:
-          type: boolean
-        requirements: {}
-      required:
-      - id
-      - iteration
-      - slot_entry
-      - value
-    WorkoutSession:
-      type: object
-      description: Workout session serializer
-      properties:
-        id:
-          type: string
-          format: uuid
-        routine:
-          type:
-          - integer
-          - 'null'
-        day:
-          type:
-          - integer
-          - 'null'
-        date:
-          type: string
-          format: date
-        notes:
-          type:
-          - string
-          - 'null'
-          description: Any notes you might want to save about this workout session.
-        impression:
-          allOf:
-          - $ref: '#/components/schemas/ImpressionEnum'
-          title: General impression
-          description: 'Your impression about this workout session. Did you exercise as well as you could?
-
-
-            * `1` - Bad
-
-            * `2` - Neutral
-
-            * `3` - Good'
-        time_start:
-          type:
-          - string
-          - 'null'
-          format: time
-          title: Start time
-        time_end:
-          type:
-          - string
-          - 'null'
-          format: time
-          title: Finish time
-    OperationEnum:
-      enum:
-      - +
-      - '-'
-      - r
-      type: string
-      description: '* `+` - Plus
-
-        * `-` - Minus
-
-        * `r` - Replace'
-    SlotData:
-      type: object
-      description: Slot Data serializer
-      properties:
-        comment:
-          type: string
-        is_superset:
-          type: boolean
-        exercises:
-          type: array
-          items:
-            type: integer
-        sets:
-          type: array
-          items:
-            $ref: '#/components/schemas/SetConfigData'
-      required:
-      - comment
-      - exercises
-      - is_superset
-      - sets
-    GroupedLogData:
-      type: object
-      description: Log Stats Data serializer
-      properties:
-        iteration:
-          type: object
-          additionalProperties:
-            $ref: '#/components/schemas/LogData'
-        weekly:
-          type: object
-          additionalProperties:
-            $ref: '#/components/schemas/LogData'
-        daily:
-          type: object
-          additionalProperties:
-            $ref: '#/components/schemas/LogData'
-        mesocycle:
-          $ref: '#/components/schemas/LogData'
-      required:
-      - daily
-      - iteration
-      - mesocycle
-      - weekly
-    PaginatedRoutineList:
-      type: object
-      required:
-      - count
-      - results
-      properties:
-        count:
-          type: integer
-          example: 123
-        next:
-          type:
-          - string
-          - 'null'
-          format: uri
-          example: http://api.example.org/accounts/?offset=400&limit=100
-        previous:
-          type:
-          - string
-          - 'null'
-          format: uri
-          example: http://api.example.org/accounts/?offset=200&limit=100
-        results:
-          type: array
-          items:
-            $ref: '#/components/schemas/Routine'
-    RepetitionsConfig:
-      type: object
-      description: Repetition Config serializer
-      properties:
-        id:
-          type: integer
-          readOnly: true
-        slot_entry:
-          type: integer
-        iteration:
-          type: integer
-          maximum: 2147483647
-          minimum: 0
-        value:
-          type: string
-          format: decimal
-          pattern: ^-?\d{0,4}(?:\.\d{0,2})?$
-        operation:
-          $ref: '#/components/schemas/OperationEnum'
-        step:
-          $ref: '#/components/schemas/StepEnum'
-        repeat:
-          type: boolean
-        requirements: {}
-      required:
-      - id
-      - iteration
-      - slot_entry
-      - value
-    ImpressionEnum:
-      enum:
-      - '1'
-      - '2'
-      - '3'
-      type: string
-      description: '* `1` - Bad
-
-        * `2` - Neutral
-
-        * `3` - Good'
-    RestConfig:
-      type: object
-      description: Rest Config serializer
-      properties:
-        id:
-          type: integer
-          readOnly: true
-        slot_entry:
-          type: integer
-        iteration:
-          type: integer
-          maximum: 2147483647
-          minimum: 0
-        value:
-          type: integer
-          maximum: 1800
-          minimum: 0
-        operation:
-          $ref: '#/components/schemas/OperationEnum'
-        step:
-          $ref: '#/components/schemas/StepEnum'
-        repeat:
-          type: boolean
-        requirements: {}
-      required:
-      - id
-      - iteration
-      - slot_entry
-      - value
-    SlotStructure:
-      type: object
-      description: Slot
-      properties:
-        id:
-          type: integer
-          readOnly: true
-        day:
-          type: integer
-          title: Exercise day
-        order:
-          type: integer
-          maximum: 2147483647
-          minimum: 0
-        comment:
-          type: string
-          maxLength: 200
-        entries:
-          type: array
-          items:
-            $ref: '#/components/schemas/SlotEntryStructure'
-        config: {}
-      required:
-      - day
-      - entries
-      - id
-    RoutineStructure:
-      type: object
-      description: Routine structure serializer
-      properties:
-        id:
-          type: integer
-          readOnly: true
-        name:
-          type: string
-          maxLength: 25
-        description:
-          type: string
-          maxLength: 1000
-        created:
-          type: string
-          format: date-time
-          readOnly: true
-          title: Creation date
-        start:
-          type: string
-          format: date
-          title: Start date
-        end:
-          type: string
-          format: date
-          title: End date
-        fit_in_week:
-          type: boolean
-        days:
-          type: array
-          items:
-            $ref: '#/components/schemas/DayStructure'
-      required:
-      - created
-      - days
-      - end
-      - id
-      - start
-    WorkoutDayDataDisplayMode:
-      type: object
-      description: WorkoutDayData serializer - display mode
-      properties:
-        iteration:
-          type: integer
-        date:
-          type: string
-          format: date
-        label:
-          type: string
-        day:
-          $ref: '#/components/schemas/Day'
-        slots:
-          type: array
-          items:
-            $ref: '#/components/schemas/SlotData'
-      required:
-      - date
-      - day
-      - iteration
-      - label
-      - slots
-    Routine:
-      type: object
-      description: Routine serializer
-      properties:
-        id:
-          type: integer
-          readOnly: true
-        name:
-          type: string
-          maxLength: 25
-        description:
-          type: string
-          maxLength: 1000
-        created:
-          type: string
-          format: date-time
-          readOnly: true
-          title: Creation date
-        start:
-          type: string
-          format: date
-          title: Start date
-        end:
-          type: string
-          format: date
-          title: End date
-        fit_in_week:
-          type: boolean
-        is_template:
-          type: boolean
-          title: Workout template
-          description: Marking a workout as a template will freeze it and allow you to make copies of it
-        is_public:
-          type: boolean
-          title: Public template
-          description: A public template is available to other users
-      required:
-      - created
-      - end
-      - id
-      - start
-    MaxRiRConfig:
-      type: object
-      description: RiR Config serializer
-      properties:
-        id:
-          type: integer
-          readOnly: true
-        slot_entry:
-          type: integer
-        iteration:
-          type: integer
-          maximum: 2147483647
-          minimum: 0
-        value:
-          type: string
-          format: decimal
-          pattern: ^-?\d{0,1}(?:\.\d{0,1})?$
-        operation:
-          $ref: '#/components/schemas/OperationEnum'
-        step:
-          $ref: '#/components/schemas/StepEnum'
-        repeat:
-          type: boolean
-        requirements: {}
-      required:
-      - id
-      - iteration
-      - slot_entry
-      - value
-    RoutineRequest:
-      type: object
-      description: Routine serializer
-      properties:
-        name:
-          type: string
-          maxLength: 25
-        description:
-          type: string
-          maxLength: 1000
-        start:
-          type: string
-          format: date
-          title: Start date
-        end:
-          type: string
-          format: date
-          title: End date
-        fit_in_week:
-          type: boolean
-        is_template:
-          type: boolean
-          title: Workout template
-          description: Marking a workout as a template will freeze it and allow you to make copies of it
-        is_public:
-          type: boolean
-          title: Public template
-          description: A public template is available to other users
-      required:
-      - end
-      - start
-    Day:
-      type: object
-      description: Day serializer
-      properties:
-        id:
-          type: integer
-          readOnly: true
-        routine:
-          type: integer
-        order:
-          type: integer
-          maximum: 2147483647
-          minimum: 0
-        name:
-          type: string
-          maxLength: 20
-        description:
-          type: string
-          maxLength: 1000
-        is_rest:
-          type: boolean
-        need_logs_to_advance:
-          type: boolean
-        type:
-          $ref: '#/components/schemas/DayTypeEnum'
-        config: {}
-      required:
-      - id
-      - routine
-    StepEnum:
-      enum:
-      - na
-      - abs
-      - percent
-      type: string
-      description: '* `na` - Not Applicable
-
-        * `abs` - Absolute
-
-        * `percent` - Percent'
-    WeightConfig:
-      type: object
-      description: Weight Config serializer
-      properties:
-        id:
-          type: integer
-          readOnly: true
-        slot_entry:
-          type: integer
-        iteration:
-          type: integer
-          maximum: 2147483647
-          minimum: 0
-        value:
-          type: string
-          format: decimal
-          pattern: ^-?\d{0,4}(?:\.\d{0,2})?$
-        operation:
-          $ref: '#/components/schemas/OperationEnum'
-        step:
-          $ref: '#/components/schemas/StepEnum'
-        repeat:
-          type: boolean
-        requirements: {}
-      required:
-      - id
-      - iteration
-      - slot_entry
-      - value
-    LogData:
-      type: object
-      description: Log Stats Data serializer
-      properties:
-        exercises:
-          type: object
-          additionalProperties: {}
-        muscle:
-          type: object
-          additionalProperties: {}
-        upper_body:
-          type: string
-          format: decimal
-          pattern: ^-?\d{0,8}(?:\.\d{0,2})?$
-        lower_body:
-          type: string
-          format: decimal
-          pattern: ^-?\d{0,8}(?:\.\d{0,2})?$
-        total:
-          type: string
-          format: decimal
-          pattern: ^-?\d{0,8}(?:\.\d{0,2})?$
-      required:
-      - exercises
-      - lower_body
-      - muscle
-      - total
-      - upper_body
-    DayTypeEnum:
-      enum:
-      - custom
-      - enom
-      - amrap
-      - hiit
-      - tabata
-      - edt
-      - rft
-      - afap
-      type: string
-      description: '* `custom` - Custom
-
-        * `enom` - Enom
-
-        * `amrap` - Amrap
-
-        * `hiit` - Hiit
-
-        * `tabata` - Tabata
-
-        * `edt` - Edt
-
-        * `rft` - Rft
-
-        * `afap` - Afap'
-    LogDisplay:
-      type: object
-      description: Log Display Data serializer
-      properties:
-        session:
-          $ref: '#/components/schemas/WorkoutSession'
-        logs:
-          type: array
-          items:
-            $ref: '#/components/schemas/WorkoutLog'
-      required:
-      - logs
-      - session
-    SetConfigData:
-      type: object
-      description: SetConfigData serializer
-      properties:
-        slot_entry_id:
-          type: integer
-        exercise:
-          type: integer
-        sets:
-          type: integer
-        max_sets:
-          type:
-          - integer
-          - 'null'
-        weight:
-          type: string
-          format: decimal
-          pattern: ^-?\d{0,4}(?:\.\d{0,2})?$
-        max_weight:
-          type: string
-          format: decimal
-          pattern: ^-?\d{0,4}(?:\.\d{0,2})?$
-        weight_unit:
-          type:
-          - integer
-          - 'null'
-        weight_rounding:
-          type: string
-          format: decimal
-          pattern: ^-?\d{0,2}(?:\.\d{0,2})?$
-        repetitions:
-          type: string
-          format: decimal
-          pattern: ^-?\d{0,4}(?:\.\d{0,2})?$
-        max_repetitions:
-          type: string
-          format: decimal
-          pattern: ^-?\d{0,4}(?:\.\d{0,2})?$
-        repetitions_unit:
-          type:
-          - integer
-          - 'null'
-        repetitions_rounding:
-          type: string
-          format: decimal
-          pattern: ^-?\d{0,2}(?:\.\d{0,2})?$
-        rir:
-          type: string
-          format: decimal
-          pattern: ^-?\d{0,1}(?:\.\d{0,1})?$
-        max_rir:
-          type: string
-          format: decimal
-          pattern: ^-?\d{0,1}(?:\.\d{0,1})?$
-        rpe:
-          type: string
-          format: decimal
-          pattern: ^-?\d{0,2}(?:\.\d{0,1})?$
-        rest:
-          type: string
-          format: decimal
-          pattern: ^-?\d{0,4}(?:\.\d{0,2})?$
-        max_rest:
-          type: string
-          format: decimal
-          pattern: ^-?\d{0,4}(?:\.\d{0,2})?$
-        type:
-          type: string
-        text_repr:
-          type: string
-        comment:
-          type: string
-      required:
-      - comment
-      - exercise
-      - max_repetitions
-      - max_rest
-      - max_rir
-      - max_sets
-      - max_weight
-      - repetitions
-      - repetitions_rounding
-      - repetitions_unit
-      - rest
-      - rir
-      - rpe
-      - sets
-      - slot_entry_id
-      - text_repr
-      - type
-      - weight
-      - weight_rounding
-      - weight_unit
-    PatchedRoutineRequest:
-      type: object
-      description: Routine serializer
-      properties:
-        name:
-          type: string
-          maxLength: 25
-        description:
-          type: string
-          maxLength: 1000
-        start:
-          type: string
-          format: date
-          title: Start date
-        end:
-          type: string
-          format: date
-          title: End date
-        fit_in_week:
-          type: boolean
-        is_template:
-          type: boolean
-          title: Workout template
-          description: Marking a workout as a template will freeze it and allow you to make copies of it
-        is_public:
-          type: boolean
-          title: Public template
-          description: A public template is available to other users
-    WorkoutLog:
-      type: object
-      description: Workout log serializer
-      properties:
-        id:
-          type: string
-          format: uuid
-        date:
-          type: string
-          format: date-time
-        session:
-          type:
-          - string
-          - 'null'
-          format: uuid
-        routine:
-          type:
-          - integer
-          - 'null'
-          title: Workout
-        iteration:
-          type:
-          - integer
-          - 'null'
-          maximum: 2147483647
-          minimum: 0
-        slot_entry:
-          type:
-          - integer
-          - 'null'
-        next_log:
-          type:
-          - string
-          - 'null'
-          format: uuid
-        exercise:
-          type: integer
-        repetitions_unit:
-          type:
-          - integer
-          - 'null'
-        repetitions:
-          type:
-          - string
-          - 'null'
-          format: decimal
-          pattern: ^-?\d{0,4}(?:\.\d{0,2})?$
-        repetitions_target:
-          type:
-          - string
-          - 'null'
-          format: decimal
-          pattern: ^-?\d{0,4}(?:\.\d{0,2})?$
-        weight_unit:
-          type:
-          - integer
-          - 'null'
-        weight:
-          type:
-          - string
-          - 'null'
-          format: decimal
-          pattern: ^-?\d{0,4}(?:\.\d{0,2})?$
-        weight_target:
-          type:
-          - string
-          - 'null'
-          format: decimal
-          pattern: ^-?\d{0,4}(?:\.\d{0,2})?$
-        rir:
-          type:
-          - string
-          - 'null'
-          format: decimal
-          pattern: ^-?\d{0,1}(?:\.\d{0,1})?$
-        rir_target:
-          type:
-          - string
-          - 'null'
-          format: decimal
-          pattern: ^-?\d{0,1}(?:\.\d{0,1})?$
-        rest:
-          type:
-          - integer
-          - 'null'
-          maximum: 2147483647
-          minimum: 0
-        rest_target:
-          type:
-          - integer
-          - 'null'
-          maximum: 2147483647
-          minimum: 0
-      required:
-      - exercise
   securitySchemes:
     cookieAuth:
       type: apiKey

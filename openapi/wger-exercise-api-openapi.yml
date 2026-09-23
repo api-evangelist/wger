@@ -2,7 +2,7 @@ openapi: 3.2.0
 info:
   title: wger Exercise API
   version: 2.7.0a2
-  description: "Self hosted FLOSS workout and fitness tracker.\n\n## Authentication\n\nSystem-wide data such as the exercise database, ingredients and units can be\nread without authenticating. Everything tied to a user account needs one of the\nfollowing, which are tried in this order:\n\n* `Authorization: Token <key>` with a personal API key. Users create one on the\n  API key page of their profile, e.g. `/en/user/api-key`.\n* `Authorization: Bearer <token>` with a JWT access token.\n* The session cookie, which is what a logged-in browser uses.\n\n## Pagination\n\nList endpoints take `limit` and `offset`, and answer with `count`, `next`,\n`previous` and `results`. The default page size is 20 and `limit` is capped\nat 999.\n\n`/api/v2/ingredient-sync/` is the exception. It uses cursor pagination so that\nsyncing the catalogue stays fast no matter how far a client has paginated. That\nresponse carries no `count`, and clients follow `next` instead of picking an\noffset.\n\n## Filtering and ordering\n\nMost list endpoints accept filters on a subset of their fields, plus `ordering`\nwith a field name that can be prefixed with `-` to reverse it. Both are listed\nper endpoint.\n\n## Unknown fields are dropped on write\n\nA field that the endpoint does not declare is ignored instead of rejected. Such\na request still answers 200 or 201, and the unknown field simply has no effect,\nso check a write against the response body rather than the status code.\n\n## Rate limits\n\nThe ingredient endpoints are rate limited because the catalogue holds millions\nof rows, and creating exercises is capped as well. Limits count per user for\nauthenticated callers and per IP otherwise. Exceeding one answers 429.\n"
+  description: Self hosted FLOSS workout and fitness tracker.
   license:
     name: AGPL-3.0-or-later
     url: https://www.gnu.org/licenses/agpl-3.0.html
@@ -84,6 +84,8 @@ paths:
               schema:
                 $ref: '#/components/schemas/PaginatedExerciseList'
           description: ''
+      summary: Exercise list
+      x-summary-source: derived
     post:
       operationId: exercise_create
       description: 'API endpoint for exercise objects.
@@ -111,6 +113,8 @@ paths:
               schema:
                 $ref: '#/components/schemas/Exercise'
           description: ''
+      summary: Exercise create
+      x-summary-source: derived
   /api/v2/exercise/{id}/:
     get:
       operationId: exercise_retrieve
@@ -140,6 +144,8 @@ paths:
               schema:
                 $ref: '#/components/schemas/Exercise'
           description: ''
+      summary: Exercise retrieve
+      x-summary-source: derived
     put:
       operationId: exercise_update
       description: 'API endpoint for exercise objects.
@@ -174,6 +180,8 @@ paths:
               schema:
                 $ref: '#/components/schemas/Exercise'
           description: ''
+      summary: Exercise update
+      x-summary-source: derived
     patch:
       operationId: exercise_partial_update
       description: 'API endpoint for exercise objects.
@@ -207,6 +215,8 @@ paths:
               schema:
                 $ref: '#/components/schemas/Exercise'
           description: ''
+      summary: Exercise partial update
+      x-summary-source: derived
     delete:
       operationId: exercise_destroy
       description: 'API endpoint for exercise objects.
@@ -231,33 +241,42 @@ paths:
       responses:
         '204':
           description: No response body
+      summary: Exercise destroy
+      x-summary-source: derived
 components:
   schemas:
-    PaginatedExerciseList:
+    PatchedExerciseRequest:
       type: object
-      required:
-      - count
-      - results
+      description: Exercise serializer
       properties:
-        count:
+        category:
           type: integer
-          example: 123
-        next:
-          type:
-          - string
-          - 'null'
-          format: uri
-          example: http://api.example.org/accounts/?offset=400&limit=100
-        previous:
-          type:
-          - string
-          - 'null'
-          format: uri
-          example: http://api.example.org/accounts/?offset=200&limit=100
-        results:
+        muscles:
           type: array
           items:
-            $ref: '#/components/schemas/Exercise'
+            type: integer
+            title: Primary muscles
+          title: Primary muscles
+        muscles_secondary:
+          type: array
+          items:
+            type: integer
+            title: Secondary muscles
+          title: Secondary muscles
+        equipment:
+          type: array
+          items:
+            type: integer
+        variation_group:
+          type:
+          - string
+          - 'null'
+          format: uuid
+        license_author:
+          type: string
+          title: Author(s)
+          description: If you are not the author, enter the name or source here.
+          maxLength: 3500
     Exercise:
       type: object
       description: Exercise serializer
@@ -312,6 +331,31 @@ components:
       - id
       - last_update
       - uuid
+    PaginatedExerciseList:
+      type: object
+      required:
+      - count
+      - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?offset=400&limit=100
+        previous:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?offset=200&limit=100
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/Exercise'
     ExerciseRequest:
       type: object
       description: Exercise serializer
@@ -346,38 +390,6 @@ components:
           maxLength: 3500
       required:
       - category
-    PatchedExerciseRequest:
-      type: object
-      description: Exercise serializer
-      properties:
-        category:
-          type: integer
-        muscles:
-          type: array
-          items:
-            type: integer
-            title: Primary muscles
-          title: Primary muscles
-        muscles_secondary:
-          type: array
-          items:
-            type: integer
-            title: Secondary muscles
-          title: Secondary muscles
-        equipment:
-          type: array
-          items:
-            type: integer
-        variation_group:
-          type:
-          - string
-          - 'null'
-          format: uuid
-        license_author:
-          type: string
-          title: Author(s)
-          description: If you are not the author, enter the name or source here.
-          maxLength: 3500
   securitySchemes:
     cookieAuth:
       type: apiKey

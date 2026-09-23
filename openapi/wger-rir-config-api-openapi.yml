@@ -2,7 +2,7 @@ openapi: 3.2.0
 info:
   title: wger Rir Config API
   version: 2.7.0a2
-  description: "Self hosted FLOSS workout and fitness tracker.\n\n## Authentication\n\nSystem-wide data such as the exercise database, ingredients and units can be\nread without authenticating. Everything tied to a user account needs one of the\nfollowing, which are tried in this order:\n\n* `Authorization: Token <key>` with a personal API key. Users create one on the\n  API key page of their profile, e.g. `/en/user/api-key`.\n* `Authorization: Bearer <token>` with a JWT access token.\n* The session cookie, which is what a logged-in browser uses.\n\n## Pagination\n\nList endpoints take `limit` and `offset`, and answer with `count`, `next`,\n`previous` and `results`. The default page size is 20 and `limit` is capped\nat 999.\n\n`/api/v2/ingredient-sync/` is the exception. It uses cursor pagination so that\nsyncing the catalogue stays fast no matter how far a client has paginated. That\nresponse carries no `count`, and clients follow `next` instead of picking an\noffset.\n\n## Filtering and ordering\n\nMost list endpoints accept filters on a subset of their fields, plus `ordering`\nwith a field name that can be prefixed with `-` to reverse it. Both are listed\nper endpoint.\n\n## Unknown fields are dropped on write\n\nA field that the endpoint does not declare is ignored instead of rejected. Such\na request still answers 200 or 201, and the unknown field simply has no effect,\nso check a write against the response body rather than the status code.\n\n## Rate limits\n\nThe ingredient endpoints are rate limited because the catalogue holds millions\nof rows, and creating exercises is capped as well. Limits count per user for\nauthenticated callers and per IP otherwise. Exceeding one answers 429.\n"
+  description: Self hosted FLOSS workout and fitness tracker.
   license:
     name: AGPL-3.0-or-later
     url: https://www.gnu.org/licenses/agpl-3.0.html
@@ -99,6 +99,8 @@ paths:
               schema:
                 $ref: '#/components/schemas/PaginatedRiRConfigList'
           description: ''
+      summary: Rir config list
+      x-summary-source: derived
     post:
       operationId: rir_config_create
       description: API endpoint for set config objects
@@ -123,6 +125,8 @@ paths:
               schema:
                 $ref: '#/components/schemas/RiRConfig'
           description: ''
+      summary: Rir config create
+      x-summary-source: derived
   /api/v2/rir-config/{id}/:
     get:
       operationId: rir_config_retrieve
@@ -149,6 +153,8 @@ paths:
               schema:
                 $ref: '#/components/schemas/RiRConfig'
           description: ''
+      summary: Rir config retrieve
+      x-summary-source: derived
     put:
       operationId: rir_config_update
       description: API endpoint for set config objects
@@ -180,6 +186,8 @@ paths:
               schema:
                 $ref: '#/components/schemas/RiRConfig'
           description: ''
+      summary: Rir config update
+      x-summary-source: derived
     patch:
       operationId: rir_config_partial_update
       description: API endpoint for set config objects
@@ -210,6 +218,8 @@ paths:
               schema:
                 $ref: '#/components/schemas/RiRConfig'
           description: ''
+      summary: Rir config partial update
+      x-summary-source: derived
     delete:
       operationId: rir_config_destroy
       description: API endpoint for set config objects
@@ -231,8 +241,78 @@ paths:
       responses:
         '204':
           description: No response body
+      summary: Rir config destroy
+      x-summary-source: derived
 components:
   schemas:
+    RiRConfigRequest:
+      type: object
+      description: RiR Config serializer
+      properties:
+        slot_entry:
+          type: integer
+        iteration:
+          type: integer
+          maximum: 2147483647
+          minimum: 0
+        value:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,1}(?:\.\d{0,1})?$
+        operation:
+          $ref: '#/components/schemas/OperationEnum'
+        step:
+          $ref: '#/components/schemas/StepEnum'
+        repeat:
+          type: boolean
+        requirements: {}
+      required:
+      - iteration
+      - slot_entry
+      - value
+    PatchedRiRConfigRequest:
+      type: object
+      description: RiR Config serializer
+      properties:
+        slot_entry:
+          type: integer
+        iteration:
+          type: integer
+          maximum: 2147483647
+          minimum: 0
+        value:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,1}(?:\.\d{0,1})?$
+        operation:
+          $ref: '#/components/schemas/OperationEnum'
+        step:
+          $ref: '#/components/schemas/StepEnum'
+        repeat:
+          type: boolean
+        requirements: {}
+    StepEnum:
+      enum:
+      - na
+      - abs
+      - percent
+      type: string
+      description: '* `na` - Not Applicable
+
+        * `abs` - Absolute
+
+        * `percent` - Percent'
+    OperationEnum:
+      enum:
+      - +
+      - '-'
+      - r
+      type: string
+      description: '* `+` - Plus
+
+        * `-` - Minus
+
+        * `r` - Replace'
     RiRConfig:
       type: object
       description: RiR Config serializer
@@ -287,74 +367,6 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/RiRConfig'
-    PatchedRiRConfigRequest:
-      type: object
-      description: RiR Config serializer
-      properties:
-        slot_entry:
-          type: integer
-        iteration:
-          type: integer
-          maximum: 2147483647
-          minimum: 0
-        value:
-          type: string
-          format: decimal
-          pattern: ^-?\d{0,1}(?:\.\d{0,1})?$
-        operation:
-          $ref: '#/components/schemas/OperationEnum'
-        step:
-          $ref: '#/components/schemas/StepEnum'
-        repeat:
-          type: boolean
-        requirements: {}
-    StepEnum:
-      enum:
-      - na
-      - abs
-      - percent
-      type: string
-      description: '* `na` - Not Applicable
-
-        * `abs` - Absolute
-
-        * `percent` - Percent'
-    OperationEnum:
-      enum:
-      - +
-      - '-'
-      - r
-      type: string
-      description: '* `+` - Plus
-
-        * `-` - Minus
-
-        * `r` - Replace'
-    RiRConfigRequest:
-      type: object
-      description: RiR Config serializer
-      properties:
-        slot_entry:
-          type: integer
-        iteration:
-          type: integer
-          maximum: 2147483647
-          minimum: 0
-        value:
-          type: string
-          format: decimal
-          pattern: ^-?\d{0,1}(?:\.\d{0,1})?$
-        operation:
-          $ref: '#/components/schemas/OperationEnum'
-        step:
-          $ref: '#/components/schemas/StepEnum'
-        repeat:
-          type: boolean
-        requirements: {}
-      required:
-      - iteration
-      - slot_entry
-      - value
   securitySchemes:
     cookieAuth:
       type: apiKey

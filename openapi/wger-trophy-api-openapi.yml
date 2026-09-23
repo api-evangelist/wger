@@ -2,7 +2,7 @@ openapi: 3.2.0
 info:
   title: wger Trophy API
   version: 2.7.0a2
-  description: "Self hosted FLOSS workout and fitness tracker.\n\n## Authentication\n\nSystem-wide data such as the exercise database, ingredients and units can be\nread without authenticating. Everything tied to a user account needs one of the\nfollowing, which are tried in this order:\n\n* `Authorization: Token <key>` with a personal API key. Users create one on the\n  API key page of their profile, e.g. `/en/user/api-key`.\n* `Authorization: Bearer <token>` with a JWT access token.\n* The session cookie, which is what a logged-in browser uses.\n\n## Pagination\n\nList endpoints take `limit` and `offset`, and answer with `count`, `next`,\n`previous` and `results`. The default page size is 20 and `limit` is capped\nat 999.\n\n`/api/v2/ingredient-sync/` is the exception. It uses cursor pagination so that\nsyncing the catalogue stays fast no matter how far a client has paginated. That\nresponse carries no `count`, and clients follow `next` instead of picking an\noffset.\n\n## Filtering and ordering\n\nMost list endpoints accept filters on a subset of their fields, plus `ordering`\nwith a field name that can be prefixed with `-` to reverse it. Both are listed\nper endpoint.\n\n## Unknown fields are dropped on write\n\nA field that the endpoint does not declare is ignored instead of rejected. Such\na request still answers 200 or 201, and the unknown field simply has no effect,\nso check a write against the response body rather than the status code.\n\n## Rate limits\n\nThe ingredient endpoints are rate limited because the catalogue holds millions\nof rows, and creating exercises is capped as well. Limits count per user for\nauthenticated callers and per IP otherwise. Exceeding one answers 429.\n"
+  description: Self hosted FLOSS workout and fitness tracker.
   license:
     name: AGPL-3.0-or-later
     url: https://www.gnu.org/licenses/agpl-3.0.html
@@ -135,6 +135,8 @@ paths:
               schema:
                 $ref: '#/components/schemas/PaginatedTrophyList'
           description: ''
+      summary: Trophy list
+      x-summary-source: derived
   /api/v2/trophy/{id}/:
     get:
       operationId: trophy_retrieve
@@ -178,10 +180,28 @@ paths:
               schema:
                 $ref: '#/components/schemas/Trophy'
           description: ''
+      summary: Trophy retrieve
+      x-summary-source: derived
   /api/v2/trophy/progress/:
     get:
       operationId: trophy_progress_list
-      description: "\n        Return all trophies with progress information for the current user.\n\n        For each trophy, returns:\n        - Trophy information (id, name, description, type, etc.)\n        - Whether the trophy has been earned\n        - Earned timestamp (if earned)\n        - Progress percentage (0-100)\n        - Current and target values (for progressive trophies)\n\n        Hidden trophies are excluded unless earned (or user is staff).\n        "
+      description: 'Return all trophies with progress information for the current user.
+
+
+        For each trophy, returns:
+
+        - Trophy information (id, name, description, type, etc.)
+
+        - Whether the trophy has been earned
+
+        - Earned timestamp (if earned)
+
+        - Progress percentage (0-100)
+
+        - Current and target values (for progressive trophies)
+
+
+        Hidden trophies are excluded unless earned (or user is staff).'
       summary: Get trophy progress
       parameters:
       - in: query
@@ -275,72 +295,6 @@ paths:
           description: ''
 components:
   schemas:
-    TrophyTypeEnum:
-      enum:
-      - time
-      - volume
-      - count
-      - sequence
-      - date
-      - pr
-      - other
-      type: string
-      description: '* `time` - Time-based
-
-        * `volume` - Volume-based
-
-        * `count` - Count-based
-
-        * `sequence` - Sequence-based
-
-        * `date` - Date-based
-
-        * `pr` - Personal Record
-
-        * `other` - Other'
-    TrophyProgress:
-      type: object
-      description: 'Serializer for trophy progress information.
-
-
-        Used for showing progress on all trophies (earned and unearned).
-
-        This is not a ModelSerializer as it aggregates data from multiple sources.'
-      properties:
-        trophy:
-          allOf:
-          - $ref: '#/components/schemas/Trophy'
-          readOnly: true
-        is_earned:
-          type: boolean
-        earned_at:
-          type:
-          - string
-          - 'null'
-          format: date-time
-        progress:
-          type: number
-          format: double
-        current_value:
-          type:
-          - string
-          - 'null'
-        target_value:
-          type:
-          - string
-          - 'null'
-        progress_display:
-          type:
-          - string
-          - 'null'
-      required:
-      - current_value
-      - earned_at
-      - is_earned
-      - progress
-      - progress_display
-      - target_value
-      - trophy
     Trophy:
       type: object
       description: 'Serializer for Trophy model.
@@ -419,6 +373,72 @@ components:
       - order
       - trophy_type
       - uuid
+    TrophyTypeEnum:
+      enum:
+      - time
+      - volume
+      - count
+      - sequence
+      - date
+      - pr
+      - other
+      type: string
+      description: '* `time` - Time-based
+
+        * `volume` - Volume-based
+
+        * `count` - Count-based
+
+        * `sequence` - Sequence-based
+
+        * `date` - Date-based
+
+        * `pr` - Personal Record
+
+        * `other` - Other'
+    TrophyProgress:
+      type: object
+      description: 'Serializer for trophy progress information.
+
+
+        Used for showing progress on all trophies (earned and unearned).
+
+        This is not a ModelSerializer as it aggregates data from multiple sources.'
+      properties:
+        trophy:
+          allOf:
+          - $ref: '#/components/schemas/Trophy'
+          readOnly: true
+        is_earned:
+          type: boolean
+        earned_at:
+          type:
+          - string
+          - 'null'
+          format: date-time
+        progress:
+          type: number
+          format: double
+        current_value:
+          type:
+          - string
+          - 'null'
+        target_value:
+          type:
+          - string
+          - 'null'
+        progress_display:
+          type:
+          - string
+          - 'null'
+      required:
+      - current_value
+      - earned_at
+      - is_earned
+      - progress
+      - progress_display
+      - target_value
+      - trophy
     PaginatedTrophyList:
       type: object
       required:

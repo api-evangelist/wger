@@ -2,7 +2,7 @@ openapi: 3.2.0
 info:
   title: wger Nutritionplan API
   version: 2.7.0a2
-  description: "Self hosted FLOSS workout and fitness tracker.\n\n## Authentication\n\nSystem-wide data such as the exercise database, ingredients and units can be\nread without authenticating. Everything tied to a user account needs one of the\nfollowing, which are tried in this order:\n\n* `Authorization: Token <key>` with a personal API key. Users create one on the\n  API key page of their profile, e.g. `/en/user/api-key`.\n* `Authorization: Bearer <token>` with a JWT access token.\n* The session cookie, which is what a logged-in browser uses.\n\n## Pagination\n\nList endpoints take `limit` and `offset`, and answer with `count`, `next`,\n`previous` and `results`. The default page size is 20 and `limit` is capped\nat 999.\n\n`/api/v2/ingredient-sync/` is the exception. It uses cursor pagination so that\nsyncing the catalogue stays fast no matter how far a client has paginated. That\nresponse carries no `count`, and clients follow `next` instead of picking an\noffset.\n\n## Filtering and ordering\n\nMost list endpoints accept filters on a subset of their fields, plus `ordering`\nwith a field name that can be prefixed with `-` to reverse it. Both are listed\nper endpoint.\n\n## Unknown fields are dropped on write\n\nA field that the endpoint does not declare is ignored instead of rejected. Such\na request still answers 200 or 201, and the unknown field simply has no effect,\nso check a write against the response body rather than the status code.\n\n## Rate limits\n\nThe ingredient endpoints are rate limited because the catalogue holds millions\nof rows, and creating exercises is capped as well. Limits count per user for\nauthenticated callers and per IP otherwise. Exceeding one answers 429.\n"
+  description: Self hosted FLOSS workout and fitness tracker.
   license:
     name: AGPL-3.0-or-later
     url: https://www.gnu.org/licenses/agpl-3.0.html
@@ -68,6 +68,8 @@ paths:
               schema:
                 $ref: '#/components/schemas/PaginatedNutritionPlanList'
           description: ''
+      summary: Nutritionplan list
+      x-summary-source: derived
     post:
       operationId: nutritionplan_create
       description: 'API endpoint for nutrition plan objects. For a read-only endpoint with all
@@ -93,6 +95,8 @@ paths:
               schema:
                 $ref: '#/components/schemas/NutritionPlan'
           description: ''
+      summary: Nutritionplan create
+      x-summary-source: derived
   /api/v2/nutritionplan/{id}/:
     get:
       operationId: nutritionplan_retrieve
@@ -122,6 +126,8 @@ paths:
               schema:
                 $ref: '#/components/schemas/NutritionPlan'
           description: ''
+      summary: Nutritionplan retrieve
+      x-summary-source: derived
     put:
       operationId: nutritionplan_update
       description: 'API endpoint for nutrition plan objects. For a read-only endpoint with all
@@ -155,6 +161,8 @@ paths:
               schema:
                 $ref: '#/components/schemas/NutritionPlan'
           description: ''
+      summary: Nutritionplan update
+      x-summary-source: derived
     patch:
       operationId: nutritionplan_partial_update
       description: 'API endpoint for nutrition plan objects. For a read-only endpoint with all
@@ -188,6 +196,8 @@ paths:
               schema:
                 $ref: '#/components/schemas/NutritionPlan'
           description: ''
+      summary: Nutritionplan partial update
+      x-summary-source: derived
     delete:
       operationId: nutritionplan_destroy
       description: 'API endpoint for nutrition plan objects. For a read-only endpoint with all
@@ -212,6 +222,8 @@ paths:
       responses:
         '204':
           description: No response body
+      summary: Nutritionplan destroy
+      x-summary-source: derived
   /api/v2/nutritionplan/{id}/nutritional_values/:
     get:
       operationId: nutritionplan_nutritional_values_retrieve
@@ -239,8 +251,108 @@ paths:
               schema:
                 $ref: '#/components/schemas/NutritionalValues'
           description: ''
+      summary: Nutritionplan nutritional values retrieve
+      x-summary-source: derived
 components:
   schemas:
+    NutritionalValues:
+      type: object
+      description: Nutritional values serializer
+      properties:
+        energy:
+          type: number
+          format: double
+        protein:
+          type: number
+          format: double
+        carbohydrates:
+          type: number
+          format: double
+        carbohydrates_sugar:
+          type:
+          - number
+          - 'null'
+          format: double
+        fat:
+          type: number
+          format: double
+        fat_saturated:
+          type:
+          - number
+          - 'null'
+          format: double
+        fiber:
+          type:
+          - number
+          - 'null'
+          format: double
+        sodium:
+          type:
+          - number
+          - 'null'
+          format: double
+      required:
+      - carbohydrates
+      - carbohydrates_sugar
+      - energy
+      - fat
+      - fat_saturated
+      - fiber
+      - protein
+      - sodium
+    NutritionPlanRequest:
+      type: object
+      description: Nutritional plan serializer
+      properties:
+        id:
+          type: string
+          format: uuid
+        start:
+          type: string
+          format: date
+          title: Start date
+        end:
+          type:
+          - string
+          - 'null'
+          format: date
+          title: End date
+        description:
+          type: string
+          description: A description of the goal of the plan, e.g. "Gain mass" or "Prepare for summer"
+          maxLength: 80
+        only_logging:
+          type: boolean
+        goal_energy:
+          type:
+          - integer
+          - 'null'
+          maximum: 2147483647
+          minimum: -2147483648
+        goal_protein:
+          type:
+          - integer
+          - 'null'
+          maximum: 2147483647
+          minimum: -2147483648
+        goal_carbohydrates:
+          type:
+          - integer
+          - 'null'
+          maximum: 2147483647
+          minimum: -2147483648
+        goal_fat:
+          type:
+          - integer
+          - 'null'
+          maximum: 2147483647
+          minimum: -2147483648
+        goal_fiber:
+          type:
+          - integer
+          - 'null'
+          maximum: 2147483647
+          minimum: -2147483648
     NutritionPlan:
       type: object
       description: Nutritional plan serializer
@@ -300,31 +412,6 @@ components:
           minimum: -2147483648
       required:
       - creation_date
-    PaginatedNutritionPlanList:
-      type: object
-      required:
-      - count
-      - results
-      properties:
-        count:
-          type: integer
-          example: 123
-        next:
-          type:
-          - string
-          - 'null'
-          format: uri
-          example: http://api.example.org/accounts/?offset=400&limit=100
-        previous:
-          type:
-          - string
-          - 'null'
-          format: uri
-          example: http://api.example.org/accounts/?offset=200&limit=100
-        results:
-          type: array
-          items:
-            $ref: '#/components/schemas/NutritionPlan'
     PatchedNutritionPlanRequest:
       type: object
       description: Nutritional plan serializer
@@ -378,104 +465,31 @@ components:
           - 'null'
           maximum: 2147483647
           minimum: -2147483648
-    NutritionPlanRequest:
+    PaginatedNutritionPlanList:
       type: object
-      description: Nutritional plan serializer
+      required:
+      - count
+      - results
       properties:
-        id:
-          type: string
-          format: uuid
-        start:
-          type: string
-          format: date
-          title: Start date
-        end:
+        count:
+          type: integer
+          example: 123
+        next:
           type:
           - string
           - 'null'
-          format: date
-          title: End date
-        description:
-          type: string
-          description: A description of the goal of the plan, e.g. "Gain mass" or "Prepare for summer"
-          maxLength: 80
-        only_logging:
-          type: boolean
-        goal_energy:
+          format: uri
+          example: http://api.example.org/accounts/?offset=400&limit=100
+        previous:
           type:
-          - integer
+          - string
           - 'null'
-          maximum: 2147483647
-          minimum: -2147483648
-        goal_protein:
-          type:
-          - integer
-          - 'null'
-          maximum: 2147483647
-          minimum: -2147483648
-        goal_carbohydrates:
-          type:
-          - integer
-          - 'null'
-          maximum: 2147483647
-          minimum: -2147483648
-        goal_fat:
-          type:
-          - integer
-          - 'null'
-          maximum: 2147483647
-          minimum: -2147483648
-        goal_fiber:
-          type:
-          - integer
-          - 'null'
-          maximum: 2147483647
-          minimum: -2147483648
-    NutritionalValues:
-      type: object
-      description: Nutritional values serializer
-      properties:
-        energy:
-          type: number
-          format: double
-        protein:
-          type: number
-          format: double
-        carbohydrates:
-          type: number
-          format: double
-        carbohydrates_sugar:
-          type:
-          - number
-          - 'null'
-          format: double
-        fat:
-          type: number
-          format: double
-        fat_saturated:
-          type:
-          - number
-          - 'null'
-          format: double
-        fiber:
-          type:
-          - number
-          - 'null'
-          format: double
-        sodium:
-          type:
-          - number
-          - 'null'
-          format: double
-      required:
-      - carbohydrates
-      - carbohydrates_sugar
-      - energy
-      - fat
-      - fat_saturated
-      - fiber
-      - protein
-      - sodium
+          format: uri
+          example: http://api.example.org/accounts/?offset=200&limit=100
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/NutritionPlan'
   securitySchemes:
     cookieAuth:
       type: apiKey

@@ -2,7 +2,7 @@ openapi: 3.2.0
 info:
   title: wger Rest Config API
   version: 2.7.0a2
-  description: "Self hosted FLOSS workout and fitness tracker.\n\n## Authentication\n\nSystem-wide data such as the exercise database, ingredients and units can be\nread without authenticating. Everything tied to a user account needs one of the\nfollowing, which are tried in this order:\n\n* `Authorization: Token <key>` with a personal API key. Users create one on the\n  API key page of their profile, e.g. `/en/user/api-key`.\n* `Authorization: Bearer <token>` with a JWT access token.\n* The session cookie, which is what a logged-in browser uses.\n\n## Pagination\n\nList endpoints take `limit` and `offset`, and answer with `count`, `next`,\n`previous` and `results`. The default page size is 20 and `limit` is capped\nat 999.\n\n`/api/v2/ingredient-sync/` is the exception. It uses cursor pagination so that\nsyncing the catalogue stays fast no matter how far a client has paginated. That\nresponse carries no `count`, and clients follow `next` instead of picking an\noffset.\n\n## Filtering and ordering\n\nMost list endpoints accept filters on a subset of their fields, plus `ordering`\nwith a field name that can be prefixed with `-` to reverse it. Both are listed\nper endpoint.\n\n## Unknown fields are dropped on write\n\nA field that the endpoint does not declare is ignored instead of rejected. Such\na request still answers 200 or 201, and the unknown field simply has no effect,\nso check a write against the response body rather than the status code.\n\n## Rate limits\n\nThe ingredient endpoints are rate limited because the catalogue holds millions\nof rows, and creating exercises is capped as well. Limits count per user for\nauthenticated callers and per IP otherwise. Exceeding one answers 429.\n"
+  description: Self hosted FLOSS workout and fitness tracker.
   license:
     name: AGPL-3.0-or-later
     url: https://www.gnu.org/licenses/agpl-3.0.html
@@ -99,6 +99,8 @@ paths:
               schema:
                 $ref: '#/components/schemas/PaginatedRestConfigList'
           description: ''
+      summary: Rest config list
+      x-summary-source: derived
     post:
       operationId: rest_config_create
       description: API endpoint for set config objects
@@ -123,6 +125,8 @@ paths:
               schema:
                 $ref: '#/components/schemas/RestConfig'
           description: ''
+      summary: Rest config create
+      x-summary-source: derived
   /api/v2/rest-config/{id}/:
     get:
       operationId: rest_config_retrieve
@@ -149,6 +153,8 @@ paths:
               schema:
                 $ref: '#/components/schemas/RestConfig'
           description: ''
+      summary: Rest config retrieve
+      x-summary-source: derived
     put:
       operationId: rest_config_update
       description: API endpoint for set config objects
@@ -180,6 +186,8 @@ paths:
               schema:
                 $ref: '#/components/schemas/RestConfig'
           description: ''
+      summary: Rest config update
+      x-summary-source: derived
     patch:
       operationId: rest_config_partial_update
       description: API endpoint for set config objects
@@ -210,6 +218,8 @@ paths:
               schema:
                 $ref: '#/components/schemas/RestConfig'
           description: ''
+      summary: Rest config partial update
+      x-summary-source: derived
     delete:
       operationId: rest_config_destroy
       description: API endpoint for set config objects
@@ -231,40 +241,10 @@ paths:
       responses:
         '204':
           description: No response body
+      summary: Rest config destroy
+      x-summary-source: derived
 components:
   schemas:
-    StepEnum:
-      enum:
-      - na
-      - abs
-      - percent
-      type: string
-      description: '* `na` - Not Applicable
-
-        * `abs` - Absolute
-
-        * `percent` - Percent'
-    PatchedRestConfigRequest:
-      type: object
-      description: Rest Config serializer
-      properties:
-        slot_entry:
-          type: integer
-        iteration:
-          type: integer
-          maximum: 2147483647
-          minimum: 0
-        value:
-          type: integer
-          maximum: 1800
-          minimum: 0
-        operation:
-          $ref: '#/components/schemas/OperationEnum'
-        step:
-          $ref: '#/components/schemas/StepEnum'
-        repeat:
-          type: boolean
-        requirements: {}
     RestConfigRequest:
       type: object
       description: Rest Config serializer
@@ -290,42 +270,6 @@ components:
       - iteration
       - slot_entry
       - value
-    PaginatedRestConfigList:
-      type: object
-      required:
-      - count
-      - results
-      properties:
-        count:
-          type: integer
-          example: 123
-        next:
-          type:
-          - string
-          - 'null'
-          format: uri
-          example: http://api.example.org/accounts/?offset=400&limit=100
-        previous:
-          type:
-          - string
-          - 'null'
-          format: uri
-          example: http://api.example.org/accounts/?offset=200&limit=100
-        results:
-          type: array
-          items:
-            $ref: '#/components/schemas/RestConfig'
-    OperationEnum:
-      enum:
-      - +
-      - '-'
-      - r
-      type: string
-      description: '* `+` - Plus
-
-        * `-` - Minus
-
-        * `r` - Replace'
     RestConfig:
       type: object
       description: Rest Config serializer
@@ -355,6 +299,74 @@ components:
       - iteration
       - slot_entry
       - value
+    PatchedRestConfigRequest:
+      type: object
+      description: Rest Config serializer
+      properties:
+        slot_entry:
+          type: integer
+        iteration:
+          type: integer
+          maximum: 2147483647
+          minimum: 0
+        value:
+          type: integer
+          maximum: 1800
+          minimum: 0
+        operation:
+          $ref: '#/components/schemas/OperationEnum'
+        step:
+          $ref: '#/components/schemas/StepEnum'
+        repeat:
+          type: boolean
+        requirements: {}
+    StepEnum:
+      enum:
+      - na
+      - abs
+      - percent
+      type: string
+      description: '* `na` - Not Applicable
+
+        * `abs` - Absolute
+
+        * `percent` - Percent'
+    OperationEnum:
+      enum:
+      - +
+      - '-'
+      - r
+      type: string
+      description: '* `+` - Plus
+
+        * `-` - Minus
+
+        * `r` - Replace'
+    PaginatedRestConfigList:
+      type: object
+      required:
+      - count
+      - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?offset=400&limit=100
+        previous:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?offset=200&limit=100
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/RestConfig'
   securitySchemes:
     cookieAuth:
       type: apiKey

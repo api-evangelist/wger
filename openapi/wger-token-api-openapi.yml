@@ -2,7 +2,7 @@ openapi: 3.2.0
 info:
   title: wger Token API
   version: 2.7.0a2
-  description: "Self hosted FLOSS workout and fitness tracker.\n\n## Authentication\n\nSystem-wide data such as the exercise database, ingredients and units can be\nread without authenticating. Everything tied to a user account needs one of the\nfollowing, which are tried in this order:\n\n* `Authorization: Token <key>` with a personal API key. Users create one on the\n  API key page of their profile, e.g. `/en/user/api-key`.\n* `Authorization: Bearer <token>` with a JWT access token.\n* The session cookie, which is what a logged-in browser uses.\n\n## Pagination\n\nList endpoints take `limit` and `offset`, and answer with `count`, `next`,\n`previous` and `results`. The default page size is 20 and `limit` is capped\nat 999.\n\n`/api/v2/ingredient-sync/` is the exception. It uses cursor pagination so that\nsyncing the catalogue stays fast no matter how far a client has paginated. That\nresponse carries no `count`, and clients follow `next` instead of picking an\noffset.\n\n## Filtering and ordering\n\nMost list endpoints accept filters on a subset of their fields, plus `ordering`\nwith a field name that can be prefixed with `-` to reverse it. Both are listed\nper endpoint.\n\n## Unknown fields are dropped on write\n\nA field that the endpoint does not declare is ignored instead of rejected. Such\na request still answers 200 or 201, and the unknown field simply has no effect,\nso check a write against the response body rather than the status code.\n\n## Rate limits\n\nThe ingredient endpoints are rate limited because the catalogue holds millions\nof rows, and creating exercises is capped as well. Limits count per user for\nauthenticated callers and per IP otherwise. Exceeding one answers 429.\n"
+  description: Self hosted FLOSS workout and fitness tracker.
   license:
     name: AGPL-3.0-or-later
     url: https://www.gnu.org/licenses/agpl-3.0.html
@@ -12,7 +12,7 @@ servers:
 - url: https://wger.de
   description: The "official" upstream wger instance
 tags:
-- name: token
+- name: Token
 paths:
   /api/v2/token/refresh:
     post:
@@ -21,7 +21,7 @@ paths:
 
         token if the refresh token is valid.'
       tags:
-      - token
+      - Token
       requestBody:
         content:
           application/json:
@@ -35,14 +35,16 @@ paths:
               schema:
                 $ref: '#/components/schemas/TokenRefresh'
           description: ''
+      summary: Token refresh create
+      x-summary-source: derived
   /api/v2/token/verify:
     post:
       operationId: token_verify_create
-      description: 'Takes a token and indicates if it is valid.  This view provides no
+      description: 'Takes a token and indicates if it is valid. This view provides no
 
         information about a token''s fitness for a particular use.'
       tags:
-      - token
+      - Token
       requestBody:
         content:
           application/json:
@@ -52,16 +54,10 @@ paths:
       responses:
         '200':
           description: No response body
+      summary: Token verify create
+      x-summary-source: derived
 components:
   schemas:
-    TokenRefreshRequest:
-      type: object
-      properties:
-        refresh:
-          type: string
-          minLength: 1
-      required:
-      - refresh
     TokenRefresh:
       type: object
       properties:
@@ -82,6 +78,14 @@ components:
           minLength: 1
       required:
       - token
+    TokenRefreshRequest:
+      type: object
+      properties:
+        refresh:
+          type: string
+          minLength: 1
+      required:
+      - refresh
   securitySchemes:
     cookieAuth:
       type: apiKey
