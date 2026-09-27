@@ -160,6 +160,9 @@ paths:
       x-summary-source: derived
 components:
   schemas:
+    NullEnum:
+      enum:
+      - null
     GenderEnum:
       enum:
       - '1'
@@ -168,9 +171,17 @@ components:
       description: '* `1` - Male
 
         * `2` - Female'
-    NullEnum:
+    IntensityEnum:
       enum:
-      - null
+      - '1'
+      - '2'
+      - '3'
+      type: string
+      description: '* `1` - Low
+
+        * `2` - Medium
+
+        * `3` - High'
     WeightUnitEnum:
       enum:
       - kg
@@ -324,28 +335,6 @@ components:
           minimum: 0
           title: Automatic reminders for weight entries
           description: Number of days after the last weight entry (enter 0 to deactivate)
-    IntensityEnum:
-      enum:
-      - '1'
-      - '2'
-      - '3'
-      type: string
-      description: '* `1` - Low
-
-        * `2` - Medium
-
-        * `3` - High'
-    VerifyEmailResponse:
-      type: object
-      properties:
-        status:
-          type: string
-        result:
-          type: string
-        message:
-          type: string
-      required:
-      - message
     Userprofile:
       type: object
       description: Workout session serializer
@@ -531,6 +520,17 @@ components:
       - is_trustworthy
       - last_workout_notification
       - username
+    VerifyEmailResponse:
+      type: object
+      properties:
+        status:
+          type: string
+        result:
+          type: string
+        message:
+          type: string
+      required:
+      - message
     UserprofileRequest:
       type: object
       description: Workout session serializer

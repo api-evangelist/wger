@@ -45,6 +45,13 @@ paths:
       x-summary-source: derived
 components:
   schemas:
+    LanguageCheckResponse:
+      type: object
+      properties:
+        result:
+          type: boolean
+      required:
+      - result
     LanguageCheckRequest:
       type: object
       description: Serializer for language check
@@ -60,13 +67,6 @@ components:
           minLength: 10
       required:
       - input
-    LanguageCheckResponse:
-      type: object
-      properties:
-        result:
-          type: boolean
-      required:
-      - result
   securitySchemes:
     cookieAuth:
       type: apiKey

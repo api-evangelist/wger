@@ -132,57 +132,82 @@ paths:
       x-summary-source: derived
 components:
   schemas:
-    Language:
+    MealItemInfo:
       type: object
-      description: Language serializer
+      description: Meal Item info serializer
+      properties:
+        id:
+          type: string
+          format: uuid
+        meal:
+          type: string
+          format: uuid
+          readOnly: true
+        ingredient:
+          type: integer
+          readOnly: true
+        ingredient_obj:
+          allOf:
+          - $ref: '#/components/schemas/IngredientInfo'
+          readOnly: true
+        weight_unit:
+          type: integer
+          readOnly: true
+        weight_unit_obj:
+          allOf:
+          - $ref: '#/components/schemas/IngredientWeightUnit'
+          readOnly: true
+        image:
+          allOf:
+          - $ref: '#/components/schemas/IngredientImage'
+          readOnly: true
+        order:
+          type: integer
+          readOnly: true
+        amount:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,4}(?:\.\d{0,2})?$
+      required:
+      - amount
+      - image
+      - ingredient
+      - ingredient_obj
+      - meal
+      - order
+      - weight_unit
+      - weight_unit_obj
+    License:
+      type: object
+      description: License serializer
       properties:
         id:
           type: integer
           readOnly: true
-        short_name:
-          type: string
-          title: Language short name
-          description: ISO 639-1
-          maxLength: 2
         full_name:
           type: string
-          title: Language full name
-          maxLength: 30
-        full_name_en:
+          description: If a license has been localized, e.g. the Creative Commons licenses for the different countries, add them as separate entries here.
+          maxLength: 60
+        short_name:
           type: string
-          title: Language full name in English
-          maxLength: 30
+          title: Short name, e.g. CC-BY-SA 3
+          maxLength: 15
+        url:
+          title: Link
+          description: Link to license text or other information
+          oneOf:
+          - type: string
+            format: uri
+            maxLength: 200
+          - type: string
+            maxLength: 0
       required:
       - full_name
-      - full_name_en
       - id
       - short_name
     NullEnum:
       enum:
       - null
-    BlankEnum:
-      enum:
-      - ''
-    Thumbnails:
-      type: object
-      description: 'Shape of the ``thumbnails`` field, used for schema generation only.
-
-
-        The aliases are read from settings.THUMBNAIL_ALIASES and are the same for
-
-        every thumbnailed image in the API. Without this, the generated schema falls
-
-        back to a plain string for the dict the method fields return.'
-      properties:
-        small:
-          type: string
-          format: uri
-        medium:
-          type: string
-          format: uri
-      required:
-      - medium
-      - small
     PaginatedNutritionPlanInfoList:
       type: object
       required:
@@ -208,6 +233,51 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/NutritionPlanInfo'
+    NutritionalValues:
+      type: object
+      description: Nutritional values serializer
+      properties:
+        energy:
+          type: number
+          format: double
+        protein:
+          type: number
+          format: double
+        carbohydrates:
+          type: number
+          format: double
+        carbohydrates_sugar:
+          type:
+          - number
+          - 'null'
+          format: double
+        fat:
+          type: number
+          format: double
+        fat_saturated:
+          type:
+          - number
+          - 'null'
+          format: double
+        fiber:
+          type:
+          - number
+          - 'null'
+          format: double
+        sodium:
+          type:
+          - number
+          - 'null'
+          format: double
+      required:
+      - carbohydrates
+      - carbohydrates_sugar
+      - energy
+      - fat
+      - fat_saturated
+      - fiber
+      - protein
+      - sodium
     NutritionPlanInfo:
       type: object
       description: Nutritional plan info serializer
@@ -272,6 +342,179 @@ components:
       required:
       - creation_date
       - meals
+    BlankEnum:
+      enum:
+      - ''
+    MealInfo:
+      type: object
+      description: Meal info serializer
+      properties:
+        id:
+          type: string
+          format: uuid
+        plan:
+          type: string
+          format: uuid
+          readOnly: true
+        order:
+          type: integer
+          readOnly: true
+        time:
+          type:
+          - string
+          - 'null'
+          format: time
+          title: Time (approx)
+        name:
+          type: string
+          description: Give meals a textual description / name such as "Breakfast" or "after workout"
+          maxLength: 25
+        meal_items:
+          type: array
+          items:
+            $ref: '#/components/schemas/MealItemInfo'
+        nutritional_values:
+          allOf:
+          - $ref: '#/components/schemas/NutritionalValues'
+          readOnly: true
+      required:
+      - meal_items
+      - nutritional_values
+      - order
+      - plan
+    IngredientImage:
+      type: object
+      description: Image serializer
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        uuid:
+          type: string
+          format: uuid
+          readOnly: true
+        ingredient_id:
+          type:
+          - integer
+          - 'null'
+          readOnly: true
+        ingredient_uuid:
+          type: string
+          readOnly: true
+        image:
+          type: string
+          format: uri
+          description: Only PNG and JPEG formats are supported
+        created:
+          type: string
+          format: date-time
+          readOnly: true
+        last_update:
+          type: string
+          format: date-time
+          readOnly: true
+        size:
+          type: integer
+          maximum: 2147483647
+          minimum: -2147483648
+        width:
+          type: integer
+          readOnly: true
+        height:
+          type: integer
+          readOnly: true
+        license:
+          type: integer
+        license_title:
+          type: string
+          title: The original title of this object, if available
+          maxLength: 300
+        license_object_url:
+          title: Link to original object, if available
+          oneOf:
+          - type: string
+            format: uri
+            maxLength: 200
+          - type: string
+            maxLength: 0
+        license_author:
+          type: string
+          title: Author(s)
+          description: If you are not the author, enter the name or source here.
+          maxLength: 3500
+        license_author_url:
+          title: Link to author profile, if available
+          oneOf:
+          - type: string
+            format: uri
+            maxLength: 200
+          - type: string
+            maxLength: 0
+        license_derivative_source_url:
+          title: Link to the original source, if this is a derivative work
+          description: Note that a derivative work is one which is not only based on a previous work, but which also contains sufficient new, creative content to entitle it to its own copyright.
+          oneOf:
+          - type: string
+            format: uri
+            maxLength: 200
+          - type: string
+            maxLength: 0
+      required:
+      - created
+      - height
+      - id
+      - image
+      - ingredient_id
+      - ingredient_uuid
+      - last_update
+      - size
+      - uuid
+      - width
+    Thumbnails:
+      type: object
+      description: 'Shape of the ``thumbnails`` field, used for schema generation only.
+
+
+        The aliases are read from settings.THUMBNAIL_ALIASES and are the same for
+
+        every thumbnailed image in the API. Without this, the generated schema falls
+
+        back to a plain string for the dict the method fields return.'
+      properties:
+        small:
+          type: string
+          format: uri
+        medium:
+          type: string
+          format: uri
+      required:
+      - medium
+      - small
+    Language:
+      type: object
+      description: Language serializer
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        short_name:
+          type: string
+          title: Language short name
+          description: ISO 639-1
+          maxLength: 2
+        full_name:
+          type: string
+          title: Language full name
+          maxLength: 30
+        full_name_en:
+          type: string
+          title: Language full name in English
+          maxLength: 30
+      required:
+      - full_name
+      - full_name_en
+      - id
+      - short_name
     IngredientInfo:
       type: object
       description: Ingredient info serializer
@@ -506,161 +749,6 @@ components:
         * `d` - D
 
         * `e` - E'
-    MealInfo:
-      type: object
-      description: Meal info serializer
-      properties:
-        id:
-          type: string
-          format: uuid
-        plan:
-          type: string
-          format: uuid
-          readOnly: true
-        order:
-          type: integer
-          readOnly: true
-        time:
-          type:
-          - string
-          - 'null'
-          format: time
-          title: Time (approx)
-        name:
-          type: string
-          description: Give meals a textual description / name such as "Breakfast" or "after workout"
-          maxLength: 25
-        meal_items:
-          type: array
-          items:
-            $ref: '#/components/schemas/MealItemInfo'
-        nutritional_values:
-          allOf:
-          - $ref: '#/components/schemas/NutritionalValues'
-          readOnly: true
-      required:
-      - meal_items
-      - nutritional_values
-      - order
-      - plan
-    NutritionalValues:
-      type: object
-      description: Nutritional values serializer
-      properties:
-        energy:
-          type: number
-          format: double
-        protein:
-          type: number
-          format: double
-        carbohydrates:
-          type: number
-          format: double
-        carbohydrates_sugar:
-          type:
-          - number
-          - 'null'
-          format: double
-        fat:
-          type: number
-          format: double
-        fat_saturated:
-          type:
-          - number
-          - 'null'
-          format: double
-        fiber:
-          type:
-          - number
-          - 'null'
-          format: double
-        sodium:
-          type:
-          - number
-          - 'null'
-          format: double
-      required:
-      - carbohydrates
-      - carbohydrates_sugar
-      - energy
-      - fat
-      - fat_saturated
-      - fiber
-      - protein
-      - sodium
-    License:
-      type: object
-      description: License serializer
-      properties:
-        id:
-          type: integer
-          readOnly: true
-        full_name:
-          type: string
-          description: If a license has been localized, e.g. the Creative Commons licenses for the different countries, add them as separate entries here.
-          maxLength: 60
-        short_name:
-          type: string
-          title: Short name, e.g. CC-BY-SA 3
-          maxLength: 15
-        url:
-          title: Link
-          description: Link to license text or other information
-          oneOf:
-          - type: string
-            format: uri
-            maxLength: 200
-          - type: string
-            maxLength: 0
-      required:
-      - full_name
-      - id
-      - short_name
-    MealItemInfo:
-      type: object
-      description: Meal Item info serializer
-      properties:
-        id:
-          type: string
-          format: uuid
-        meal:
-          type: string
-          format: uuid
-          readOnly: true
-        ingredient:
-          type: integer
-          readOnly: true
-        ingredient_obj:
-          allOf:
-          - $ref: '#/components/schemas/IngredientInfo'
-          readOnly: true
-        weight_unit:
-          type: integer
-          readOnly: true
-        weight_unit_obj:
-          allOf:
-          - $ref: '#/components/schemas/IngredientWeightUnit'
-          readOnly: true
-        image:
-          allOf:
-          - $ref: '#/components/schemas/IngredientImage'
-          readOnly: true
-        order:
-          type: integer
-          readOnly: true
-        amount:
-          type: string
-          format: decimal
-          pattern: ^-?\d{0,4}(?:\.\d{0,2})?$
-      required:
-      - amount
-      - image
-      - ingredient
-      - ingredient_obj
-      - meal
-      - order
-      - weight_unit
-      - weight_unit_obj
     IngredientWeightUnit:
       type: object
       description: IngredientWeightUnit serializer
@@ -689,94 +777,6 @@ components:
       - ingredient
       - name
       - uuid
-    IngredientImage:
-      type: object
-      description: Image serializer
-      properties:
-        id:
-          type: integer
-          readOnly: true
-        uuid:
-          type: string
-          format: uuid
-          readOnly: true
-        ingredient_id:
-          type:
-          - integer
-          - 'null'
-          readOnly: true
-        ingredient_uuid:
-          type: string
-          readOnly: true
-        image:
-          type: string
-          format: uri
-          description: Only PNG and JPEG formats are supported
-        created:
-          type: string
-          format: date-time
-          readOnly: true
-        last_update:
-          type: string
-          format: date-time
-          readOnly: true
-        size:
-          type: integer
-          maximum: 2147483647
-          minimum: -2147483648
-        width:
-          type: integer
-          readOnly: true
-        height:
-          type: integer
-          readOnly: true
-        license:
-          type: integer
-        license_title:
-          type: string
-          title: The original title of this object, if available
-          maxLength: 300
-        license_object_url:
-          title: Link to original object, if available
-          oneOf:
-          - type: string
-            format: uri
-            maxLength: 200
-          - type: string
-            maxLength: 0
-        license_author:
-          type: string
-          title: Author(s)
-          description: If you are not the author, enter the name or source here.
-          maxLength: 3500
-        license_author_url:
-          title: Link to author profile, if available
-          oneOf:
-          - type: string
-            format: uri
-            maxLength: 200
-          - type: string
-            maxLength: 0
-        license_derivative_source_url:
-          title: Link to the original source, if this is a derivative work
-          description: Note that a derivative work is one which is not only based on a previous work, but which also contains sufficient new, creative content to entitle it to its own copyright.
-          oneOf:
-          - type: string
-            format: uri
-            maxLength: 200
-          - type: string
-            maxLength: 0
-      required:
-      - created
-      - height
-      - id
-      - image
-      - ingredient_id
-      - ingredient_uuid
-      - last_update
-      - size
-      - uuid
-      - width
   securitySchemes:
     cookieAuth:
       type: apiKey

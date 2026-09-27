@@ -278,99 +278,6 @@ paths:
       x-summary-source: derived
 components:
   schemas:
-    LogItemRequest:
-      type: object
-      description: LogItem serializer
-      properties:
-        id:
-          type: string
-          format: uuid
-        plan:
-          type: string
-          format: uuid
-          title: Nutrition plan
-        meal:
-          type:
-          - string
-          - 'null'
-          format: uuid
-        ingredient:
-          type: integer
-        weight_unit:
-          type:
-          - integer
-          - 'null'
-        datetime:
-          type: string
-          format: date-time
-          title: Date and Time (Approx.)
-        amount:
-          type: string
-          format: decimal
-          pattern: ^-?\d{0,4}(?:\.\d{0,2})?$
-      required:
-      - amount
-      - ingredient
-      - plan
-    LogItem:
-      type: object
-      description: LogItem serializer
-      properties:
-        id:
-          type: string
-          format: uuid
-        plan:
-          type: string
-          format: uuid
-          title: Nutrition plan
-        meal:
-          type:
-          - string
-          - 'null'
-          format: uuid
-        ingredient:
-          type: integer
-        weight_unit:
-          type:
-          - integer
-          - 'null'
-        datetime:
-          type: string
-          format: date-time
-          title: Date and Time (Approx.)
-        amount:
-          type: string
-          format: decimal
-          pattern: ^-?\d{0,4}(?:\.\d{0,2})?$
-      required:
-      - amount
-      - ingredient
-      - plan
-    PaginatedLogItemList:
-      type: object
-      required:
-      - count
-      - results
-      properties:
-        count:
-          type: integer
-          example: 123
-        next:
-          type:
-          - string
-          - 'null'
-          format: uri
-          example: http://api.example.org/accounts/?offset=400&limit=100
-        previous:
-          type:
-          - string
-          - 'null'
-          format: uri
-          example: http://api.example.org/accounts/?offset=200&limit=100
-        results:
-          type: array
-          items:
-            $ref: '#/components/schemas/LogItem'
     NutritionalValues:
       type: object
       description: Nutritional values serializer
@@ -416,6 +323,99 @@ components:
       - fiber
       - protein
       - sodium
+    PaginatedLogItemList:
+      type: object
+      required:
+      - count
+      - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?offset=400&limit=100
+        previous:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?offset=200&limit=100
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/LogItem'
+    LogItem:
+      type: object
+      description: LogItem serializer
+      properties:
+        id:
+          type: string
+          format: uuid
+        plan:
+          type: string
+          format: uuid
+          title: Nutrition plan
+        meal:
+          type:
+          - string
+          - 'null'
+          format: uuid
+        ingredient:
+          type: integer
+        weight_unit:
+          type:
+          - integer
+          - 'null'
+        datetime:
+          type: string
+          format: date-time
+          title: Date and Time (Approx.)
+        amount:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,4}(?:\.\d{0,2})?$
+      required:
+      - amount
+      - ingredient
+      - plan
+    LogItemRequest:
+      type: object
+      description: LogItem serializer
+      properties:
+        id:
+          type: string
+          format: uuid
+        plan:
+          type: string
+          format: uuid
+          title: Nutrition plan
+        meal:
+          type:
+          - string
+          - 'null'
+          format: uuid
+        ingredient:
+          type: integer
+        weight_unit:
+          type:
+          - integer
+          - 'null'
+        datetime:
+          type: string
+          format: date-time
+          title: Date and Time (Approx.)
+        amount:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,4}(?:\.\d{0,2})?$
+      required:
+      - amount
+      - ingredient
+      - plan
     PatchedLogItemRequest:
       type: object
       description: LogItem serializer

@@ -257,7 +257,7 @@ paths:
       x-summary-source: derived
 components:
   schemas:
-    Measurement:
+    PatchedMeasurementRequest:
       type: object
       description: Measurement serializer
       properties:
@@ -279,9 +279,6 @@ components:
           type: string
           title: Description
           maxLength: 100
-      required:
-      - category
-      - value
     PaginatedMeasurementList:
       type: object
       required:
@@ -307,7 +304,7 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/Measurement'
-    PatchedMeasurementRequest:
+    Measurement:
       type: object
       description: Measurement serializer
       properties:
@@ -329,6 +326,9 @@ components:
           type: string
           title: Description
           maxLength: 100
+      required:
+      - category
+      - value
     MeasurementRequest:
       type: object
       description: Measurement serializer

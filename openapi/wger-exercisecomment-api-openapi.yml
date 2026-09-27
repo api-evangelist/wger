@@ -206,6 +206,31 @@ paths:
       x-summary-source: derived
 components:
   schemas:
+    PaginatedExerciseCommentList:
+      type: object
+      required:
+      - count
+      - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?offset=400&limit=100
+        previous:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?offset=200&limit=100
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/ExerciseComment'
     ExerciseComment:
       type: object
       description: ExerciseComment serializer
@@ -256,31 +281,6 @@ components:
           minLength: 1
           description: A comment about how to correctly do this exercise.
           maxLength: 200
-    PaginatedExerciseCommentList:
-      type: object
-      required:
-      - count
-      - results
-      properties:
-        count:
-          type: integer
-          example: 123
-        next:
-          type:
-          - string
-          - 'null'
-          format: uri
-          example: http://api.example.org/accounts/?offset=400&limit=100
-        previous:
-          type:
-          - string
-          - 'null'
-          format: uri
-          example: http://api.example.org/accounts/?offset=200&limit=100
-        results:
-          type: array
-          items:
-            $ref: '#/components/schemas/ExerciseComment'
   securitySchemes:
     cookieAuth:
       type: apiKey

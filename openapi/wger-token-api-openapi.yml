@@ -58,17 +58,6 @@ paths:
       x-summary-source: derived
 components:
   schemas:
-    TokenRefresh:
-      type: object
-      properties:
-        access:
-          type: string
-          readOnly: true
-        refresh:
-          type: string
-      required:
-      - access
-      - refresh
     TokenVerifyRequest:
       type: object
       properties:
@@ -85,6 +74,17 @@ components:
           type: string
           minLength: 1
       required:
+      - refresh
+    TokenRefresh:
+      type: object
+      properties:
+        access:
+          type: string
+          readOnly: true
+        refresh:
+          type: string
+      required:
+      - access
       - refresh
   securitySchemes:
     cookieAuth:

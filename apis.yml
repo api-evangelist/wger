@@ -57,7 +57,7 @@ tags:
   - Fitness
   - Nutrition
   - Health
-  - Open-Source
+  - Open Source
   - Self-Hosted
   - Workout Tracking
   - Django
@@ -73,6 +73,7 @@ tags_raw:
   - Workout Tracking
   - Django
   - REST
+  - Open-Source
 apis:
 - aid: wger:wger-check-language-api
   name: Wger Check Language API

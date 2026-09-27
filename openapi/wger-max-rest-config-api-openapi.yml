@@ -270,42 +270,6 @@ components:
       - iteration
       - slot_entry
       - value
-    PaginatedMaxRestConfigList:
-      type: object
-      required:
-      - count
-      - results
-      properties:
-        count:
-          type: integer
-          example: 123
-        next:
-          type:
-          - string
-          - 'null'
-          format: uri
-          example: http://api.example.org/accounts/?offset=400&limit=100
-        previous:
-          type:
-          - string
-          - 'null'
-          format: uri
-          example: http://api.example.org/accounts/?offset=200&limit=100
-        results:
-          type: array
-          items:
-            $ref: '#/components/schemas/MaxRestConfig'
-    StepEnum:
-      enum:
-      - na
-      - abs
-      - percent
-      type: string
-      description: '* `na` - Not Applicable
-
-        * `abs` - Absolute
-
-        * `percent` - Percent'
     MaxRestConfig:
       type: object
       description: Rest Config serializer
@@ -335,6 +299,17 @@ components:
       - iteration
       - slot_entry
       - value
+    StepEnum:
+      enum:
+      - na
+      - abs
+      - percent
+      type: string
+      description: '* `na` - Not Applicable
+
+        * `abs` - Absolute
+
+        * `percent` - Percent'
     PatchedMaxRestConfigRequest:
       type: object
       description: Rest Config serializer
@@ -367,6 +342,31 @@ components:
         * `-` - Minus
 
         * `r` - Replace'
+    PaginatedMaxRestConfigList:
+      type: object
+      required:
+      - count
+      - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?offset=400&limit=100
+        previous:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?offset=200&limit=100
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/MaxRestConfig'
   securitySchemes:
     cookieAuth:
       type: apiKey

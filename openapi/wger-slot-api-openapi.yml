@@ -210,21 +210,6 @@ paths:
       x-summary-source: derived
 components:
   schemas:
-    PatchedSlotRequest:
-      type: object
-      description: Slot
-      properties:
-        day:
-          type: integer
-          title: Exercise day
-        order:
-          type: integer
-          maximum: 2147483647
-          minimum: 0
-        comment:
-          type: string
-          maxLength: 200
-        config: {}
     PaginatedSlotList:
       type: object
       required:
@@ -267,6 +252,21 @@ components:
         config: {}
       required:
       - day
+    PatchedSlotRequest:
+      type: object
+      description: Slot
+      properties:
+        day:
+          type: integer
+          title: Exercise day
+        order:
+          type: integer
+          maximum: 2147483647
+          minimum: 0
+        comment:
+          type: string
+          maxLength: 200
+        config: {}
     Slot:
       type: object
       description: Slot

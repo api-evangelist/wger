@@ -295,6 +295,49 @@ paths:
           description: ''
 components:
   schemas:
+    TrophyProgress:
+      type: object
+      description: 'Serializer for trophy progress information.
+
+
+        Used for showing progress on all trophies (earned and unearned).
+
+        This is not a ModelSerializer as it aggregates data from multiple sources.'
+      properties:
+        trophy:
+          allOf:
+          - $ref: '#/components/schemas/Trophy'
+          readOnly: true
+        is_earned:
+          type: boolean
+        earned_at:
+          type:
+          - string
+          - 'null'
+          format: date-time
+        progress:
+          type: number
+          format: double
+        current_value:
+          type:
+          - string
+          - 'null'
+        target_value:
+          type:
+          - string
+          - 'null'
+        progress_display:
+          type:
+          - string
+          - 'null'
+      required:
+      - current_value
+      - earned_at
+      - is_earned
+      - progress
+      - progress_display
+      - target_value
+      - trophy
     Trophy:
       type: object
       description: 'Serializer for Trophy model.
@@ -373,72 +416,6 @@ components:
       - order
       - trophy_type
       - uuid
-    TrophyTypeEnum:
-      enum:
-      - time
-      - volume
-      - count
-      - sequence
-      - date
-      - pr
-      - other
-      type: string
-      description: '* `time` - Time-based
-
-        * `volume` - Volume-based
-
-        * `count` - Count-based
-
-        * `sequence` - Sequence-based
-
-        * `date` - Date-based
-
-        * `pr` - Personal Record
-
-        * `other` - Other'
-    TrophyProgress:
-      type: object
-      description: 'Serializer for trophy progress information.
-
-
-        Used for showing progress on all trophies (earned and unearned).
-
-        This is not a ModelSerializer as it aggregates data from multiple sources.'
-      properties:
-        trophy:
-          allOf:
-          - $ref: '#/components/schemas/Trophy'
-          readOnly: true
-        is_earned:
-          type: boolean
-        earned_at:
-          type:
-          - string
-          - 'null'
-          format: date-time
-        progress:
-          type: number
-          format: double
-        current_value:
-          type:
-          - string
-          - 'null'
-        target_value:
-          type:
-          - string
-          - 'null'
-        progress_display:
-          type:
-          - string
-          - 'null'
-      required:
-      - current_value
-      - earned_at
-      - is_earned
-      - progress
-      - progress_display
-      - target_value
-      - trophy
     PaginatedTrophyList:
       type: object
       required:
@@ -464,6 +441,29 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/Trophy'
+    TrophyTypeEnum:
+      enum:
+      - time
+      - volume
+      - count
+      - sequence
+      - date
+      - pr
+      - other
+      type: string
+      description: '* `time` - Time-based
+
+        * `volume` - Volume-based
+
+        * `count` - Count-based
+
+        * `sequence` - Sequence-based
+
+        * `date` - Date-based
+
+        * `pr` - Personal Record
+
+        * `other` - Other'
   securitySchemes:
     cookieAuth:
       type: apiKey

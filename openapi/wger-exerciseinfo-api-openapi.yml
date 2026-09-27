@@ -199,6 +199,34 @@ paths:
       x-summary-source: derived
 components:
   schemas:
+    License:
+      type: object
+      description: License serializer
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        full_name:
+          type: string
+          description: If a license has been localized, e.g. the Creative Commons licenses for the different countries, add them as separate entries here.
+          maxLength: 60
+        short_name:
+          type: string
+          title: Short name, e.g. CC-BY-SA 3
+          maxLength: 15
+        url:
+          title: Link
+          description: Link to license text or other information
+          oneOf:
+          - type: string
+            format: uri
+            maxLength: 200
+          - type: string
+            maxLength: 0
+      required:
+      - full_name
+      - id
+      - short_name
     ExerciseImage:
       type: object
       description: ExerciseImage serializer
@@ -295,31 +323,19 @@ components:
       - image
       - thumbnails
       - uuid
-    PaginatedExerciseInfoList:
+    ExerciseCategory:
       type: object
-      required:
-      - count
-      - results
+      description: ExerciseCategory serializer
       properties:
-        count:
+        id:
           type: integer
-          example: 123
-        next:
-          type:
-          - string
-          - 'null'
-          format: uri
-          example: http://api.example.org/accounts/?offset=400&limit=100
-        previous:
-          type:
-          - string
-          - 'null'
-          format: uri
-          example: http://api.example.org/accounts/?offset=200&limit=100
-        results:
-          type: array
-          items:
-            $ref: '#/components/schemas/ExerciseInfo'
+          readOnly: true
+        name:
+          type: string
+          maxLength: 100
+      required:
+      - id
+      - name
     ExerciseVideoInfo:
       type: object
       description: ExerciseVideo serializer for the info endpoint
@@ -413,110 +429,6 @@ components:
       - uuid
       - video
       - width
-    Thumbnails:
-      type: object
-      description: 'Shape of the ``thumbnails`` field, used for schema generation only.
-
-
-        The aliases are read from settings.THUMBNAIL_ALIASES and are the same for
-
-        every thumbnailed image in the API. Without this, the generated schema falls
-
-        back to a plain string for the dict the method fields return.'
-      properties:
-        small:
-          type: string
-          format: uri
-        medium:
-          type: string
-          format: uri
-      required:
-      - medium
-      - small
-    StyleEnum:
-      enum:
-      - '1'
-      - '2'
-      - '3'
-      - '4'
-      - '5'
-      type: string
-      description: '* `1` - Line
-
-        * `2` - 3D
-
-        * `3` - Low-poly
-
-        * `4` - Photo
-
-        * `5` - Other'
-    ExerciseInfoAlias:
-      type: object
-      description: Exercise alias serializer for info endpoint
-      properties:
-        id:
-          type: integer
-          readOnly: true
-        uuid:
-          type: string
-          format: uuid
-          readOnly: true
-        alias:
-          type: string
-          title: Alias for an exercise
-          maxLength: 200
-      required:
-      - alias
-      - id
-      - uuid
-    Equipment:
-      type: object
-      description: Equipment serializer
-      properties:
-        id:
-          type: integer
-          readOnly: true
-        name:
-          type: string
-          maxLength: 50
-      required:
-      - id
-      - name
-    Muscle:
-      type: object
-      description: Muscle serializer
-      properties:
-        id:
-          type: integer
-          readOnly: true
-        name:
-          type: string
-          description: In latin, e.g. "Pectoralis major"
-          maxLength: 50
-        name_en:
-          type: string
-          title: Alternative name
-          description: A more basic name for the muscle
-          maxLength: 50
-        is_front:
-          type: boolean
-        image_url_main:
-          type:
-          - string
-          - 'null'
-          description: Absolute URL to the main muscle image
-          readOnly: true
-        image_url_secondary:
-          type:
-          - string
-          - 'null'
-          description: Absolute URL to the secondary muscle image
-          readOnly: true
-      required:
-      - id
-      - image_url_main
-      - image_url_secondary
-      - name
     ExerciseTranslationInfo:
       type: object
       description: Exercise translation serializer for the info endpoint
@@ -608,34 +520,158 @@ components:
       - name
       - notes
       - uuid
-    License:
+    Muscle:
       type: object
-      description: License serializer
+      description: Muscle serializer
       properties:
         id:
           type: integer
           readOnly: true
-        full_name:
+        name:
           type: string
-          description: If a license has been localized, e.g. the Creative Commons licenses for the different countries, add them as separate entries here.
-          maxLength: 60
-        short_name:
+          description: In latin, e.g. "Pectoralis major"
+          maxLength: 50
+        name_en:
           type: string
-          title: Short name, e.g. CC-BY-SA 3
-          maxLength: 15
-        url:
-          title: Link
-          description: Link to license text or other information
-          oneOf:
-          - type: string
-            format: uri
-            maxLength: 200
-          - type: string
-            maxLength: 0
+          title: Alternative name
+          description: A more basic name for the muscle
+          maxLength: 50
+        is_front:
+          type: boolean
+        image_url_main:
+          type:
+          - string
+          - 'null'
+          description: Absolute URL to the main muscle image
+          readOnly: true
+        image_url_secondary:
+          type:
+          - string
+          - 'null'
+          description: Absolute URL to the secondary muscle image
+          readOnly: true
       required:
-      - full_name
       - id
-      - short_name
+      - image_url_main
+      - image_url_secondary
+      - name
+    StyleEnum:
+      enum:
+      - '1'
+      - '2'
+      - '3'
+      - '4'
+      - '5'
+      type: string
+      description: '* `1` - Line
+
+        * `2` - 3D
+
+        * `3` - Low-poly
+
+        * `4` - Photo
+
+        * `5` - Other'
+    Equipment:
+      type: object
+      description: Equipment serializer
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        name:
+          type: string
+          maxLength: 50
+      required:
+      - id
+      - name
+    Thumbnails:
+      type: object
+      description: 'Shape of the ``thumbnails`` field, used for schema generation only.
+
+
+        The aliases are read from settings.THUMBNAIL_ALIASES and are the same for
+
+        every thumbnailed image in the API. Without this, the generated schema falls
+
+        back to a plain string for the dict the method fields return.'
+      properties:
+        small:
+          type: string
+          format: uri
+        medium:
+          type: string
+          format: uri
+      required:
+      - medium
+      - small
+    PaginatedExerciseInfoList:
+      type: object
+      required:
+      - count
+      - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?offset=400&limit=100
+        previous:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?offset=200&limit=100
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/ExerciseInfo'
+    ExerciseInfoAlias:
+      type: object
+      description: Exercise alias serializer for info endpoint
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        uuid:
+          type: string
+          format: uuid
+          readOnly: true
+        alias:
+          type: string
+          title: Alias for an exercise
+          maxLength: 200
+      required:
+      - alias
+      - id
+      - uuid
+    ExerciseComment:
+      type: object
+      description: ExerciseComment serializer
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        uuid:
+          type: string
+          format: uuid
+          readOnly: true
+        translation:
+          type: integer
+          title: Exercise
+        comment:
+          type: string
+          description: A comment about how to correctly do this exercise.
+          maxLength: 200
+      required:
+      - comment
+      - id
+      - translation
+      - uuid
     ExerciseInfo:
       type: object
       description: Exercise info serializer
@@ -732,42 +768,6 @@ components:
       - translations
       - uuid
       - videos
-    ExerciseCategory:
-      type: object
-      description: ExerciseCategory serializer
-      properties:
-        id:
-          type: integer
-          readOnly: true
-        name:
-          type: string
-          maxLength: 100
-      required:
-      - id
-      - name
-    ExerciseComment:
-      type: object
-      description: ExerciseComment serializer
-      properties:
-        id:
-          type: integer
-          readOnly: true
-        uuid:
-          type: string
-          format: uuid
-          readOnly: true
-        translation:
-          type: integer
-          title: Exercise
-        comment:
-          type: string
-          description: A comment about how to correctly do this exercise.
-          maxLength: 200
-      required:
-      - comment
-      - id
-      - translation
-      - uuid
   securitySchemes:
     cookieAuth:
       type: apiKey

@@ -245,6 +245,65 @@ paths:
       x-summary-source: derived
 components:
   schemas:
+    ExerciseRequest:
+      type: object
+      description: Exercise serializer
+      properties:
+        category:
+          type: integer
+        muscles:
+          type: array
+          items:
+            type: integer
+            title: Primary muscles
+          title: Primary muscles
+        muscles_secondary:
+          type: array
+          items:
+            type: integer
+            title: Secondary muscles
+          title: Secondary muscles
+        equipment:
+          type: array
+          items:
+            type: integer
+        variation_group:
+          type:
+          - string
+          - 'null'
+          format: uuid
+        license_author:
+          type: string
+          title: Author(s)
+          description: If you are not the author, enter the name or source here.
+          maxLength: 3500
+      required:
+      - category
+    PaginatedExerciseList:
+      type: object
+      required:
+      - count
+      - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?offset=400&limit=100
+        previous:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?offset=200&limit=100
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/Exercise'
     PatchedExerciseRequest:
       type: object
       description: Exercise serializer
@@ -331,65 +390,6 @@ components:
       - id
       - last_update
       - uuid
-    PaginatedExerciseList:
-      type: object
-      required:
-      - count
-      - results
-      properties:
-        count:
-          type: integer
-          example: 123
-        next:
-          type:
-          - string
-          - 'null'
-          format: uri
-          example: http://api.example.org/accounts/?offset=400&limit=100
-        previous:
-          type:
-          - string
-          - 'null'
-          format: uri
-          example: http://api.example.org/accounts/?offset=200&limit=100
-        results:
-          type: array
-          items:
-            $ref: '#/components/schemas/Exercise'
-    ExerciseRequest:
-      type: object
-      description: Exercise serializer
-      properties:
-        category:
-          type: integer
-        muscles:
-          type: array
-          items:
-            type: integer
-            title: Primary muscles
-          title: Primary muscles
-        muscles_secondary:
-          type: array
-          items:
-            type: integer
-            title: Secondary muscles
-          title: Secondary muscles
-        equipment:
-          type: array
-          items:
-            type: integer
-        variation_group:
-          type:
-          - string
-          - 'null'
-          format: uuid
-        license_author:
-          type: string
-          title: Author(s)
-          description: If you are not the author, enter the name or source here.
-          maxLength: 3500
-      required:
-      - category
   securitySchemes:
     cookieAuth:
       type: apiKey

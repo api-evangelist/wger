@@ -245,13 +245,10 @@ paths:
       x-summary-source: derived
 components:
   schemas:
-    MaxSetNrConfig:
+    PatchedMaxSetNrConfigRequest:
       type: object
       description: Max Set Nr config serializer
       properties:
-        id:
-          type: integer
-          readOnly: true
         slot_entry:
           type: integer
         iteration:
@@ -269,11 +266,6 @@ components:
         repeat:
           type: boolean
         requirements: {}
-      required:
-      - id
-      - iteration
-      - slot_entry
-      - value
     StepEnum:
       enum:
       - na
@@ -285,31 +277,6 @@ components:
         * `abs` - Absolute
 
         * `percent` - Percent'
-    MaxSetNrConfigRequest:
-      type: object
-      description: Max Set Nr config serializer
-      properties:
-        slot_entry:
-          type: integer
-        iteration:
-          type: integer
-          maximum: 2147483647
-          minimum: 0
-        value:
-          type: integer
-          maximum: 50
-          minimum: 0
-        operation:
-          $ref: '#/components/schemas/OperationEnum'
-        step:
-          $ref: '#/components/schemas/StepEnum'
-        repeat:
-          type: boolean
-        requirements: {}
-      required:
-      - iteration
-      - slot_entry
-      - value
     PaginatedMaxSetNrConfigList:
       type: object
       required:
@@ -346,7 +313,7 @@ components:
         * `-` - Minus
 
         * `r` - Replace'
-    PatchedMaxSetNrConfigRequest:
+    MaxSetNrConfigRequest:
       type: object
       description: Max Set Nr config serializer
       properties:
@@ -367,6 +334,39 @@ components:
         repeat:
           type: boolean
         requirements: {}
+      required:
+      - iteration
+      - slot_entry
+      - value
+    MaxSetNrConfig:
+      type: object
+      description: Max Set Nr config serializer
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        slot_entry:
+          type: integer
+        iteration:
+          type: integer
+          maximum: 2147483647
+          minimum: 0
+        value:
+          type: integer
+          maximum: 50
+          minimum: 0
+        operation:
+          $ref: '#/components/schemas/OperationEnum'
+        step:
+          $ref: '#/components/schemas/StepEnum'
+        repeat:
+          type: boolean
+        requirements: {}
+      required:
+      - id
+      - iteration
+      - slot_entry
+      - value
   securitySchemes:
     cookieAuth:
       type: apiKey

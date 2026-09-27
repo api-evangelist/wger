@@ -240,7 +240,7 @@ paths:
       x-summary-source: derived
 components:
   schemas:
-    WorkoutSessionRequest:
+    WorkoutSession:
       type: object
       description: Workout session serializer
       properties:
@@ -287,42 +287,6 @@ components:
           - 'null'
           format: time
           title: Finish time
-    ImpressionEnum:
-      enum:
-      - '1'
-      - '2'
-      - '3'
-      type: string
-      description: '* `1` - Bad
-
-        * `2` - Neutral
-
-        * `3` - Good'
-    PaginatedWorkoutSessionList:
-      type: object
-      required:
-      - count
-      - results
-      properties:
-        count:
-          type: integer
-          example: 123
-        next:
-          type:
-          - string
-          - 'null'
-          format: uri
-          example: http://api.example.org/accounts/?offset=400&limit=100
-        previous:
-          type:
-          - string
-          - 'null'
-          format: uri
-          example: http://api.example.org/accounts/?offset=200&limit=100
-        results:
-          type: array
-          items:
-            $ref: '#/components/schemas/WorkoutSession'
     PatchedWorkoutSessionRequest:
       type: object
       description: Workout session serializer
@@ -370,7 +334,43 @@ components:
           - 'null'
           format: time
           title: Finish time
-    WorkoutSession:
+    PaginatedWorkoutSessionList:
+      type: object
+      required:
+      - count
+      - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?offset=400&limit=100
+        previous:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?offset=200&limit=100
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/WorkoutSession'
+    ImpressionEnum:
+      enum:
+      - '1'
+      - '2'
+      - '3'
+      type: string
+      description: '* `1` - Bad
+
+        * `2` - Neutral
+
+        * `3` - Good'
+    WorkoutSessionRequest:
       type: object
       description: Workout session serializer
       properties:

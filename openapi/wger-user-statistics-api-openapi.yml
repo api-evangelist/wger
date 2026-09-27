@@ -110,6 +110,31 @@ paths:
       x-summary-source: derived
 components:
   schemas:
+    PaginatedUserStatisticsList:
+      type: object
+      required:
+      - count
+      - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?offset=400&limit=100
+        previous:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?offset=200&limit=100
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/UserStatistics'
     UserStatistics:
       type: object
       description: 'Serializer for UserStatistics model.
@@ -192,31 +217,6 @@ components:
       - total_workouts
       - weekend_workout_streak
       - worked_out_jan_1
-    PaginatedUserStatisticsList:
-      type: object
-      required:
-      - count
-      - results
-      properties:
-        count:
-          type: integer
-          example: 123
-        next:
-          type:
-          - string
-          - 'null'
-          format: uri
-          example: http://api.example.org/accounts/?offset=400&limit=100
-        previous:
-          type:
-          - string
-          - 'null'
-          format: uri
-          example: http://api.example.org/accounts/?offset=200&limit=100
-        results:
-          type: array
-          items:
-            $ref: '#/components/schemas/UserStatistics'
   securitySchemes:
     cookieAuth:
       type: apiKey

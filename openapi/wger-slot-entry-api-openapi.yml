@@ -261,31 +261,45 @@ paths:
       x-summary-source: derived
 components:
   schemas:
-    PaginatedSlotEntryList:
+    PatchedSlotEntryRequest:
       type: object
-      required:
-      - count
-      - results
+      description: Slot entry serializer
       properties:
-        count:
+        slot:
           type: integer
-          example: 123
-        next:
+        exercise:
+          type: integer
+        type:
+          $ref: '#/components/schemas/ExerciseTypeEnum'
+        repetition_unit:
+          type:
+          - integer
+          - 'null'
+        repetition_rounding:
           type:
           - string
           - 'null'
-          format: uri
-          example: http://api.example.org/accounts/?offset=400&limit=100
-        previous:
+          format: decimal
+          pattern: ^-?\d{0,2}(?:\.\d{0,2})?$
+        weight_unit:
+          type:
+          - integer
+          - 'null'
+          title: Unit
+        weight_rounding:
           type:
           - string
           - 'null'
-          format: uri
-          example: http://api.example.org/accounts/?offset=200&limit=100
-        results:
-          type: array
-          items:
-            $ref: '#/components/schemas/SlotEntry'
+          format: decimal
+          pattern: ^-?\d{0,2}(?:\.\d{0,2})?$
+        order:
+          type: integer
+          maximum: 2147483647
+          minimum: 0
+        comment:
+          type: string
+          maxLength: 100
+        config: {}
     SlotEntryRequest:
       type: object
       description: Slot entry serializer
@@ -357,6 +371,31 @@ components:
         * `iso` - Iso Hold
 
         * `jump` - Jump'
+    PaginatedSlotEntryList:
+      type: object
+      required:
+      - count
+      - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?offset=400&limit=100
+        previous:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?offset=200&limit=100
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/SlotEntry'
     SlotEntry:
       type: object
       description: Slot entry serializer
@@ -403,45 +442,6 @@ components:
       - exercise
       - id
       - slot
-    PatchedSlotEntryRequest:
-      type: object
-      description: Slot entry serializer
-      properties:
-        slot:
-          type: integer
-        exercise:
-          type: integer
-        type:
-          $ref: '#/components/schemas/ExerciseTypeEnum'
-        repetition_unit:
-          type:
-          - integer
-          - 'null'
-        repetition_rounding:
-          type:
-          - string
-          - 'null'
-          format: decimal
-          pattern: ^-?\d{0,2}(?:\.\d{0,2})?$
-        weight_unit:
-          type:
-          - integer
-          - 'null'
-          title: Unit
-        weight_rounding:
-          type:
-          - string
-          - 'null'
-          format: decimal
-          pattern: ^-?\d{0,2}(?:\.\d{0,2})?$
-        order:
-          type: integer
-          maximum: 2147483647
-          minimum: 0
-        comment:
-          type: string
-          maxLength: 100
-        config: {}
   securitySchemes:
     cookieAuth:
       type: apiKey

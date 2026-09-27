@@ -256,29 +256,7 @@ paths:
       x-summary-source: derived
 components:
   schemas:
-    WeightEntry:
-      type: object
-      description: Weight serializer
-      properties:
-        id:
-          type: integer
-          readOnly: true
-        date:
-          type: string
-          format: date-time
-        weight:
-          type: string
-          format: decimal
-          pattern: ^-?\d{0,3}(?:\.\d{0,2})?$
-        user:
-          type: integer
-          readOnly: true
-      required:
-      - date
-      - id
-      - user
-      - weight
-    WeightEntryRequest:
+    PatchedWeightEntryRequest:
       type: object
       description: Weight serializer
       properties:
@@ -289,9 +267,6 @@ components:
           type: string
           format: decimal
           pattern: ^-?\d{0,3}(?:\.\d{0,2})?$
-      required:
-      - date
-      - weight
     PaginatedWeightEntryList:
       type: object
       required:
@@ -317,7 +292,7 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/WeightEntry'
-    PatchedWeightEntryRequest:
+    WeightEntryRequest:
       type: object
       description: Weight serializer
       properties:
@@ -328,6 +303,31 @@ components:
           type: string
           format: decimal
           pattern: ^-?\d{0,3}(?:\.\d{0,2})?$
+      required:
+      - date
+      - weight
+    WeightEntry:
+      type: object
+      description: Weight serializer
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        date:
+          type: string
+          format: date-time
+        weight:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,3}(?:\.\d{0,2})?$
+        user:
+          type: integer
+          readOnly: true
+      required:
+      - date
+      - id
+      - user
+      - weight
   securitySchemes:
     cookieAuth:
       type: apiKey

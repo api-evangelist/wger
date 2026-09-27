@@ -214,6 +214,70 @@ paths:
       x-summary-source: derived
 components:
   schemas:
+    UserTrophy:
+      type: object
+      description: 'Serializer for UserTrophy model.
+
+
+        Shows user''s earned trophies with trophy details.'
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        trophy:
+          allOf:
+          - $ref: '#/components/schemas/Trophy'
+          readOnly: true
+        earned_at:
+          type: string
+          format: date-time
+          readOnly: true
+          description: When the trophy was earned
+        progress:
+          type: number
+          format: double
+          readOnly: true
+          description: Progress towards earning the trophy (0-100)
+        is_notified:
+          type: boolean
+          readOnly: true
+          title: Notified
+          description: Whether the user has been notified about earning this trophy
+        context_data:
+          readOnly: true
+          description: Additional information concerning this trophy
+      required:
+      - context_data
+      - earned_at
+      - id
+      - is_notified
+      - progress
+      - trophy
+    PaginatedUserTrophyList:
+      type: object
+      required:
+      - count
+      - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?offset=400&limit=100
+        previous:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?offset=200&limit=100
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/UserTrophy'
     Trophy:
       type: object
       description: 'Serializer for Trophy model.
@@ -315,70 +379,6 @@ components:
         * `pr` - Personal Record
 
         * `other` - Other'
-    UserTrophy:
-      type: object
-      description: 'Serializer for UserTrophy model.
-
-
-        Shows user''s earned trophies with trophy details.'
-      properties:
-        id:
-          type: integer
-          readOnly: true
-        trophy:
-          allOf:
-          - $ref: '#/components/schemas/Trophy'
-          readOnly: true
-        earned_at:
-          type: string
-          format: date-time
-          readOnly: true
-          description: When the trophy was earned
-        progress:
-          type: number
-          format: double
-          readOnly: true
-          description: Progress towards earning the trophy (0-100)
-        is_notified:
-          type: boolean
-          readOnly: true
-          title: Notified
-          description: Whether the user has been notified about earning this trophy
-        context_data:
-          readOnly: true
-          description: Additional information concerning this trophy
-      required:
-      - context_data
-      - earned_at
-      - id
-      - is_notified
-      - progress
-      - trophy
-    PaginatedUserTrophyList:
-      type: object
-      required:
-      - count
-      - results
-      properties:
-        count:
-          type: integer
-          example: 123
-        next:
-          type:
-          - string
-          - 'null'
-          format: uri
-          example: http://api.example.org/accounts/?offset=400&limit=100
-        previous:
-          type:
-          - string
-          - 'null'
-          format: uri
-          example: http://api.example.org/accounts/?offset=200&limit=100
-        results:
-          type: array
-          items:
-            $ref: '#/components/schemas/UserTrophy'
   securitySchemes:
     cookieAuth:
       type: apiKey

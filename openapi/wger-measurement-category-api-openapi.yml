@@ -230,7 +230,7 @@ components:
           type: string
           minLength: 1
           maxLength: 30
-    Category:
+    CategoryRequest:
       type: object
       description: Measurement category serializer
       properties:
@@ -239,9 +239,11 @@ components:
           format: uuid
         name:
           type: string
+          minLength: 1
           maxLength: 100
         unit:
           type: string
+          minLength: 1
           maxLength: 30
       required:
       - name
@@ -271,7 +273,7 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/Category'
-    CategoryRequest:
+    Category:
       type: object
       description: Measurement category serializer
       properties:
@@ -280,11 +282,9 @@ components:
           format: uuid
         name:
           type: string
-          minLength: 1
           maxLength: 100
         unit:
           type: string
-          minLength: 1
           maxLength: 30
       required:
       - name

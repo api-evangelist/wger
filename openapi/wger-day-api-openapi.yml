@@ -226,6 +226,61 @@ paths:
       x-summary-source: derived
 components:
   schemas:
+    DayTypeEnum:
+      enum:
+      - custom
+      - enom
+      - amrap
+      - hiit
+      - tabata
+      - edt
+      - rft
+      - afap
+      type: string
+      description: '* `custom` - Custom
+
+        * `enom` - Enom
+
+        * `amrap` - Amrap
+
+        * `hiit` - Hiit
+
+        * `tabata` - Tabata
+
+        * `edt` - Edt
+
+        * `rft` - Rft
+
+        * `afap` - Afap'
+    Day:
+      type: object
+      description: Day serializer
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        routine:
+          type: integer
+        order:
+          type: integer
+          maximum: 2147483647
+          minimum: 0
+        name:
+          type: string
+          maxLength: 20
+        description:
+          type: string
+          maxLength: 1000
+        is_rest:
+          type: boolean
+        need_logs_to_advance:
+          type: boolean
+        type:
+          $ref: '#/components/schemas/DayTypeEnum'
+        config: {}
+      required:
+      - id
+      - routine
     PaginatedDayList:
       type: object
       required:
@@ -299,61 +354,6 @@ components:
         type:
           $ref: '#/components/schemas/DayTypeEnum'
         config: {}
-    DayTypeEnum:
-      enum:
-      - custom
-      - enom
-      - amrap
-      - hiit
-      - tabata
-      - edt
-      - rft
-      - afap
-      type: string
-      description: '* `custom` - Custom
-
-        * `enom` - Enom
-
-        * `amrap` - Amrap
-
-        * `hiit` - Hiit
-
-        * `tabata` - Tabata
-
-        * `edt` - Edt
-
-        * `rft` - Rft
-
-        * `afap` - Afap'
-    Day:
-      type: object
-      description: Day serializer
-      properties:
-        id:
-          type: integer
-          readOnly: true
-        routine:
-          type: integer
-        order:
-          type: integer
-          maximum: 2147483647
-          minimum: 0
-        name:
-          type: string
-          maxLength: 20
-        description:
-          type: string
-          maxLength: 1000
-        is_rest:
-          type: boolean
-        need_logs_to_advance:
-          type: boolean
-        type:
-          $ref: '#/components/schemas/DayTypeEnum'
-        config: {}
-      required:
-      - id
-      - routine
   securitySchemes:
     cookieAuth:
       type: apiKey
