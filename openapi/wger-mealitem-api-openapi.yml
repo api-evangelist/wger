@@ -277,6 +277,81 @@ components:
       - amount
       - ingredient
       - meal
+    MealItem:
+      type: object
+      description: MealItem serializer
+      properties:
+        id:
+          type: string
+          format: uuid
+        meal:
+          type: string
+          format: uuid
+          title: Nutrition plan
+        ingredient:
+          type: integer
+        weight_unit:
+          type:
+          - integer
+          - 'null'
+        order:
+          type: integer
+          readOnly: true
+        amount:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,4}(?:\.\d{0,2})?$
+      required:
+      - amount
+      - ingredient
+      - meal
+      - order
+    PaginatedMealItemList:
+      type: object
+      required:
+      - count
+      - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?offset=400&limit=100
+        previous:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?offset=200&limit=100
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/MealItem'
+    PatchedMealItemRequest:
+      type: object
+      description: MealItem serializer
+      properties:
+        id:
+          type: string
+          format: uuid
+        meal:
+          type: string
+          format: uuid
+          title: Nutrition plan
+        ingredient:
+          type: integer
+        weight_unit:
+          type:
+          - integer
+          - 'null'
+        amount:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,4}(?:\.\d{0,2})?$
     NutritionalValues:
       type: object
       description: Nutritional values serializer
@@ -322,81 +397,6 @@ components:
       - fiber
       - protein
       - sodium
-    PatchedMealItemRequest:
-      type: object
-      description: MealItem serializer
-      properties:
-        id:
-          type: string
-          format: uuid
-        meal:
-          type: string
-          format: uuid
-          title: Nutrition plan
-        ingredient:
-          type: integer
-        weight_unit:
-          type:
-          - integer
-          - 'null'
-        amount:
-          type: string
-          format: decimal
-          pattern: ^-?\d{0,4}(?:\.\d{0,2})?$
-    PaginatedMealItemList:
-      type: object
-      required:
-      - count
-      - results
-      properties:
-        count:
-          type: integer
-          example: 123
-        next:
-          type:
-          - string
-          - 'null'
-          format: uri
-          example: http://api.example.org/accounts/?offset=400&limit=100
-        previous:
-          type:
-          - string
-          - 'null'
-          format: uri
-          example: http://api.example.org/accounts/?offset=200&limit=100
-        results:
-          type: array
-          items:
-            $ref: '#/components/schemas/MealItem'
-    MealItem:
-      type: object
-      description: MealItem serializer
-      properties:
-        id:
-          type: string
-          format: uuid
-        meal:
-          type: string
-          format: uuid
-          title: Nutrition plan
-        ingredient:
-          type: integer
-        weight_unit:
-          type:
-          - integer
-          - 'null'
-        order:
-          type: integer
-          readOnly: true
-        amount:
-          type: string
-          format: decimal
-          pattern: ^-?\d{0,4}(?:\.\d{0,2})?$
-      required:
-      - amount
-      - ingredient
-      - meal
-      - order
   securitySchemes:
     cookieAuth:
       type: apiKey

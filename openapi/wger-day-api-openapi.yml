@@ -252,6 +252,54 @@ components:
         * `rft` - Rft
 
         * `afap` - Afap'
+    PatchedDayRequest:
+      type: object
+      description: Day serializer
+      properties:
+        routine:
+          type: integer
+        order:
+          type: integer
+          maximum: 2147483647
+          minimum: 0
+        name:
+          type: string
+          maxLength: 20
+        description:
+          type: string
+          maxLength: 1000
+        is_rest:
+          type: boolean
+        need_logs_to_advance:
+          type: boolean
+        type:
+          $ref: '#/components/schemas/DayTypeEnum'
+        config: {}
+    DayRequest:
+      type: object
+      description: Day serializer
+      properties:
+        routine:
+          type: integer
+        order:
+          type: integer
+          maximum: 2147483647
+          minimum: 0
+        name:
+          type: string
+          maxLength: 20
+        description:
+          type: string
+          maxLength: 1000
+        is_rest:
+          type: boolean
+        need_logs_to_advance:
+          type: boolean
+        type:
+          $ref: '#/components/schemas/DayTypeEnum'
+        config: {}
+      required:
+      - routine
     Day:
       type: object
       description: Day serializer
@@ -306,54 +354,6 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/Day'
-    DayRequest:
-      type: object
-      description: Day serializer
-      properties:
-        routine:
-          type: integer
-        order:
-          type: integer
-          maximum: 2147483647
-          minimum: 0
-        name:
-          type: string
-          maxLength: 20
-        description:
-          type: string
-          maxLength: 1000
-        is_rest:
-          type: boolean
-        need_logs_to_advance:
-          type: boolean
-        type:
-          $ref: '#/components/schemas/DayTypeEnum'
-        config: {}
-      required:
-      - routine
-    PatchedDayRequest:
-      type: object
-      description: Day serializer
-      properties:
-        routine:
-          type: integer
-        order:
-          type: integer
-          maximum: 2147483647
-          minimum: 0
-        name:
-          type: string
-          maxLength: 20
-        description:
-          type: string
-          maxLength: 1000
-        is_rest:
-          type: boolean
-        need_logs_to_advance:
-          type: boolean
-        type:
-          $ref: '#/components/schemas/DayTypeEnum'
-        config: {}
   securitySchemes:
     cookieAuth:
       type: apiKey

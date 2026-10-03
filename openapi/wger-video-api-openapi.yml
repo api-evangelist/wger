@@ -214,31 +214,6 @@ paths:
       x-summary-source: derived
 components:
   schemas:
-    PaginatedExerciseVideoList:
-      type: object
-      required:
-      - count
-      - results
-      properties:
-        count:
-          type: integer
-          example: 123
-        next:
-          type:
-          - string
-          - 'null'
-          format: uri
-          example: http://api.example.org/accounts/?offset=400&limit=100
-        previous:
-          type:
-          - string
-          - 'null'
-          format: uri
-          example: http://api.example.org/accounts/?offset=200&limit=100
-        results:
-          type: array
-          items:
-            $ref: '#/components/schemas/ExerciseVideo'
     ExerciseVideo:
       type: object
       description: ExerciseVideo serializer
@@ -385,6 +360,31 @@ components:
             maxLength: 200
           - type: string
             maxLength: 0
+    PaginatedExerciseVideoList:
+      type: object
+      required:
+      - count
+      - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?offset=400&limit=100
+        previous:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?offset=200&limit=100
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/ExerciseVideo'
     ExerciseVideoRequest:
       type: object
       description: ExerciseVideo serializer

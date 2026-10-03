@@ -245,6 +245,31 @@ paths:
       x-summary-source: derived
 components:
   schemas:
+    RepetitionsConfigRequest:
+      type: object
+      description: Repetition Config serializer
+      properties:
+        slot_entry:
+          type: integer
+        iteration:
+          type: integer
+          maximum: 2147483647
+          minimum: 0
+        value:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,4}(?:\.\d{0,2})?$
+        operation:
+          $ref: '#/components/schemas/OperationEnum'
+        step:
+          $ref: '#/components/schemas/StepEnum'
+        repeat:
+          type: boolean
+        requirements: {}
+      required:
+      - iteration
+      - slot_entry
+      - value
     PaginatedRepetitionsConfigList:
       type: object
       required:
@@ -270,6 +295,17 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/RepetitionsConfig'
+    OperationEnum:
+      enum:
+      - +
+      - '-'
+      - r
+      type: string
+      description: '* `+` - Plus
+
+        * `-` - Minus
+
+        * `r` - Replace'
     PatchedRepetitionsConfigRequest:
       type: object
       description: Repetition Config serializer
@@ -302,31 +338,6 @@ components:
         * `abs` - Absolute
 
         * `percent` - Percent'
-    RepetitionsConfigRequest:
-      type: object
-      description: Repetition Config serializer
-      properties:
-        slot_entry:
-          type: integer
-        iteration:
-          type: integer
-          maximum: 2147483647
-          minimum: 0
-        value:
-          type: string
-          format: decimal
-          pattern: ^-?\d{0,4}(?:\.\d{0,2})?$
-        operation:
-          $ref: '#/components/schemas/OperationEnum'
-        step:
-          $ref: '#/components/schemas/StepEnum'
-        repeat:
-          type: boolean
-        requirements: {}
-      required:
-      - iteration
-      - slot_entry
-      - value
     RepetitionsConfig:
       type: object
       description: Repetition Config serializer
@@ -356,17 +367,6 @@ components:
       - iteration
       - slot_entry
       - value
-    OperationEnum:
-      enum:
-      - +
-      - '-'
-      - r
-      type: string
-      description: '* `+` - Plus
-
-        * `-` - Minus
-
-        * `r` - Replace'
   securitySchemes:
     cookieAuth:
       type: apiKey

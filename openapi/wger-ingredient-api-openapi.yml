@@ -349,37 +349,6 @@ paths:
       x-summary-source: derived
 components:
   schemas:
-    NullEnum:
-      enum:
-      - null
-    BlankEnum:
-      enum:
-      - ''
-    PaginatedIngredientList:
-      type: object
-      required:
-      - count
-      - results
-      properties:
-        count:
-          type: integer
-          example: 123
-        next:
-          type:
-          - string
-          - 'null'
-          format: uri
-          example: http://api.example.org/accounts/?offset=400&limit=100
-        previous:
-          type:
-          - string
-          - 'null'
-          format: uri
-          example: http://api.example.org/accounts/?offset=200&limit=100
-        results:
-          type: array
-          items:
-            $ref: '#/components/schemas/Ingredient'
     IngredientValues:
       type: object
       description: 'Nutritional values for a given amount and unit of an ingredient.
@@ -453,6 +422,9 @@ components:
         * `d` - D
 
         * `e` - E'
+    NullEnum:
+      enum:
+      - null
     IngredientWeightUnit:
       type: object
       description: IngredientWeightUnit serializer
@@ -684,6 +656,34 @@ components:
       - protein
       - uuid
       - weight_units
+    BlankEnum:
+      enum:
+      - ''
+    PaginatedIngredientList:
+      type: object
+      required:
+      - count
+      - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?offset=400&limit=100
+        previous:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?offset=200&limit=100
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/Ingredient'
   securitySchemes:
     cookieAuth:
       type: apiKey

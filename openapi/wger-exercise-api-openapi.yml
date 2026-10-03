@@ -279,6 +279,60 @@ components:
           maxLength: 3500
       required:
       - category
+    Exercise:
+      type: object
+      description: Exercise serializer
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        uuid:
+          type: string
+          format: uuid
+          readOnly: true
+        created:
+          type: string
+          format: date-time
+          readOnly: true
+          title: Creation date
+        last_update:
+          type: string
+          format: date-time
+          readOnly: true
+        category:
+          type: integer
+        muscles:
+          type: array
+          items:
+            type: integer
+            title: Primary muscles
+          title: Primary muscles
+        muscles_secondary:
+          type: array
+          items:
+            type: integer
+            title: Secondary muscles
+          title: Secondary muscles
+        equipment:
+          type: array
+          items:
+            type: integer
+        variation_group:
+          type:
+          - string
+          - 'null'
+          format: uuid
+        license_author:
+          type: string
+          title: Author(s)
+          description: If you are not the author, enter the name or source here.
+          maxLength: 3500
+      required:
+      - category
+      - created
+      - id
+      - last_update
+      - uuid
     PaginatedExerciseList:
       type: object
       required:
@@ -336,60 +390,6 @@ components:
           title: Author(s)
           description: If you are not the author, enter the name or source here.
           maxLength: 3500
-    Exercise:
-      type: object
-      description: Exercise serializer
-      properties:
-        id:
-          type: integer
-          readOnly: true
-        uuid:
-          type: string
-          format: uuid
-          readOnly: true
-        created:
-          type: string
-          format: date-time
-          readOnly: true
-          title: Creation date
-        last_update:
-          type: string
-          format: date-time
-          readOnly: true
-        category:
-          type: integer
-        muscles:
-          type: array
-          items:
-            type: integer
-            title: Primary muscles
-          title: Primary muscles
-        muscles_secondary:
-          type: array
-          items:
-            type: integer
-            title: Secondary muscles
-          title: Secondary muscles
-        equipment:
-          type: array
-          items:
-            type: integer
-        variation_group:
-          type:
-          - string
-          - 'null'
-          format: uuid
-        license_author:
-          type: string
-          title: Author(s)
-          description: If you are not the author, enter the name or source here.
-          maxLength: 3500
-      required:
-      - category
-      - created
-      - id
-      - last_update
-      - uuid
   securitySchemes:
     cookieAuth:
       type: apiKey

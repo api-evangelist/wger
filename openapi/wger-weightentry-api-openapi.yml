@@ -267,6 +267,20 @@ components:
           type: string
           format: decimal
           pattern: ^-?\d{0,3}(?:\.\d{0,2})?$
+    WeightEntryRequest:
+      type: object
+      description: Weight serializer
+      properties:
+        date:
+          type: string
+          format: date-time
+        weight:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,3}(?:\.\d{0,2})?$
+      required:
+      - date
+      - weight
     PaginatedWeightEntryList:
       type: object
       required:
@@ -292,20 +306,6 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/WeightEntry'
-    WeightEntryRequest:
-      type: object
-      description: Weight serializer
-      properties:
-        date:
-          type: string
-          format: date-time
-        weight:
-          type: string
-          format: decimal
-          pattern: ^-?\d{0,3}(?:\.\d{0,2})?$
-      required:
-      - date
-      - weight
     WeightEntry:
       type: object
       description: Weight serializer

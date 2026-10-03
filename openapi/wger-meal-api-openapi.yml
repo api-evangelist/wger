@@ -245,7 +245,7 @@ paths:
       x-summary-source: derived
 components:
   schemas:
-    MealRequest:
+    Meal:
       type: object
       description: Meal serializer
       properties:
@@ -256,6 +256,9 @@ components:
           type: string
           format: uuid
           title: Nutrition plan
+        order:
+          type: integer
+          readOnly: true
         time:
           type:
           - string
@@ -267,6 +270,7 @@ components:
           description: Give meals a textual description / name such as "Breakfast" or "after workout"
           maxLength: 25
       required:
+      - order
       - plan
     PatchedMealRequest:
       type: object
@@ -289,6 +293,31 @@ components:
           type: string
           description: Give meals a textual description / name such as "Breakfast" or "after workout"
           maxLength: 25
+    PaginatedMealList:
+      type: object
+      required:
+      - count
+      - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?offset=400&limit=100
+        previous:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?offset=200&limit=100
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/Meal'
     NutritionalValues:
       type: object
       description: Nutritional values serializer
@@ -334,32 +363,7 @@ components:
       - fiber
       - protein
       - sodium
-    PaginatedMealList:
-      type: object
-      required:
-      - count
-      - results
-      properties:
-        count:
-          type: integer
-          example: 123
-        next:
-          type:
-          - string
-          - 'null'
-          format: uri
-          example: http://api.example.org/accounts/?offset=400&limit=100
-        previous:
-          type:
-          - string
-          - 'null'
-          format: uri
-          example: http://api.example.org/accounts/?offset=200&limit=100
-        results:
-          type: array
-          items:
-            $ref: '#/components/schemas/Meal'
-    Meal:
+    MealRequest:
       type: object
       description: Meal serializer
       properties:
@@ -370,9 +374,6 @@ components:
           type: string
           format: uuid
           title: Nutrition plan
-        order:
-          type: integer
-          readOnly: true
         time:
           type:
           - string
@@ -384,7 +385,6 @@ components:
           description: Give meals a textual description / name such as "Breakfast" or "after workout"
           maxLength: 25
       required:
-      - order
       - plan
   securitySchemes:
     cookieAuth:

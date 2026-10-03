@@ -211,23 +211,6 @@ paths:
       x-summary-source: derived
 components:
   schemas:
-    ImageRequest:
-      type: object
-      description: Exercise serializer
-      properties:
-        date:
-          type: string
-          format: date
-        image:
-          type: string
-          format: binary
-          description: Only PNG and JPEG formats are supported
-        description:
-          type: string
-          maxLength: 1000
-      required:
-      - date
-      - image
     PatchedImageRequest:
       type: object
       description: Exercise serializer
@@ -296,6 +279,23 @@ components:
       - id
       - image
       - width
+    ImageRequest:
+      type: object
+      description: Exercise serializer
+      properties:
+        date:
+          type: string
+          format: date
+        image:
+          type: string
+          format: binary
+          description: Only PNG and JPEG formats are supported
+        description:
+          type: string
+          maxLength: 1000
+      required:
+      - date
+      - image
   securitySchemes:
     cookieAuth:
       type: apiKey

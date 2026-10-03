@@ -295,6 +295,54 @@ paths:
           description: ''
 components:
   schemas:
+    TrophyTypeEnum:
+      enum:
+      - time
+      - volume
+      - count
+      - sequence
+      - date
+      - pr
+      - other
+      type: string
+      description: '* `time` - Time-based
+
+        * `volume` - Volume-based
+
+        * `count` - Count-based
+
+        * `sequence` - Sequence-based
+
+        * `date` - Date-based
+
+        * `pr` - Personal Record
+
+        * `other` - Other'
+    PaginatedTrophyList:
+      type: object
+      required:
+      - count
+      - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?offset=400&limit=100
+        previous:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?offset=200&limit=100
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/Trophy'
     TrophyProgress:
       type: object
       description: 'Serializer for trophy progress information.
@@ -416,54 +464,6 @@ components:
       - order
       - trophy_type
       - uuid
-    PaginatedTrophyList:
-      type: object
-      required:
-      - count
-      - results
-      properties:
-        count:
-          type: integer
-          example: 123
-        next:
-          type:
-          - string
-          - 'null'
-          format: uri
-          example: http://api.example.org/accounts/?offset=400&limit=100
-        previous:
-          type:
-          - string
-          - 'null'
-          format: uri
-          example: http://api.example.org/accounts/?offset=200&limit=100
-        results:
-          type: array
-          items:
-            $ref: '#/components/schemas/Trophy'
-    TrophyTypeEnum:
-      enum:
-      - time
-      - volume
-      - count
-      - sequence
-      - date
-      - pr
-      - other
-      type: string
-      description: '* `time` - Time-based
-
-        * `volume` - Volume-based
-
-        * `count` - Count-based
-
-        * `sequence` - Sequence-based
-
-        * `date` - Date-based
-
-        * `pr` - Personal Record
-
-        * `other` - Other'
   securitySchemes:
     cookieAuth:
       type: apiKey

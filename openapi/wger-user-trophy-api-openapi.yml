@@ -214,6 +214,54 @@ paths:
       x-summary-source: derived
 components:
   schemas:
+    TrophyTypeEnum:
+      enum:
+      - time
+      - volume
+      - count
+      - sequence
+      - date
+      - pr
+      - other
+      type: string
+      description: '* `time` - Time-based
+
+        * `volume` - Volume-based
+
+        * `count` - Count-based
+
+        * `sequence` - Sequence-based
+
+        * `date` - Date-based
+
+        * `pr` - Personal Record
+
+        * `other` - Other'
+    PaginatedUserTrophyList:
+      type: object
+      required:
+      - count
+      - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?offset=400&limit=100
+        previous:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?offset=200&limit=100
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/UserTrophy'
     UserTrophy:
       type: object
       description: 'Serializer for UserTrophy model.
@@ -253,31 +301,6 @@ components:
       - is_notified
       - progress
       - trophy
-    PaginatedUserTrophyList:
-      type: object
-      required:
-      - count
-      - results
-      properties:
-        count:
-          type: integer
-          example: 123
-        next:
-          type:
-          - string
-          - 'null'
-          format: uri
-          example: http://api.example.org/accounts/?offset=400&limit=100
-        previous:
-          type:
-          - string
-          - 'null'
-          format: uri
-          example: http://api.example.org/accounts/?offset=200&limit=100
-        results:
-          type: array
-          items:
-            $ref: '#/components/schemas/UserTrophy'
     Trophy:
       type: object
       description: 'Serializer for Trophy model.
@@ -356,29 +379,6 @@ components:
       - order
       - trophy_type
       - uuid
-    TrophyTypeEnum:
-      enum:
-      - time
-      - volume
-      - count
-      - sequence
-      - date
-      - pr
-      - other
-      type: string
-      description: '* `time` - Time-based
-
-        * `volume` - Volume-based
-
-        * `count` - Count-based
-
-        * `sequence` - Sequence-based
-
-        * `date` - Date-based
-
-        * `pr` - Personal Record
-
-        * `other` - Other'
   securitySchemes:
     cookieAuth:
       type: apiKey

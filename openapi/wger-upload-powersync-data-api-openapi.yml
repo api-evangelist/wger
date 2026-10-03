@@ -112,6 +112,13 @@ components:
           type: string
         details:
           type: string
+    PatchedPowersyncUploadRequest:
+      type: object
+      properties:
+        table:
+          type: string
+          minLength: 1
+        data: {}
     PowersyncUploadRequest:
       type: object
       properties:
@@ -122,13 +129,6 @@ components:
       required:
       - data
       - table
-    PatchedPowersyncUploadRequest:
-      type: object
-      properties:
-        table:
-          type: string
-          minLength: 1
-        data: {}
   securitySchemes:
     cookieAuth:
       type: apiKey

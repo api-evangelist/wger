@@ -206,41 +206,6 @@ paths:
       x-summary-source: derived
 components:
   schemas:
-    ExerciseAlias:
-      type: object
-      description: ExerciseAlias serializer
-      properties:
-        id:
-          type: integer
-          readOnly: true
-        uuid:
-          type: string
-          format: uuid
-          readOnly: true
-        translation:
-          type: integer
-          title: Exercise
-        alias:
-          type: string
-          title: Alias for an exercise
-          maxLength: 200
-      required:
-      - alias
-      - id
-      - translation
-      - uuid
-    PatchedExerciseAliasRequest:
-      type: object
-      description: ExerciseAlias serializer
-      properties:
-        translation:
-          type: integer
-          title: Exercise
-        alias:
-          type: string
-          minLength: 1
-          title: Alias for an exercise
-          maxLength: 200
     ExerciseAliasRequest:
       type: object
       description: ExerciseAlias serializer
@@ -281,6 +246,41 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/ExerciseAlias'
+    PatchedExerciseAliasRequest:
+      type: object
+      description: ExerciseAlias serializer
+      properties:
+        translation:
+          type: integer
+          title: Exercise
+        alias:
+          type: string
+          minLength: 1
+          title: Alias for an exercise
+          maxLength: 200
+    ExerciseAlias:
+      type: object
+      description: ExerciseAlias serializer
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        uuid:
+          type: string
+          format: uuid
+          readOnly: true
+        translation:
+          type: integer
+          title: Exercise
+        alias:
+          type: string
+          title: Alias for an exercise
+          maxLength: 200
+      required:
+      - alias
+      - id
+      - translation
+      - uuid
   securitySchemes:
     cookieAuth:
       type: apiKey

@@ -240,6 +240,53 @@ paths:
       x-summary-source: derived
 components:
   schemas:
+    WorkoutSessionRequest:
+      type: object
+      description: Workout session serializer
+      properties:
+        id:
+          type: string
+          format: uuid
+        routine:
+          type:
+          - integer
+          - 'null'
+        day:
+          type:
+          - integer
+          - 'null'
+        date:
+          type: string
+          format: date
+        notes:
+          type:
+          - string
+          - 'null'
+          description: Any notes you might want to save about this workout session.
+        impression:
+          allOf:
+          - $ref: '#/components/schemas/ImpressionEnum'
+          title: General impression
+          description: 'Your impression about this workout session. Did you exercise as well as you could?
+
+
+            * `1` - Bad
+
+            * `2` - Neutral
+
+            * `3` - Good'
+        time_start:
+          type:
+          - string
+          - 'null'
+          format: time
+          title: Start time
+        time_end:
+          type:
+          - string
+          - 'null'
+          format: time
+          title: Finish time
     WorkoutSession:
       type: object
       description: Workout session serializer
@@ -287,6 +334,17 @@ components:
           - 'null'
           format: time
           title: Finish time
+    ImpressionEnum:
+      enum:
+      - '1'
+      - '2'
+      - '3'
+      type: string
+      description: '* `1` - Bad
+
+        * `2` - Neutral
+
+        * `3` - Good'
     PatchedWorkoutSessionRequest:
       type: object
       description: Workout session serializer
@@ -359,64 +417,6 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/WorkoutSession'
-    ImpressionEnum:
-      enum:
-      - '1'
-      - '2'
-      - '3'
-      type: string
-      description: '* `1` - Bad
-
-        * `2` - Neutral
-
-        * `3` - Good'
-    WorkoutSessionRequest:
-      type: object
-      description: Workout session serializer
-      properties:
-        id:
-          type: string
-          format: uuid
-        routine:
-          type:
-          - integer
-          - 'null'
-        day:
-          type:
-          - integer
-          - 'null'
-        date:
-          type: string
-          format: date
-        notes:
-          type:
-          - string
-          - 'null'
-          description: Any notes you might want to save about this workout session.
-        impression:
-          allOf:
-          - $ref: '#/components/schemas/ImpressionEnum'
-          title: General impression
-          description: 'Your impression about this workout session. Did you exercise as well as you could?
-
-
-            * `1` - Bad
-
-            * `2` - Neutral
-
-            * `3` - Good'
-        time_start:
-          type:
-          - string
-          - 'null'
-          format: time
-          title: Start time
-        time_end:
-          type:
-          - string
-          - 'null'
-          format: time
-          title: Finish time
   securitySchemes:
     cookieAuth:
       type: apiKey

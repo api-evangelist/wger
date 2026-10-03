@@ -431,7 +431,7 @@ paths:
       x-summary-source: derived
 components:
   schemas:
-    PatchedWorkoutLogRequest:
+    WorkoutLogRequest:
       type: object
       description: Workout log serializer
       properties:
@@ -524,6 +524,8 @@ components:
           - 'null'
           maximum: 2147483647
           minimum: 0
+      required:
+      - exercise
     WorkoutLog:
       type: object
       description: Workout log serializer
@@ -644,7 +646,7 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/WorkoutLog'
-    WorkoutLogRequest:
+    PatchedWorkoutLogRequest:
       type: object
       description: Workout log serializer
       properties:
@@ -737,8 +739,6 @@ components:
           - 'null'
           maximum: 2147483647
           minimum: 0
-      required:
-      - exercise
   securitySchemes:
     cookieAuth:
       type: apiKey

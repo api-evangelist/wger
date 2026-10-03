@@ -257,28 +257,6 @@ paths:
       x-summary-source: derived
 components:
   schemas:
-    PatchedMeasurementRequest:
-      type: object
-      description: Measurement serializer
-      properties:
-        id:
-          type: string
-          format: uuid
-        category:
-          type: string
-          format: uuid
-        date:
-          type: string
-          format: date-time
-        value:
-          type: number
-          format: double
-          maximum: 5000
-          minimum: 0
-        notes:
-          type: string
-          title: Description
-          maxLength: 100
     PaginatedMeasurementList:
       type: object
       required:
@@ -304,6 +282,28 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/Measurement'
+    PatchedMeasurementRequest:
+      type: object
+      description: Measurement serializer
+      properties:
+        id:
+          type: string
+          format: uuid
+        category:
+          type: string
+          format: uuid
+        date:
+          type: string
+          format: date-time
+        value:
+          type: number
+          format: double
+          maximum: 5000
+          minimum: 0
+        notes:
+          type: string
+          title: Description
+          maxLength: 100
     Measurement:
       type: object
       description: Measurement serializer

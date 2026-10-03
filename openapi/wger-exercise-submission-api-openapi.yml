@@ -57,96 +57,6 @@ components:
           maxLength: 200
       required:
       - comment
-    ExerciseSubmissionAliasRequest:
-      type: object
-      description: 'Alias serializer without ``translation``, for use inside a submission.
-
-
-        A subclass rather than a modified instance of the parent: both would be named
-
-        ExerciseAlias in the schema, and the narrower one would win for the alias
-
-        endpoint too.'
-      properties:
-        alias:
-          type: string
-          minLength: 1
-          title: Alias for an exercise
-          maxLength: 200
-      required:
-      - alias
-    ExerciseSubmission:
-      type: object
-      description: Exercise submission serializer
-      properties:
-        id:
-          type: integer
-          readOnly: true
-        category:
-          type: integer
-        muscles:
-          type: array
-          items:
-            type: integer
-        muscles_secondary:
-          type: array
-          items:
-            type: integer
-        equipment:
-          type: array
-          items:
-            type: integer
-        variation_group:
-          type:
-          - string
-          - 'null'
-          format: uuid
-        license:
-          type: integer
-        license_author:
-          type: string
-          title: Author(s)
-          description: If you are not the author, enter the name or source here.
-          maxLength: 3500
-        translations:
-          type: array
-          items:
-            $ref: '#/components/schemas/ExerciseTranslationSubmission'
-      required:
-      - category
-      - id
-      - translations
-    ExerciseTranslationSubmissionRequest:
-      type: object
-      description: "Translation serializer used as a nested child of ``ExerciseSubmissionSerializer``.\n\nDiffers from the regular serializer only because:\n- the ``exercise`` FK isn't known until the parent creates it (passed via ``create()`` kwargs);\n- the payload also accepts nested ``aliases`` and ``comments`` lists,\n  which the regular CRUD endpoint doesn't;\n- those take their ``translation`` from the parent, so they don't accept one."
-      properties:
-        name:
-          type: string
-          minLength: 1
-          maxLength: 200
-        description_source:
-          type: string
-          minLength: 40
-          title: Description (Source)
-        language:
-          type: integer
-        aliases:
-          type: array
-          items:
-            $ref: '#/components/schemas/ExerciseSubmissionAliasRequest'
-        comments:
-          type: array
-          items:
-            $ref: '#/components/schemas/ExerciseSubmissionCommentRequest'
-        license_author:
-          type: string
-          title: Author(s)
-          description: If you are not the author, enter the name or source here.
-          maxLength: 3500
-      required:
-      - description_source
-      - language
-      - name
     ExerciseSubmissionAlias:
       type: object
       description: 'Alias serializer without ``translation``, for use inside a submission.
@@ -195,6 +105,96 @@ components:
       - comment
       - id
       - uuid
+    ExerciseSubmission:
+      type: object
+      description: Exercise submission serializer
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        category:
+          type: integer
+        muscles:
+          type: array
+          items:
+            type: integer
+        muscles_secondary:
+          type: array
+          items:
+            type: integer
+        equipment:
+          type: array
+          items:
+            type: integer
+        variation_group:
+          type:
+          - string
+          - 'null'
+          format: uuid
+        license:
+          type: integer
+        license_author:
+          type: string
+          title: Author(s)
+          description: If you are not the author, enter the name or source here.
+          maxLength: 3500
+        translations:
+          type: array
+          items:
+            $ref: '#/components/schemas/ExerciseTranslationSubmission'
+      required:
+      - category
+      - id
+      - translations
+    ExerciseSubmissionAliasRequest:
+      type: object
+      description: 'Alias serializer without ``translation``, for use inside a submission.
+
+
+        A subclass rather than a modified instance of the parent: both would be named
+
+        ExerciseAlias in the schema, and the narrower one would win for the alias
+
+        endpoint too.'
+      properties:
+        alias:
+          type: string
+          minLength: 1
+          title: Alias for an exercise
+          maxLength: 200
+      required:
+      - alias
+    ExerciseTranslationSubmissionRequest:
+      type: object
+      description: "Translation serializer used as a nested child of ``ExerciseSubmissionSerializer``.\n\nDiffers from the regular serializer only because:\n- the ``exercise`` FK isn't known until the parent creates it (passed via ``create()`` kwargs);\n- the payload also accepts nested ``aliases`` and ``comments`` lists,\n  which the regular CRUD endpoint doesn't;\n- those take their ``translation`` from the parent, so they don't accept one."
+      properties:
+        name:
+          type: string
+          minLength: 1
+          maxLength: 200
+        description_source:
+          type: string
+          minLength: 40
+          title: Description (Source)
+        language:
+          type: integer
+        aliases:
+          type: array
+          items:
+            $ref: '#/components/schemas/ExerciseSubmissionAliasRequest'
+        comments:
+          type: array
+          items:
+            $ref: '#/components/schemas/ExerciseSubmissionCommentRequest'
+        license_author:
+          type: string
+          title: Author(s)
+          description: If you are not the author, enter the name or source here.
+          maxLength: 3500
+      required:
+      - description_source
+      - language
+      - name
     ExerciseSubmissionRequest:
       type: object
       description: Exercise submission serializer

@@ -206,54 +206,6 @@ paths:
       x-summary-source: derived
 components:
   schemas:
-    PaginatedExerciseCommentList:
-      type: object
-      required:
-      - count
-      - results
-      properties:
-        count:
-          type: integer
-          example: 123
-        next:
-          type:
-          - string
-          - 'null'
-          format: uri
-          example: http://api.example.org/accounts/?offset=400&limit=100
-        previous:
-          type:
-          - string
-          - 'null'
-          format: uri
-          example: http://api.example.org/accounts/?offset=200&limit=100
-        results:
-          type: array
-          items:
-            $ref: '#/components/schemas/ExerciseComment'
-    ExerciseComment:
-      type: object
-      description: ExerciseComment serializer
-      properties:
-        id:
-          type: integer
-          readOnly: true
-        uuid:
-          type: string
-          format: uuid
-          readOnly: true
-        translation:
-          type: integer
-          title: Exercise
-        comment:
-          type: string
-          description: A comment about how to correctly do this exercise.
-          maxLength: 200
-      required:
-      - comment
-      - id
-      - translation
-      - uuid
     ExerciseCommentRequest:
       type: object
       description: ExerciseComment serializer
@@ -281,6 +233,54 @@ components:
           minLength: 1
           description: A comment about how to correctly do this exercise.
           maxLength: 200
+    ExerciseComment:
+      type: object
+      description: ExerciseComment serializer
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        uuid:
+          type: string
+          format: uuid
+          readOnly: true
+        translation:
+          type: integer
+          title: Exercise
+        comment:
+          type: string
+          description: A comment about how to correctly do this exercise.
+          maxLength: 200
+      required:
+      - comment
+      - id
+      - translation
+      - uuid
+    PaginatedExerciseCommentList:
+      type: object
+      required:
+      - count
+      - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?offset=400&limit=100
+        previous:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?offset=200&limit=100
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/ExerciseComment'
   securitySchemes:
     cookieAuth:
       type: apiKey
