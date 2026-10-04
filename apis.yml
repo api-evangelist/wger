@@ -52,7 +52,6 @@ x-category: "Sports & Fitness"
 x-tier: 3
 x-tier-reason: bulk-registered-from-public-apis
 tags:
-  - Sports And Fitness
   - Public APIs
   - Fitness
   - Nutrition
@@ -63,7 +62,6 @@ tags:
   - Django
   - REST
 tags_raw:
-  - Sports And Fitness
   - Public APIs
   - Fitness
   - Nutrition
@@ -541,6 +539,8 @@ apis:
   humanURL: https://wger.readthedocs.io/en/latest/api/api.html
   baseURL: https://wger.de/api/v2
   tags:
+  - Ingredient
+  tags_raw:
   - ingredient
   properties:
   - type: OpenAPI
@@ -2204,3 +2204,5 @@ x-enrichment:
   status: enriched
   artifacts_added: 28
   pass: local-v1
+x-tags-removed:
+- Sports And Fitness
