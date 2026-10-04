@@ -43,68 +43,6 @@ paths:
       x-summary-source: derived
 components:
   schemas:
-    ExerciseSubmissionCommentRequest:
-      type: object
-      description: 'Comment serializer without ``translation``, for use inside a submission.
-
-
-        See ExerciseSubmissionAliasSerializer for why this is a subclass.'
-      properties:
-        comment:
-          type: string
-          minLength: 1
-          description: A comment about how to correctly do this exercise.
-          maxLength: 200
-      required:
-      - comment
-    ExerciseSubmissionAlias:
-      type: object
-      description: 'Alias serializer without ``translation``, for use inside a submission.
-
-
-        A subclass rather than a modified instance of the parent: both would be named
-
-        ExerciseAlias in the schema, and the narrower one would win for the alias
-
-        endpoint too.'
-      properties:
-        id:
-          type: integer
-          readOnly: true
-        uuid:
-          type: string
-          format: uuid
-          readOnly: true
-        alias:
-          type: string
-          title: Alias for an exercise
-          maxLength: 200
-      required:
-      - alias
-      - id
-      - uuid
-    ExerciseSubmissionComment:
-      type: object
-      description: 'Comment serializer without ``translation``, for use inside a submission.
-
-
-        See ExerciseSubmissionAliasSerializer for why this is a subclass.'
-      properties:
-        id:
-          type: integer
-          readOnly: true
-        uuid:
-          type: string
-          format: uuid
-          readOnly: true
-        comment:
-          type: string
-          description: A comment about how to correctly do this exercise.
-          maxLength: 200
-      required:
-      - comment
-      - id
-      - uuid
     ExerciseSubmission:
       type: object
       description: Exercise submission serializer
@@ -146,46 +84,49 @@ components:
       - category
       - id
       - translations
-    ExerciseSubmissionAliasRequest:
+    ExerciseSubmissionComment:
       type: object
-      description: 'Alias serializer without ``translation``, for use inside a submission.
+      description: 'Comment serializer without ``translation``, for use inside a submission.
 
 
-        A subclass rather than a modified instance of the parent: both would be named
-
-        ExerciseAlias in the schema, and the narrower one would win for the alias
-
-        endpoint too.'
+        See ExerciseSubmissionAliasSerializer for why this is a subclass.'
       properties:
-        alias:
+        id:
+          type: integer
+          readOnly: true
+        uuid:
           type: string
-          minLength: 1
-          title: Alias for an exercise
+          format: uuid
+          readOnly: true
+        comment:
+          type: string
+          description: A comment about how to correctly do this exercise.
           maxLength: 200
       required:
-      - alias
-    ExerciseTranslationSubmissionRequest:
+      - comment
+      - id
+      - uuid
+    ExerciseTranslationSubmission:
       type: object
       description: "Translation serializer used as a nested child of ``ExerciseSubmissionSerializer``.\n\nDiffers from the regular serializer only because:\n- the ``exercise`` FK isn't known until the parent creates it (passed via ``create()`` kwargs);\n- the payload also accepts nested ``aliases`` and ``comments`` lists,\n  which the regular CRUD endpoint doesn't;\n- those take their ``translation`` from the parent, so they don't accept one."
       properties:
         name:
           type: string
-          minLength: 1
           maxLength: 200
         description_source:
           type: string
-          minLength: 40
           title: Description (Source)
+          minLength: 40
         language:
           type: integer
         aliases:
           type: array
           items:
-            $ref: '#/components/schemas/ExerciseSubmissionAliasRequest'
+            $ref: '#/components/schemas/ExerciseSubmissionAlias'
         comments:
           type: array
           items:
-            $ref: '#/components/schemas/ExerciseSubmissionCommentRequest'
+            $ref: '#/components/schemas/ExerciseSubmissionComment'
         license_author:
           type: string
           title: Author(s)
@@ -238,27 +179,54 @@ components:
       required:
       - category
       - translations
-    ExerciseTranslationSubmission:
+    ExerciseSubmissionAlias:
+      type: object
+      description: 'Alias serializer without ``translation``, for use inside a submission.
+
+
+        A subclass rather than a modified instance of the parent: both would be named
+
+        ExerciseAlias in the schema, and the narrower one would win for the alias
+
+        endpoint too.'
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        uuid:
+          type: string
+          format: uuid
+          readOnly: true
+        alias:
+          type: string
+          title: Alias for an exercise
+          maxLength: 200
+      required:
+      - alias
+      - id
+      - uuid
+    ExerciseTranslationSubmissionRequest:
       type: object
       description: "Translation serializer used as a nested child of ``ExerciseSubmissionSerializer``.\n\nDiffers from the regular serializer only because:\n- the ``exercise`` FK isn't known until the parent creates it (passed via ``create()`` kwargs);\n- the payload also accepts nested ``aliases`` and ``comments`` lists,\n  which the regular CRUD endpoint doesn't;\n- those take their ``translation`` from the parent, so they don't accept one."
       properties:
         name:
           type: string
+          minLength: 1
           maxLength: 200
         description_source:
           type: string
-          title: Description (Source)
           minLength: 40
+          title: Description (Source)
         language:
           type: integer
         aliases:
           type: array
           items:
-            $ref: '#/components/schemas/ExerciseSubmissionAlias'
+            $ref: '#/components/schemas/ExerciseSubmissionAliasRequest'
         comments:
           type: array
           items:
-            $ref: '#/components/schemas/ExerciseSubmissionComment'
+            $ref: '#/components/schemas/ExerciseSubmissionCommentRequest'
         license_author:
           type: string
           title: Author(s)
@@ -268,6 +236,38 @@ components:
       - description_source
       - language
       - name
+    ExerciseSubmissionAliasRequest:
+      type: object
+      description: 'Alias serializer without ``translation``, for use inside a submission.
+
+
+        A subclass rather than a modified instance of the parent: both would be named
+
+        ExerciseAlias in the schema, and the narrower one would win for the alias
+
+        endpoint too.'
+      properties:
+        alias:
+          type: string
+          minLength: 1
+          title: Alias for an exercise
+          maxLength: 200
+      required:
+      - alias
+    ExerciseSubmissionCommentRequest:
+      type: object
+      description: 'Comment serializer without ``translation``, for use inside a submission.
+
+
+        See ExerciseSubmissionAliasSerializer for why this is a subclass.'
+      properties:
+        comment:
+          type: string
+          minLength: 1
+          description: A comment about how to correctly do this exercise.
+          maxLength: 200
+      required:
+      - comment
   securitySchemes:
     cookieAuth:
       type: apiKey

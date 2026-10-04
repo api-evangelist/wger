@@ -88,17 +88,6 @@ paths:
       x-summary-source: derived
 components:
   schemas:
-    UnitTypeEnum:
-      enum:
-      - REPETITIONS
-      - TIME
-      - DISTANCE
-      type: string
-      description: '* `REPETITIONS` - Repetitions
-
-        * `TIME` - Time
-
-        * `DISTANCE` - Distance'
     RepetitionUnit:
       type: object
       description: Repetition unit serializer
@@ -130,6 +119,17 @@ components:
       required:
       - id
       - name
+    UnitTypeEnum:
+      enum:
+      - REPETITIONS
+      - TIME
+      - DISTANCE
+      type: string
+      description: '* `REPETITIONS` - Repetitions
+
+        * `TIME` - Time
+
+        * `DISTANCE` - Distance'
     PaginatedRepetitionUnitList:
       type: object
       required:

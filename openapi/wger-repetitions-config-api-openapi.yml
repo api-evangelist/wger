@@ -245,6 +245,17 @@ paths:
       x-summary-source: derived
 components:
   schemas:
+    StepEnum:
+      enum:
+      - na
+      - abs
+      - percent
+      type: string
+      description: '* `na` - Not Applicable
+
+        * `abs` - Absolute
+
+        * `percent` - Percent'
     RepetitionsConfigRequest:
       type: object
       description: Repetition Config serializer
@@ -327,17 +338,6 @@ components:
         repeat:
           type: boolean
         requirements: {}
-    StepEnum:
-      enum:
-      - na
-      - abs
-      - percent
-      type: string
-      description: '* `na` - Not Applicable
-
-        * `abs` - Absolute
-
-        * `percent` - Percent'
     RepetitionsConfig:
       type: object
       description: Repetition Config serializer

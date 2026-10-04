@@ -431,6 +431,99 @@ paths:
       x-summary-source: derived
 components:
   schemas:
+    PatchedWorkoutLogRequest:
+      type: object
+      description: Workout log serializer
+      properties:
+        id:
+          type: string
+          format: uuid
+        date:
+          type: string
+          format: date-time
+        session:
+          type:
+          - string
+          - 'null'
+          format: uuid
+        routine:
+          type:
+          - integer
+          - 'null'
+          title: Workout
+        iteration:
+          type:
+          - integer
+          - 'null'
+          maximum: 2147483647
+          minimum: 0
+        slot_entry:
+          type:
+          - integer
+          - 'null'
+        next_log:
+          type:
+          - string
+          - 'null'
+          format: uuid
+        exercise:
+          type: integer
+        repetitions_unit:
+          type:
+          - integer
+          - 'null'
+        repetitions:
+          type:
+          - string
+          - 'null'
+          format: decimal
+          pattern: ^-?\d{0,4}(?:\.\d{0,2})?$
+        repetitions_target:
+          type:
+          - string
+          - 'null'
+          format: decimal
+          pattern: ^-?\d{0,4}(?:\.\d{0,2})?$
+        weight_unit:
+          type:
+          - integer
+          - 'null'
+        weight:
+          type:
+          - string
+          - 'null'
+          format: decimal
+          pattern: ^-?\d{0,4}(?:\.\d{0,2})?$
+        weight_target:
+          type:
+          - string
+          - 'null'
+          format: decimal
+          pattern: ^-?\d{0,4}(?:\.\d{0,2})?$
+        rir:
+          type:
+          - string
+          - 'null'
+          format: decimal
+          pattern: ^-?\d{0,1}(?:\.\d{0,1})?$
+        rir_target:
+          type:
+          - string
+          - 'null'
+          format: decimal
+          pattern: ^-?\d{0,1}(?:\.\d{0,1})?$
+        rest:
+          type:
+          - integer
+          - 'null'
+          maximum: 2147483647
+          minimum: 0
+        rest_target:
+          type:
+          - integer
+          - 'null'
+          maximum: 2147483647
+          minimum: 0
     WorkoutLogRequest:
       type: object
       description: Workout log serializer
@@ -646,99 +739,6 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/WorkoutLog'
-    PatchedWorkoutLogRequest:
-      type: object
-      description: Workout log serializer
-      properties:
-        id:
-          type: string
-          format: uuid
-        date:
-          type: string
-          format: date-time
-        session:
-          type:
-          - string
-          - 'null'
-          format: uuid
-        routine:
-          type:
-          - integer
-          - 'null'
-          title: Workout
-        iteration:
-          type:
-          - integer
-          - 'null'
-          maximum: 2147483647
-          minimum: 0
-        slot_entry:
-          type:
-          - integer
-          - 'null'
-        next_log:
-          type:
-          - string
-          - 'null'
-          format: uuid
-        exercise:
-          type: integer
-        repetitions_unit:
-          type:
-          - integer
-          - 'null'
-        repetitions:
-          type:
-          - string
-          - 'null'
-          format: decimal
-          pattern: ^-?\d{0,4}(?:\.\d{0,2})?$
-        repetitions_target:
-          type:
-          - string
-          - 'null'
-          format: decimal
-          pattern: ^-?\d{0,4}(?:\.\d{0,2})?$
-        weight_unit:
-          type:
-          - integer
-          - 'null'
-        weight:
-          type:
-          - string
-          - 'null'
-          format: decimal
-          pattern: ^-?\d{0,4}(?:\.\d{0,2})?$
-        weight_target:
-          type:
-          - string
-          - 'null'
-          format: decimal
-          pattern: ^-?\d{0,4}(?:\.\d{0,2})?$
-        rir:
-          type:
-          - string
-          - 'null'
-          format: decimal
-          pattern: ^-?\d{0,1}(?:\.\d{0,1})?$
-        rir_target:
-          type:
-          - string
-          - 'null'
-          format: decimal
-          pattern: ^-?\d{0,1}(?:\.\d{0,1})?$
-        rest:
-          type:
-          - integer
-          - 'null'
-          maximum: 2147483647
-          minimum: 0
-        rest_target:
-          type:
-          - integer
-          - 'null'
-          maximum: 2147483647
-          minimum: 0
   securitySchemes:
     cookieAuth:
       type: apiKey

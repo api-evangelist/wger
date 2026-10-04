@@ -160,6 +160,224 @@ paths:
       x-summary-source: derived
 components:
   schemas:
+    GenderEnum:
+      enum:
+      - '1'
+      - '2'
+      type: string
+      description: '* `1` - Male
+
+        * `2` - Female'
+    IntensityEnum:
+      enum:
+      - '1'
+      - '2'
+      - '3'
+      type: string
+      description: '* `1` - Low
+
+        * `2` - Medium
+
+        * `3` - High'
+    VerifyEmailResponse:
+      type: object
+      properties:
+        status:
+          type: string
+        result:
+          type: string
+        message:
+          type: string
+      required:
+      - message
+    Userprofile:
+      type: object
+      description: Workout session serializer
+      properties:
+        username:
+          type: string
+          readOnly: true
+        email:
+          type: string
+          format: email
+          readOnly: true
+        email_verified:
+          type: boolean
+          readOnly: true
+        is_trustworthy:
+          type: boolean
+          readOnly: true
+        date_joined:
+          type: string
+          format: date-time
+          readOnly: true
+        gym:
+          type:
+          - integer
+          - 'null'
+          readOnly: true
+        weight_rounding:
+          type:
+          - string
+          - 'null'
+          format: decimal
+          pattern: ^-?\d{0,2}(?:\.\d{0,2})?$
+        repetitions_rounding:
+          type:
+          - string
+          - 'null'
+          format: decimal
+          pattern: ^-?\d{0,2}(?:\.\d{0,2})?$
+        is_temporary:
+          type: boolean
+          readOnly: true
+        workout_reminder_active:
+          type: boolean
+          title: Activate workout reminders
+          description: Check to activate automatic reminders for workouts. You need to provide a valid email for this to work.
+        workout_reminder:
+          type: integer
+          maximum: 30
+          minimum: 1
+          title: Remind before expiration
+          description: The number of days you want to be reminded before a workout expires.
+        workout_duration:
+          type: integer
+          maximum: 30
+          minimum: 1
+          title: Default duration of workouts
+          description: Default duration in weeks of workouts not in a schedule. Used for email workout reminders.
+        last_workout_notification:
+          type:
+          - string
+          - 'null'
+          format: date
+          readOnly: true
+        notification_language:
+          type: integer
+          description: Language to use when sending you email notifications, e.g. email reminders for workouts. This does not affect the language used on the website.
+        age:
+          type:
+          - integer
+          - 'null'
+          maximum: 100
+          minimum: 10
+        birthdate:
+          type:
+          - string
+          - 'null'
+          format: date
+          title: Date of Birth
+        height:
+          type:
+          - integer
+          - 'null'
+          maximum: 230
+          minimum: 140
+          title: Height (cm)
+        gender:
+          oneOf:
+          - $ref: '#/components/schemas/GenderEnum'
+          - $ref: '#/components/schemas/NullEnum'
+        sleep_hours:
+          type:
+          - integer
+          - 'null'
+          maximum: 10
+          minimum: 4
+          title: Hours of sleep
+          description: The average hours of sleep per day
+        work_hours:
+          type:
+          - integer
+          - 'null'
+          maximum: 15
+          minimum: 1
+          title: Work
+          description: Average hours per day
+        work_intensity:
+          title: Physical intensity
+          description: 'Approximately
+
+
+            * `1` - Low
+
+            * `2` - Medium
+
+            * `3` - High'
+          oneOf:
+          - $ref: '#/components/schemas/IntensityEnum'
+          - $ref: '#/components/schemas/NullEnum'
+        sport_hours:
+          type:
+          - integer
+          - 'null'
+          maximum: 30
+          minimum: 1
+          title: Sport
+          description: Average hours per week
+        sport_intensity:
+          title: Physical intensity
+          description: 'Approximately
+
+
+            * `1` - Low
+
+            * `2` - Medium
+
+            * `3` - High'
+          oneOf:
+          - $ref: '#/components/schemas/IntensityEnum'
+          - $ref: '#/components/schemas/NullEnum'
+        freetime_hours:
+          type:
+          - integer
+          - 'null'
+          maximum: 15
+          minimum: 1
+          title: Free time
+          description: Average hours per day
+        freetime_intensity:
+          title: Physical intensity
+          description: 'Approximately
+
+
+            * `1` - Low
+
+            * `2` - Medium
+
+            * `3` - High'
+          oneOf:
+          - $ref: '#/components/schemas/IntensityEnum'
+          - $ref: '#/components/schemas/NullEnum'
+        calories:
+          type:
+          - integer
+          - 'null'
+          maximum: 5000
+          minimum: 1500
+          title: Total daily calories
+          description: Total caloric intake, including e.g. any surplus
+        weight_unit:
+          $ref: '#/components/schemas/WeightUnitEnum'
+        num_days_weight_reminder:
+          type: integer
+          maximum: 30
+          minimum: 0
+          title: Automatic reminders for weight entries
+          description: Number of days after the last weight entry (enter 0 to deactivate)
+      required:
+      - date_joined
+      - email
+      - email_verified
+      - gym
+      - is_temporary
+      - is_trustworthy
+      - last_workout_notification
+      - username
+    NullEnum:
+      enum:
+      - null
     UserprofileRequest:
       type: object
       description: Workout session serializer
@@ -458,224 +676,6 @@ components:
       description: '* `kg` - Metric (kilogram)
 
         * `lb` - Imperial (pound)'
-    VerifyEmailResponse:
-      type: object
-      properties:
-        status:
-          type: string
-        result:
-          type: string
-        message:
-          type: string
-      required:
-      - message
-    NullEnum:
-      enum:
-      - null
-    GenderEnum:
-      enum:
-      - '1'
-      - '2'
-      type: string
-      description: '* `1` - Male
-
-        * `2` - Female'
-    Userprofile:
-      type: object
-      description: Workout session serializer
-      properties:
-        username:
-          type: string
-          readOnly: true
-        email:
-          type: string
-          format: email
-          readOnly: true
-        email_verified:
-          type: boolean
-          readOnly: true
-        is_trustworthy:
-          type: boolean
-          readOnly: true
-        date_joined:
-          type: string
-          format: date-time
-          readOnly: true
-        gym:
-          type:
-          - integer
-          - 'null'
-          readOnly: true
-        weight_rounding:
-          type:
-          - string
-          - 'null'
-          format: decimal
-          pattern: ^-?\d{0,2}(?:\.\d{0,2})?$
-        repetitions_rounding:
-          type:
-          - string
-          - 'null'
-          format: decimal
-          pattern: ^-?\d{0,2}(?:\.\d{0,2})?$
-        is_temporary:
-          type: boolean
-          readOnly: true
-        workout_reminder_active:
-          type: boolean
-          title: Activate workout reminders
-          description: Check to activate automatic reminders for workouts. You need to provide a valid email for this to work.
-        workout_reminder:
-          type: integer
-          maximum: 30
-          minimum: 1
-          title: Remind before expiration
-          description: The number of days you want to be reminded before a workout expires.
-        workout_duration:
-          type: integer
-          maximum: 30
-          minimum: 1
-          title: Default duration of workouts
-          description: Default duration in weeks of workouts not in a schedule. Used for email workout reminders.
-        last_workout_notification:
-          type:
-          - string
-          - 'null'
-          format: date
-          readOnly: true
-        notification_language:
-          type: integer
-          description: Language to use when sending you email notifications, e.g. email reminders for workouts. This does not affect the language used on the website.
-        age:
-          type:
-          - integer
-          - 'null'
-          maximum: 100
-          minimum: 10
-        birthdate:
-          type:
-          - string
-          - 'null'
-          format: date
-          title: Date of Birth
-        height:
-          type:
-          - integer
-          - 'null'
-          maximum: 230
-          minimum: 140
-          title: Height (cm)
-        gender:
-          oneOf:
-          - $ref: '#/components/schemas/GenderEnum'
-          - $ref: '#/components/schemas/NullEnum'
-        sleep_hours:
-          type:
-          - integer
-          - 'null'
-          maximum: 10
-          minimum: 4
-          title: Hours of sleep
-          description: The average hours of sleep per day
-        work_hours:
-          type:
-          - integer
-          - 'null'
-          maximum: 15
-          minimum: 1
-          title: Work
-          description: Average hours per day
-        work_intensity:
-          title: Physical intensity
-          description: 'Approximately
-
-
-            * `1` - Low
-
-            * `2` - Medium
-
-            * `3` - High'
-          oneOf:
-          - $ref: '#/components/schemas/IntensityEnum'
-          - $ref: '#/components/schemas/NullEnum'
-        sport_hours:
-          type:
-          - integer
-          - 'null'
-          maximum: 30
-          minimum: 1
-          title: Sport
-          description: Average hours per week
-        sport_intensity:
-          title: Physical intensity
-          description: 'Approximately
-
-
-            * `1` - Low
-
-            * `2` - Medium
-
-            * `3` - High'
-          oneOf:
-          - $ref: '#/components/schemas/IntensityEnum'
-          - $ref: '#/components/schemas/NullEnum'
-        freetime_hours:
-          type:
-          - integer
-          - 'null'
-          maximum: 15
-          minimum: 1
-          title: Free time
-          description: Average hours per day
-        freetime_intensity:
-          title: Physical intensity
-          description: 'Approximately
-
-
-            * `1` - Low
-
-            * `2` - Medium
-
-            * `3` - High'
-          oneOf:
-          - $ref: '#/components/schemas/IntensityEnum'
-          - $ref: '#/components/schemas/NullEnum'
-        calories:
-          type:
-          - integer
-          - 'null'
-          maximum: 5000
-          minimum: 1500
-          title: Total daily calories
-          description: Total caloric intake, including e.g. any surplus
-        weight_unit:
-          $ref: '#/components/schemas/WeightUnitEnum'
-        num_days_weight_reminder:
-          type: integer
-          maximum: 30
-          minimum: 0
-          title: Automatic reminders for weight entries
-          description: Number of days after the last weight entry (enter 0 to deactivate)
-      required:
-      - date_joined
-      - email
-      - email_verified
-      - gym
-      - is_temporary
-      - is_trustworthy
-      - last_workout_notification
-      - username
-    IntensityEnum:
-      enum:
-      - '1'
-      - '2'
-      - '3'
-      type: string
-      description: '* `1` - Low
-
-        * `2` - Medium
-
-        * `3` - High'
   securitySchemes:
     cookieAuth:
       type: apiKey

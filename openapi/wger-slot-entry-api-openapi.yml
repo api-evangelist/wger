@@ -261,6 +261,48 @@ paths:
       x-summary-source: derived
 components:
   schemas:
+    SlotEntryRequest:
+      type: object
+      description: Slot entry serializer
+      properties:
+        slot:
+          type: integer
+        exercise:
+          type: integer
+        type:
+          $ref: '#/components/schemas/ExerciseTypeEnum'
+        repetition_unit:
+          type:
+          - integer
+          - 'null'
+        repetition_rounding:
+          type:
+          - string
+          - 'null'
+          format: decimal
+          pattern: ^-?\d{0,2}(?:\.\d{0,2})?$
+        weight_unit:
+          type:
+          - integer
+          - 'null'
+          title: Unit
+        weight_rounding:
+          type:
+          - string
+          - 'null'
+          format: decimal
+          pattern: ^-?\d{0,2}(?:\.\d{0,2})?$
+        order:
+          type: integer
+          maximum: 2147483647
+          minimum: 0
+        comment:
+          type: string
+          maxLength: 100
+        config: {}
+      required:
+      - exercise
+      - slot
     SlotEntry:
       type: object
       description: Slot entry serializer
@@ -307,48 +349,35 @@ components:
       - exercise
       - id
       - slot
-    SlotEntryRequest:
-      type: object
-      description: Slot entry serializer
-      properties:
-        slot:
-          type: integer
-        exercise:
-          type: integer
-        type:
-          $ref: '#/components/schemas/ExerciseTypeEnum'
-        repetition_unit:
-          type:
-          - integer
-          - 'null'
-        repetition_rounding:
-          type:
-          - string
-          - 'null'
-          format: decimal
-          pattern: ^-?\d{0,2}(?:\.\d{0,2})?$
-        weight_unit:
-          type:
-          - integer
-          - 'null'
-          title: Unit
-        weight_rounding:
-          type:
-          - string
-          - 'null'
-          format: decimal
-          pattern: ^-?\d{0,2}(?:\.\d{0,2})?$
-        order:
-          type: integer
-          maximum: 2147483647
-          minimum: 0
-        comment:
-          type: string
-          maxLength: 100
-        config: {}
-      required:
-      - exercise
-      - slot
+    ExerciseTypeEnum:
+      enum:
+      - normal
+      - warmup
+      - dropset
+      - myo
+      - partial
+      - forced
+      - tut
+      - iso
+      - jump
+      type: string
+      description: '* `normal` - Normal
+
+        * `warmup` - Warmup
+
+        * `dropset` - Dropset
+
+        * `myo` - Myo
+
+        * `partial` - Partial
+
+        * `forced` - Forced
+
+        * `tut` - Tut
+
+        * `iso` - Iso Hold
+
+        * `jump` - Jump'
     PatchedSlotEntryRequest:
       type: object
       description: Slot entry serializer
@@ -413,35 +442,6 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/SlotEntry'
-    ExerciseTypeEnum:
-      enum:
-      - normal
-      - warmup
-      - dropset
-      - myo
-      - partial
-      - forced
-      - tut
-      - iso
-      - jump
-      type: string
-      description: '* `normal` - Normal
-
-        * `warmup` - Warmup
-
-        * `dropset` - Dropset
-
-        * `myo` - Myo
-
-        * `partial` - Partial
-
-        * `forced` - Forced
-
-        * `tut` - Tut
-
-        * `iso` - Iso Hold
-
-        * `jump` - Jump'
   securitySchemes:
     cookieAuth:
       type: apiKey

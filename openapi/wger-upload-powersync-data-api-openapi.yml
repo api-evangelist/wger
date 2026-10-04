@@ -103,15 +103,6 @@ paths:
       x-summary-source: derived
 components:
   schemas:
-    PowersyncUploadResponse:
-      type: object
-      properties:
-        status:
-          type: string
-        error:
-          type: string
-        details:
-          type: string
     PatchedPowersyncUploadRequest:
       type: object
       properties:
@@ -129,6 +120,15 @@ components:
       required:
       - data
       - table
+    PowersyncUploadResponse:
+      type: object
+      properties:
+        status:
+          type: string
+        error:
+          type: string
+        details:
+          type: string
   securitySchemes:
     cookieAuth:
       type: apiKey

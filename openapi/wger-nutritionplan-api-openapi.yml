@@ -255,6 +255,129 @@ paths:
       x-summary-source: derived
 components:
   schemas:
+    NutritionPlanRequest:
+      type: object
+      description: Nutritional plan serializer
+      properties:
+        id:
+          type: string
+          format: uuid
+        start:
+          type: string
+          format: date
+          title: Start date
+        end:
+          type:
+          - string
+          - 'null'
+          format: date
+          title: End date
+        description:
+          type: string
+          description: A description of the goal of the plan, e.g. "Gain mass" or "Prepare for summer"
+          maxLength: 80
+        only_logging:
+          type: boolean
+        goal_energy:
+          type:
+          - integer
+          - 'null'
+          maximum: 2147483647
+          minimum: -2147483648
+        goal_protein:
+          type:
+          - integer
+          - 'null'
+          maximum: 2147483647
+          minimum: -2147483648
+        goal_carbohydrates:
+          type:
+          - integer
+          - 'null'
+          maximum: 2147483647
+          minimum: -2147483648
+        goal_fat:
+          type:
+          - integer
+          - 'null'
+          maximum: 2147483647
+          minimum: -2147483648
+        goal_fiber:
+          type:
+          - integer
+          - 'null'
+          maximum: 2147483647
+          minimum: -2147483648
+    PaginatedNutritionPlanList:
+      type: object
+      required:
+      - count
+      - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?offset=400&limit=100
+        previous:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?offset=200&limit=100
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/NutritionPlan'
+    NutritionalValues:
+      type: object
+      description: Nutritional values serializer
+      properties:
+        energy:
+          type: number
+          format: double
+        protein:
+          type: number
+          format: double
+        carbohydrates:
+          type: number
+          format: double
+        carbohydrates_sugar:
+          type:
+          - number
+          - 'null'
+          format: double
+        fat:
+          type: number
+          format: double
+        fat_saturated:
+          type:
+          - number
+          - 'null'
+          format: double
+        fiber:
+          type:
+          - number
+          - 'null'
+          format: double
+        sodium:
+          type:
+          - number
+          - 'null'
+          format: double
+      required:
+      - carbohydrates
+      - carbohydrates_sugar
+      - energy
+      - fat
+      - fat_saturated
+      - fiber
+      - protein
+      - sodium
     NutritionPlan:
       type: object
       description: Nutritional plan serializer
@@ -314,31 +437,6 @@ components:
           minimum: -2147483648
       required:
       - creation_date
-    PaginatedNutritionPlanList:
-      type: object
-      required:
-      - count
-      - results
-      properties:
-        count:
-          type: integer
-          example: 123
-        next:
-          type:
-          - string
-          - 'null'
-          format: uri
-          example: http://api.example.org/accounts/?offset=400&limit=100
-        previous:
-          type:
-          - string
-          - 'null'
-          format: uri
-          example: http://api.example.org/accounts/?offset=200&limit=100
-        results:
-          type: array
-          items:
-            $ref: '#/components/schemas/NutritionPlan'
     PatchedNutritionPlanRequest:
       type: object
       description: Nutritional plan serializer
@@ -392,104 +490,6 @@ components:
           - 'null'
           maximum: 2147483647
           minimum: -2147483648
-    NutritionPlanRequest:
-      type: object
-      description: Nutritional plan serializer
-      properties:
-        id:
-          type: string
-          format: uuid
-        start:
-          type: string
-          format: date
-          title: Start date
-        end:
-          type:
-          - string
-          - 'null'
-          format: date
-          title: End date
-        description:
-          type: string
-          description: A description of the goal of the plan, e.g. "Gain mass" or "Prepare for summer"
-          maxLength: 80
-        only_logging:
-          type: boolean
-        goal_energy:
-          type:
-          - integer
-          - 'null'
-          maximum: 2147483647
-          minimum: -2147483648
-        goal_protein:
-          type:
-          - integer
-          - 'null'
-          maximum: 2147483647
-          minimum: -2147483648
-        goal_carbohydrates:
-          type:
-          - integer
-          - 'null'
-          maximum: 2147483647
-          minimum: -2147483648
-        goal_fat:
-          type:
-          - integer
-          - 'null'
-          maximum: 2147483647
-          minimum: -2147483648
-        goal_fiber:
-          type:
-          - integer
-          - 'null'
-          maximum: 2147483647
-          minimum: -2147483648
-    NutritionalValues:
-      type: object
-      description: Nutritional values serializer
-      properties:
-        energy:
-          type: number
-          format: double
-        protein:
-          type: number
-          format: double
-        carbohydrates:
-          type: number
-          format: double
-        carbohydrates_sugar:
-          type:
-          - number
-          - 'null'
-          format: double
-        fat:
-          type: number
-          format: double
-        fat_saturated:
-          type:
-          - number
-          - 'null'
-          format: double
-        fiber:
-          type:
-          - number
-          - 'null'
-          format: double
-        sodium:
-          type:
-          - number
-          - 'null'
-          format: double
-      required:
-      - carbohydrates
-      - carbohydrates_sugar
-      - energy
-      - fat
-      - fat_saturated
-      - fiber
-      - protein
-      - sodium
   securitySchemes:
     cookieAuth:
       type: apiKey

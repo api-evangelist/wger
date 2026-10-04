@@ -114,20 +114,31 @@ paths:
       x-summary-source: derived
 components:
   schemas:
-    ModelTypeEnum:
-      enum:
-      - base
-      - translation
-      - image
-      - video
-      type: string
-      description: '* `base` - base
-
-        * `translation` - translation
-
-        * `image` - image
-
-        * `video` - video'
+    PaginatedDeletionLogList:
+      type: object
+      required:
+      - count
+      - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?offset=400&limit=100
+        previous:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?offset=200&limit=100
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/DeletionLog'
     DeletionLog:
       type: object
       description: Deletion log serializer
@@ -157,31 +168,20 @@ components:
       - replaced_by
       - timestamp
       - uuid
-    PaginatedDeletionLogList:
-      type: object
-      required:
-      - count
-      - results
-      properties:
-        count:
-          type: integer
-          example: 123
-        next:
-          type:
-          - string
-          - 'null'
-          format: uri
-          example: http://api.example.org/accounts/?offset=400&limit=100
-        previous:
-          type:
-          - string
-          - 'null'
-          format: uri
-          example: http://api.example.org/accounts/?offset=200&limit=100
-        results:
-          type: array
-          items:
-            $ref: '#/components/schemas/DeletionLog'
+    ModelTypeEnum:
+      enum:
+      - base
+      - translation
+      - image
+      - video
+      type: string
+      description: '* `base` - base
+
+        * `translation` - translation
+
+        * `image` - image
+
+        * `video` - video'
   securitySchemes:
     cookieAuth:
       type: apiKey

@@ -210,27 +210,6 @@ paths:
       x-summary-source: derived
 components:
   schemas:
-    Slot:
-      type: object
-      description: Slot
-      properties:
-        id:
-          type: integer
-          readOnly: true
-        day:
-          type: integer
-          title: Exercise day
-        order:
-          type: integer
-          maximum: 2147483647
-          minimum: 0
-        comment:
-          type: string
-          maxLength: 200
-        config: {}
-      required:
-      - day
-      - id
     PatchedSlotRequest:
       type: object
       description: Slot
@@ -246,6 +225,23 @@ components:
           type: string
           maxLength: 200
         config: {}
+    SlotRequest:
+      type: object
+      description: Slot
+      properties:
+        day:
+          type: integer
+          title: Exercise day
+        order:
+          type: integer
+          maximum: 2147483647
+          minimum: 0
+        comment:
+          type: string
+          maxLength: 200
+        config: {}
+      required:
+      - day
     PaginatedSlotList:
       type: object
       required:
@@ -271,10 +267,13 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/Slot'
-    SlotRequest:
+    Slot:
       type: object
       description: Slot
       properties:
+        id:
+          type: integer
+          readOnly: true
         day:
           type: integer
           title: Exercise day
@@ -288,6 +287,7 @@ components:
         config: {}
       required:
       - day
+      - id
   securitySchemes:
     cookieAuth:
       type: apiKey

@@ -240,6 +240,17 @@ paths:
       x-summary-source: derived
 components:
   schemas:
+    ImpressionEnum:
+      enum:
+      - '1'
+      - '2'
+      - '3'
+      type: string
+      description: '* `1` - Bad
+
+        * `2` - Neutral
+
+        * `3` - Good'
     WorkoutSessionRequest:
       type: object
       description: Workout session serializer
@@ -287,7 +298,7 @@ components:
           - 'null'
           format: time
           title: Finish time
-    WorkoutSession:
+    PatchedWorkoutSessionRequest:
       type: object
       description: Workout session serializer
       properties:
@@ -334,18 +345,7 @@ components:
           - 'null'
           format: time
           title: Finish time
-    ImpressionEnum:
-      enum:
-      - '1'
-      - '2'
-      - '3'
-      type: string
-      description: '* `1` - Bad
-
-        * `2` - Neutral
-
-        * `3` - Good'
-    PatchedWorkoutSessionRequest:
+    WorkoutSession:
       type: object
       description: Workout session serializer
       properties:

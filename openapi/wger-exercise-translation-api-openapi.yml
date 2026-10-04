@@ -241,32 +241,6 @@ components:
           title: Author(s)
           description: If you are not the author, enter the name or source here.
           maxLength: 3500
-    ExerciseTranslationRequest:
-      type: object
-      description: Exercise translation serializer
-      properties:
-        name:
-          type: string
-          minLength: 1
-          maxLength: 200
-        exercise:
-          type: integer
-        description_source:
-          type: string
-          minLength: 40
-          title: Description (Source)
-        language:
-          type: integer
-        license_author:
-          type: string
-          title: Author(s)
-          description: If you are not the author, enter the name or source here.
-          maxLength: 3500
-      required:
-      - description_source
-      - exercise
-      - language
-      - name
     ExerciseTranslation:
       type: object
       description: Exercise translation serializer
@@ -311,6 +285,32 @@ components:
       - language
       - name
       - uuid
+    ExerciseTranslationRequest:
+      type: object
+      description: Exercise translation serializer
+      properties:
+        name:
+          type: string
+          minLength: 1
+          maxLength: 200
+        exercise:
+          type: integer
+        description_source:
+          type: string
+          minLength: 40
+          title: Description (Source)
+        language:
+          type: integer
+        license_author:
+          type: string
+          title: Author(s)
+          description: If you are not the author, enter the name or source here.
+          maxLength: 3500
+      required:
+      - description_source
+      - exercise
+      - language
+      - name
     PaginatedExerciseTranslationList:
       type: object
       required:

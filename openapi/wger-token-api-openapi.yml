@@ -58,6 +58,15 @@ paths:
       x-summary-source: derived
 components:
   schemas:
+    TokenVerifyRequest:
+      type: object
+      properties:
+        token:
+          type: string
+          writeOnly: true
+          minLength: 1
+      required:
+      - token
     TokenRefresh:
       type: object
       properties:
@@ -69,15 +78,6 @@ components:
       required:
       - access
       - refresh
-    TokenVerifyRequest:
-      type: object
-      properties:
-        token:
-          type: string
-          writeOnly: true
-          minLength: 1
-      required:
-      - token
     TokenRefreshRequest:
       type: object
       properties:

@@ -245,6 +245,17 @@ paths:
       x-summary-source: derived
 components:
   schemas:
+    StepEnum:
+      enum:
+      - na
+      - abs
+      - percent
+      type: string
+      description: '* `na` - Not Applicable
+
+        * `abs` - Absolute
+
+        * `percent` - Percent'
     PatchedMaxRestConfigRequest:
       type: object
       description: Rest Config serializer
@@ -266,6 +277,31 @@ components:
         repeat:
           type: boolean
         requirements: {}
+    PaginatedMaxRestConfigList:
+      type: object
+      required:
+      - count
+      - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?offset=400&limit=100
+        previous:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?offset=200&limit=100
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/MaxRestConfig'
     MaxRestConfigRequest:
       type: object
       description: Rest Config serializer
@@ -302,42 +338,6 @@ components:
         * `-` - Minus
 
         * `r` - Replace'
-    StepEnum:
-      enum:
-      - na
-      - abs
-      - percent
-      type: string
-      description: '* `na` - Not Applicable
-
-        * `abs` - Absolute
-
-        * `percent` - Percent'
-    PaginatedMaxRestConfigList:
-      type: object
-      required:
-      - count
-      - results
-      properties:
-        count:
-          type: integer
-          example: 123
-        next:
-          type:
-          - string
-          - 'null'
-          format: uri
-          example: http://api.example.org/accounts/?offset=400&limit=100
-        previous:
-          type:
-          - string
-          - 'null'
-          format: uri
-          example: http://api.example.org/accounts/?offset=200&limit=100
-        results:
-          type: array
-          items:
-            $ref: '#/components/schemas/MaxRestConfig'
     MaxRestConfig:
       type: object
       description: Rest Config serializer

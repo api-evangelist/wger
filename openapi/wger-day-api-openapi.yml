@@ -226,6 +226,31 @@ paths:
       x-summary-source: derived
 components:
   schemas:
+    PaginatedDayList:
+      type: object
+      required:
+      - count
+      - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?offset=400&limit=100
+        previous:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?offset=200&limit=100
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/Day'
     DayTypeEnum:
       enum:
       - custom
@@ -252,29 +277,6 @@ components:
         * `rft` - Rft
 
         * `afap` - Afap'
-    PatchedDayRequest:
-      type: object
-      description: Day serializer
-      properties:
-        routine:
-          type: integer
-        order:
-          type: integer
-          maximum: 2147483647
-          minimum: 0
-        name:
-          type: string
-          maxLength: 20
-        description:
-          type: string
-          maxLength: 1000
-        is_rest:
-          type: boolean
-        need_logs_to_advance:
-          type: boolean
-        type:
-          $ref: '#/components/schemas/DayTypeEnum'
-        config: {}
     DayRequest:
       type: object
       description: Day serializer
@@ -300,6 +302,29 @@ components:
         config: {}
       required:
       - routine
+    PatchedDayRequest:
+      type: object
+      description: Day serializer
+      properties:
+        routine:
+          type: integer
+        order:
+          type: integer
+          maximum: 2147483647
+          minimum: 0
+        name:
+          type: string
+          maxLength: 20
+        description:
+          type: string
+          maxLength: 1000
+        is_rest:
+          type: boolean
+        need_logs_to_advance:
+          type: boolean
+        type:
+          $ref: '#/components/schemas/DayTypeEnum'
+        config: {}
     Day:
       type: object
       description: Day serializer
@@ -329,31 +354,6 @@ components:
       required:
       - id
       - routine
-    PaginatedDayList:
-      type: object
-      required:
-      - count
-      - results
-      properties:
-        count:
-          type: integer
-          example: 123
-        next:
-          type:
-          - string
-          - 'null'
-          format: uri
-          example: http://api.example.org/accounts/?offset=400&limit=100
-        previous:
-          type:
-          - string
-          - 'null'
-          format: uri
-          example: http://api.example.org/accounts/?offset=200&limit=100
-        results:
-          type: array
-          items:
-            $ref: '#/components/schemas/Day'
   securitySchemes:
     cookieAuth:
       type: apiKey

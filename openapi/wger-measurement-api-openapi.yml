@@ -257,53 +257,6 @@ paths:
       x-summary-source: derived
 components:
   schemas:
-    PaginatedMeasurementList:
-      type: object
-      required:
-      - count
-      - results
-      properties:
-        count:
-          type: integer
-          example: 123
-        next:
-          type:
-          - string
-          - 'null'
-          format: uri
-          example: http://api.example.org/accounts/?offset=400&limit=100
-        previous:
-          type:
-          - string
-          - 'null'
-          format: uri
-          example: http://api.example.org/accounts/?offset=200&limit=100
-        results:
-          type: array
-          items:
-            $ref: '#/components/schemas/Measurement'
-    PatchedMeasurementRequest:
-      type: object
-      description: Measurement serializer
-      properties:
-        id:
-          type: string
-          format: uuid
-        category:
-          type: string
-          format: uuid
-        date:
-          type: string
-          format: date-time
-        value:
-          type: number
-          format: double
-          maximum: 5000
-          minimum: 0
-        notes:
-          type: string
-          title: Description
-          maxLength: 100
     Measurement:
       type: object
       description: Measurement serializer
@@ -329,6 +282,31 @@ components:
       required:
       - category
       - value
+    PaginatedMeasurementList:
+      type: object
+      required:
+      - count
+      - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?offset=400&limit=100
+        previous:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?offset=200&limit=100
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/Measurement'
     MeasurementRequest:
       type: object
       description: Measurement serializer
@@ -354,6 +332,28 @@ components:
       required:
       - category
       - value
+    PatchedMeasurementRequest:
+      type: object
+      description: Measurement serializer
+      properties:
+        id:
+          type: string
+          format: uuid
+        category:
+          type: string
+          format: uuid
+        date:
+          type: string
+          format: date-time
+        value:
+          type: number
+          format: double
+          maximum: 5000
+          minimum: 0
+        notes:
+          type: string
+          title: Description
+          maxLength: 100
   securitySchemes:
     cookieAuth:
       type: apiKey

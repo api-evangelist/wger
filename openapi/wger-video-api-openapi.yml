@@ -312,54 +312,6 @@ components:
       - uuid
       - video
       - width
-    PatchedExerciseVideoRequest:
-      type: object
-      description: ExerciseVideo serializer
-      properties:
-        exercise:
-          type: integer
-        video:
-          type: string
-          format: binary
-        is_main:
-          type: boolean
-          title: Is main video
-        license:
-          type: integer
-        license_title:
-          type: string
-          title: The original title of this object, if available
-          maxLength: 300
-        license_object_url:
-          title: Link to original object, if available
-          oneOf:
-          - type: string
-            format: uri
-            maxLength: 200
-          - type: string
-            maxLength: 0
-        license_author:
-          type: string
-          title: Author(s)
-          description: If you are not the author, enter the name or source here.
-          maxLength: 3500
-        license_author_url:
-          title: Link to author profile, if available
-          oneOf:
-          - type: string
-            format: uri
-            maxLength: 200
-          - type: string
-            maxLength: 0
-        license_derivative_source_url:
-          title: Link to the original source, if this is a derivative work
-          description: Note that a derivative work is one which is not only based on a previous work, but which also contains sufficient new, creative content to entitle it to its own copyright.
-          oneOf:
-          - type: string
-            format: uri
-            maxLength: 200
-          - type: string
-            maxLength: 0
     PaginatedExerciseVideoList:
       type: object
       required:
@@ -436,6 +388,54 @@ components:
       required:
       - exercise
       - video
+    PatchedExerciseVideoRequest:
+      type: object
+      description: ExerciseVideo serializer
+      properties:
+        exercise:
+          type: integer
+        video:
+          type: string
+          format: binary
+        is_main:
+          type: boolean
+          title: Is main video
+        license:
+          type: integer
+        license_title:
+          type: string
+          title: The original title of this object, if available
+          maxLength: 300
+        license_object_url:
+          title: Link to original object, if available
+          oneOf:
+          - type: string
+            format: uri
+            maxLength: 200
+          - type: string
+            maxLength: 0
+        license_author:
+          type: string
+          title: Author(s)
+          description: If you are not the author, enter the name or source here.
+          maxLength: 3500
+        license_author_url:
+          title: Link to author profile, if available
+          oneOf:
+          - type: string
+            format: uri
+            maxLength: 200
+          - type: string
+            maxLength: 0
+        license_derivative_source_url:
+          title: Link to the original source, if this is a derivative work
+          description: Note that a derivative work is one which is not only based on a previous work, but which also contains sufficient new, creative content to entitle it to its own copyright.
+          oneOf:
+          - type: string
+            format: uri
+            maxLength: 200
+          - type: string
+            maxLength: 0
   securitySchemes:
     cookieAuth:
       type: apiKey

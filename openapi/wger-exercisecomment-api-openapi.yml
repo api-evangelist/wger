@@ -206,56 +206,6 @@ paths:
       x-summary-source: derived
 components:
   schemas:
-    ExerciseCommentRequest:
-      type: object
-      description: ExerciseComment serializer
-      properties:
-        translation:
-          type: integer
-          title: Exercise
-        comment:
-          type: string
-          minLength: 1
-          description: A comment about how to correctly do this exercise.
-          maxLength: 200
-      required:
-      - comment
-      - translation
-    PatchedExerciseCommentRequest:
-      type: object
-      description: ExerciseComment serializer
-      properties:
-        translation:
-          type: integer
-          title: Exercise
-        comment:
-          type: string
-          minLength: 1
-          description: A comment about how to correctly do this exercise.
-          maxLength: 200
-    ExerciseComment:
-      type: object
-      description: ExerciseComment serializer
-      properties:
-        id:
-          type: integer
-          readOnly: true
-        uuid:
-          type: string
-          format: uuid
-          readOnly: true
-        translation:
-          type: integer
-          title: Exercise
-        comment:
-          type: string
-          description: A comment about how to correctly do this exercise.
-          maxLength: 200
-      required:
-      - comment
-      - id
-      - translation
-      - uuid
     PaginatedExerciseCommentList:
       type: object
       required:
@@ -281,6 +231,56 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/ExerciseComment'
+    ExerciseComment:
+      type: object
+      description: ExerciseComment serializer
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        uuid:
+          type: string
+          format: uuid
+          readOnly: true
+        translation:
+          type: integer
+          title: Exercise
+        comment:
+          type: string
+          description: A comment about how to correctly do this exercise.
+          maxLength: 200
+      required:
+      - comment
+      - id
+      - translation
+      - uuid
+    PatchedExerciseCommentRequest:
+      type: object
+      description: ExerciseComment serializer
+      properties:
+        translation:
+          type: integer
+          title: Exercise
+        comment:
+          type: string
+          minLength: 1
+          description: A comment about how to correctly do this exercise.
+          maxLength: 200
+    ExerciseCommentRequest:
+      type: object
+      description: ExerciseComment serializer
+      properties:
+        translation:
+          type: integer
+          title: Exercise
+        comment:
+          type: string
+          minLength: 1
+          description: A comment about how to correctly do this exercise.
+          maxLength: 200
+      required:
+      - comment
+      - translation
   securitySchemes:
     cookieAuth:
       type: apiKey

@@ -88,6 +88,19 @@ paths:
       x-summary-source: derived
 components:
   schemas:
+    ExerciseCategory:
+      type: object
+      description: ExerciseCategory serializer
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        name:
+          type: string
+          maxLength: 100
+      required:
+      - id
+      - name
     PaginatedExerciseCategoryList:
       type: object
       required:
@@ -113,19 +126,6 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/ExerciseCategory'
-    ExerciseCategory:
-      type: object
-      description: ExerciseCategory serializer
-      properties:
-        id:
-          type: integer
-          readOnly: true
-        name:
-          type: string
-          maxLength: 100
-      required:
-      - id
-      - name
   securitySchemes:
     cookieAuth:
       type: apiKey

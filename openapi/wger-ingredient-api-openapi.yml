@@ -349,110 +349,34 @@ paths:
       x-summary-source: derived
 components:
   schemas:
-    IngredientValues:
-      type: object
-      description: 'Nutritional values for a given amount and unit of an ingredient.
-
-
-        Carries the form errors instead of usable values when the amount or unit
-
-        query parameters don''t validate.'
-      properties:
-        energy:
-          type: number
-          format: double
-        protein:
-          type: number
-          format: double
-        carbohydrates:
-          type: number
-          format: double
-        carbohydrates_sugar:
-          type:
-          - number
-          - 'null'
-          format: double
-        fat:
-          type: number
-          format: double
-        fat_saturated:
-          type:
-          - number
-          - 'null'
-          format: double
-        fiber:
-          type:
-          - number
-          - 'null'
-          format: double
-        sodium:
-          type:
-          - number
-          - 'null'
-          format: double
-        errors:
-          type: object
-          additionalProperties:
-            type: array
-            items:
-              type: string
-      required:
-      - carbohydrates
-      - carbohydrates_sugar
-      - energy
-      - fat
-      - fat_saturated
-      - fiber
-      - protein
-      - sodium
-    NutriscoreEnum:
+    BlankEnum:
       enum:
-      - a
-      - b
-      - c
-      - d
-      - e
-      type: string
-      description: '* `a` - A
-
-        * `b` - B
-
-        * `c` - C
-
-        * `d` - D
-
-        * `e` - E'
-    NullEnum:
-      enum:
-      - null
-    IngredientWeightUnit:
+      - ''
+    PaginatedIngredientList:
       type: object
-      description: IngredientWeightUnit serializer
-      properties:
-        id:
-          type: integer
-          readOnly: true
-        uuid:
-          type: string
-          format: uuid
-          readOnly: true
-        ingredient:
-          type: integer
-          readOnly: true
-        gram:
-          type: integer
-          maximum: 2147483647
-          minimum: -2147483648
-          title: Amount in grams
-        name:
-          type: string
-          maxLength: 200
       required:
-      - gram
-      - id
-      - ingredient
-      - name
-      - uuid
+      - count
+      - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?offset=400&limit=100
+        previous:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?offset=200&limit=100
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/Ingredient'
     Ingredient:
       type: object
       description: Ingredient serializer
@@ -656,34 +580,110 @@ components:
       - protein
       - uuid
       - weight_units
-    BlankEnum:
-      enum:
-      - ''
-    PaginatedIngredientList:
+    IngredientWeightUnit:
       type: object
-      required:
-      - count
-      - results
+      description: IngredientWeightUnit serializer
       properties:
-        count:
+        id:
           type: integer
-          example: 123
-        next:
+          readOnly: true
+        uuid:
+          type: string
+          format: uuid
+          readOnly: true
+        ingredient:
+          type: integer
+          readOnly: true
+        gram:
+          type: integer
+          maximum: 2147483647
+          minimum: -2147483648
+          title: Amount in grams
+        name:
+          type: string
+          maxLength: 200
+      required:
+      - gram
+      - id
+      - ingredient
+      - name
+      - uuid
+    NullEnum:
+      enum:
+      - null
+    NutriscoreEnum:
+      enum:
+      - a
+      - b
+      - c
+      - d
+      - e
+      type: string
+      description: '* `a` - A
+
+        * `b` - B
+
+        * `c` - C
+
+        * `d` - D
+
+        * `e` - E'
+    IngredientValues:
+      type: object
+      description: 'Nutritional values for a given amount and unit of an ingredient.
+
+
+        Carries the form errors instead of usable values when the amount or unit
+
+        query parameters don''t validate.'
+      properties:
+        energy:
+          type: number
+          format: double
+        protein:
+          type: number
+          format: double
+        carbohydrates:
+          type: number
+          format: double
+        carbohydrates_sugar:
           type:
-          - string
+          - number
           - 'null'
-          format: uri
-          example: http://api.example.org/accounts/?offset=400&limit=100
-        previous:
+          format: double
+        fat:
+          type: number
+          format: double
+        fat_saturated:
           type:
-          - string
+          - number
           - 'null'
-          format: uri
-          example: http://api.example.org/accounts/?offset=200&limit=100
-        results:
-          type: array
-          items:
-            $ref: '#/components/schemas/Ingredient'
+          format: double
+        fiber:
+          type:
+          - number
+          - 'null'
+          format: double
+        sodium:
+          type:
+          - number
+          - 'null'
+          format: double
+        errors:
+          type: object
+          additionalProperties:
+            type: array
+            items:
+              type: string
+      required:
+      - carbohydrates
+      - carbohydrates_sugar
+      - energy
+      - fat
+      - fat_saturated
+      - fiber
+      - protein
+      - sodium
   securitySchemes:
     cookieAuth:
       type: apiKey

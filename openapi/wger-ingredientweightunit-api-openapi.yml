@@ -96,6 +96,31 @@ paths:
       x-summary-source: derived
 components:
   schemas:
+    PaginatedIngredientWeightUnitList:
+      type: object
+      required:
+      - count
+      - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?offset=400&limit=100
+        previous:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?offset=200&limit=100
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/IngredientWeightUnit'
     IngredientWeightUnit:
       type: object
       description: IngredientWeightUnit serializer
@@ -124,31 +149,6 @@ components:
       - ingredient
       - name
       - uuid
-    PaginatedIngredientWeightUnitList:
-      type: object
-      required:
-      - count
-      - results
-      properties:
-        count:
-          type: integer
-          example: 123
-        next:
-          type:
-          - string
-          - 'null'
-          format: uri
-          example: http://api.example.org/accounts/?offset=400&limit=100
-        previous:
-          type:
-          - string
-          - 'null'
-          format: uri
-          example: http://api.example.org/accounts/?offset=200&limit=100
-        results:
-          type: array
-          items:
-            $ref: '#/components/schemas/IngredientWeightUnit'
   securitySchemes:
     cookieAuth:
       type: apiKey

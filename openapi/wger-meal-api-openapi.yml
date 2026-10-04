@@ -272,6 +272,51 @@ components:
       required:
       - order
       - plan
+    NutritionalValues:
+      type: object
+      description: Nutritional values serializer
+      properties:
+        energy:
+          type: number
+          format: double
+        protein:
+          type: number
+          format: double
+        carbohydrates:
+          type: number
+          format: double
+        carbohydrates_sugar:
+          type:
+          - number
+          - 'null'
+          format: double
+        fat:
+          type: number
+          format: double
+        fat_saturated:
+          type:
+          - number
+          - 'null'
+          format: double
+        fiber:
+          type:
+          - number
+          - 'null'
+          format: double
+        sodium:
+          type:
+          - number
+          - 'null'
+          format: double
+      required:
+      - carbohydrates
+      - carbohydrates_sugar
+      - energy
+      - fat
+      - fat_saturated
+      - fiber
+      - protein
+      - sodium
     PatchedMealRequest:
       type: object
       description: Meal serializer
@@ -318,51 +363,6 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/Meal'
-    NutritionalValues:
-      type: object
-      description: Nutritional values serializer
-      properties:
-        energy:
-          type: number
-          format: double
-        protein:
-          type: number
-          format: double
-        carbohydrates:
-          type: number
-          format: double
-        carbohydrates_sugar:
-          type:
-          - number
-          - 'null'
-          format: double
-        fat:
-          type: number
-          format: double
-        fat_saturated:
-          type:
-          - number
-          - 'null'
-          format: double
-        fiber:
-          type:
-          - number
-          - 'null'
-          format: double
-        sodium:
-          type:
-          - number
-          - 'null'
-          format: double
-      required:
-      - carbohydrates
-      - carbohydrates_sugar
-      - energy
-      - fat
-      - fat_saturated
-      - fiber
-      - protein
-      - sodium
     MealRequest:
       type: object
       description: Meal serializer
