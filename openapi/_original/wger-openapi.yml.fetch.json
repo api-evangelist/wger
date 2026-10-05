@@ -1,0 +1,12 @@
+{
+ "url": "https://wger.de/api/v2/schema",
+ "requested_url": "https://wger.de/api/v2/schema",
+ "status": 200,
+ "content_type": "application/yaml; charset=utf-8",
+ "bytes": 453449,
+ "sha256": "cde4f971d4270bfb8234040274da12587e008bfa3e983081dc45bab4094ee072",
+ "fetched_at": "2026-10-04",
+ "fetched_by": "APIEvangelist-Harvest/1.0 (+https://apievangelist.com)",
+ "match": "equivalent",
+ "note": "Re-fetched from the provider by verify-openapi-sources.py; the provider's current document describes the same operations (Jaccard 0.984), but the bytes differ, so the archive is an earlier or reformatted copy."
+}
