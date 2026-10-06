@@ -46,7 +46,7 @@ description: >-
 url: https://wger.de/en/software/api
 specificationVersion: '0.23'
 created: '2026-05-28'
-modified: '2026-08-27'
+modified: '2026-10-06'
 x-source: public-apis/public-apis
 x-category: "Sports & Fitness"
 x-tier: 3
@@ -2131,6 +2131,8 @@ apis:
   - type: Conformance
     url: conformance/wger-conformance.yml
 common:
+  - url: https://wger.de/blog/
+    type: Blog
   - type: License
     name: AGPL-3.0
     url: https://github.com/wger-project/wger/blob/master/LICENSE
