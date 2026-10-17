@@ -338,29 +338,6 @@ components:
       - progress_display
       - target_value
       - trophy
-    TrophyTypeEnum:
-      enum:
-      - time
-      - volume
-      - count
-      - sequence
-      - date
-      - pr
-      - other
-      type: string
-      description: '* `time` - Time-based
-
-        * `volume` - Volume-based
-
-        * `count` - Count-based
-
-        * `sequence` - Sequence-based
-
-        * `date` - Date-based
-
-        * `pr` - Personal Record
-
-        * `other` - Other'
     PaginatedTrophyList:
       type: object
       required:
@@ -464,6 +441,29 @@ components:
       - order
       - trophy_type
       - uuid
+    TrophyTypeEnum:
+      enum:
+      - time
+      - volume
+      - count
+      - sequence
+      - date
+      - pr
+      - other
+      type: string
+      description: '* `time` - Time-based
+
+        * `volume` - Volume-based
+
+        * `count` - Count-based
+
+        * `sequence` - Sequence-based
+
+        * `date` - Date-based
+
+        * `pr` - Personal Record
+
+        * `other` - Other'
   securitySchemes:
     cookieAuth:
       type: apiKey

@@ -67,6 +67,14 @@ components:
           minLength: 1
       required:
       - token
+    TokenRefreshRequest:
+      type: object
+      properties:
+        refresh:
+          type: string
+          minLength: 1
+      required:
+      - refresh
     TokenRefresh:
       type: object
       properties:
@@ -77,14 +85,6 @@ components:
           type: string
       required:
       - access
-      - refresh
-    TokenRefreshRequest:
-      type: object
-      properties:
-        refresh:
-          type: string
-          minLength: 1
-      required:
       - refresh
   securitySchemes:
     cookieAuth:

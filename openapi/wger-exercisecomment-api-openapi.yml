@@ -206,6 +206,21 @@ paths:
       x-summary-source: derived
 components:
   schemas:
+    ExerciseCommentRequest:
+      type: object
+      description: ExerciseComment serializer
+      properties:
+        translation:
+          type: integer
+          title: Exercise
+        comment:
+          type: string
+          minLength: 1
+          description: A comment about how to correctly do this exercise.
+          maxLength: 200
+      required:
+      - comment
+      - translation
     PaginatedExerciseCommentList:
       type: object
       required:
@@ -231,6 +246,18 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/ExerciseComment'
+    PatchedExerciseCommentRequest:
+      type: object
+      description: ExerciseComment serializer
+      properties:
+        translation:
+          type: integer
+          title: Exercise
+        comment:
+          type: string
+          minLength: 1
+          description: A comment about how to correctly do this exercise.
+          maxLength: 200
     ExerciseComment:
       type: object
       description: ExerciseComment serializer
@@ -254,33 +281,6 @@ components:
       - id
       - translation
       - uuid
-    PatchedExerciseCommentRequest:
-      type: object
-      description: ExerciseComment serializer
-      properties:
-        translation:
-          type: integer
-          title: Exercise
-        comment:
-          type: string
-          minLength: 1
-          description: A comment about how to correctly do this exercise.
-          maxLength: 200
-    ExerciseCommentRequest:
-      type: object
-      description: ExerciseComment serializer
-      properties:
-        translation:
-          type: integer
-          title: Exercise
-        comment:
-          type: string
-          minLength: 1
-          description: A comment about how to correctly do this exercise.
-          maxLength: 200
-      required:
-      - comment
-      - translation
   securitySchemes:
     cookieAuth:
       type: apiKey

@@ -215,55 +215,6 @@ paths:
       x-summary-source: derived
 components:
   schemas:
-    PatchedCategoryRequest:
-      type: object
-      description: Measurement category serializer
-      properties:
-        id:
-          type: string
-          format: uuid
-        name:
-          type: string
-          minLength: 1
-          maxLength: 100
-        unit:
-          type: string
-          minLength: 1
-          maxLength: 30
-    Category:
-      type: object
-      description: Measurement category serializer
-      properties:
-        id:
-          type: string
-          format: uuid
-        name:
-          type: string
-          maxLength: 100
-        unit:
-          type: string
-          maxLength: 30
-      required:
-      - name
-      - unit
-    CategoryRequest:
-      type: object
-      description: Measurement category serializer
-      properties:
-        id:
-          type: string
-          format: uuid
-        name:
-          type: string
-          minLength: 1
-          maxLength: 100
-        unit:
-          type: string
-          minLength: 1
-          maxLength: 30
-      required:
-      - name
-      - unit
     PaginatedCategoryList:
       type: object
       required:
@@ -289,6 +240,55 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/Category'
+    CategoryRequest:
+      type: object
+      description: Measurement category serializer
+      properties:
+        id:
+          type: string
+          format: uuid
+        name:
+          type: string
+          minLength: 1
+          maxLength: 100
+        unit:
+          type: string
+          minLength: 1
+          maxLength: 30
+      required:
+      - name
+      - unit
+    Category:
+      type: object
+      description: Measurement category serializer
+      properties:
+        id:
+          type: string
+          format: uuid
+        name:
+          type: string
+          maxLength: 100
+        unit:
+          type: string
+          maxLength: 30
+      required:
+      - name
+      - unit
+    PatchedCategoryRequest:
+      type: object
+      description: Measurement category serializer
+      properties:
+        id:
+          type: string
+          format: uuid
+        name:
+          type: string
+          minLength: 1
+          maxLength: 100
+        unit:
+          type: string
+          minLength: 1
+          maxLength: 30
   securitySchemes:
     cookieAuth:
       type: apiKey

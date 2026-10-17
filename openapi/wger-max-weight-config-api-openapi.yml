@@ -245,17 +245,6 @@ paths:
       x-summary-source: derived
 components:
   schemas:
-    StepEnum:
-      enum:
-      - na
-      - abs
-      - percent
-      type: string
-      description: '* `na` - Not Applicable
-
-        * `abs` - Absolute
-
-        * `percent` - Percent'
     MaxWeightConfigRequest:
       type: object
       description: Max Weight Config serializer
@@ -327,6 +316,17 @@ components:
         repeat:
           type: boolean
         requirements: {}
+    OperationEnum:
+      enum:
+      - +
+      - '-'
+      - r
+      type: string
+      description: '* `+` - Plus
+
+        * `-` - Minus
+
+        * `r` - Replace'
     MaxWeightConfig:
       type: object
       description: Max Weight Config serializer
@@ -356,17 +356,17 @@ components:
       - iteration
       - slot_entry
       - value
-    OperationEnum:
+    StepEnum:
       enum:
-      - +
-      - '-'
-      - r
+      - na
+      - abs
+      - percent
       type: string
-      description: '* `+` - Plus
+      description: '* `na` - Not Applicable
 
-        * `-` - Minus
+        * `abs` - Absolute
 
-        * `r` - Replace'
+        * `percent` - Percent'
   securitySchemes:
     cookieAuth:
       type: apiKey

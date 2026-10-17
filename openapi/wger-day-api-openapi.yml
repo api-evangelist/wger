@@ -226,57 +226,6 @@ paths:
       x-summary-source: derived
 components:
   schemas:
-    PaginatedDayList:
-      type: object
-      required:
-      - count
-      - results
-      properties:
-        count:
-          type: integer
-          example: 123
-        next:
-          type:
-          - string
-          - 'null'
-          format: uri
-          example: http://api.example.org/accounts/?offset=400&limit=100
-        previous:
-          type:
-          - string
-          - 'null'
-          format: uri
-          example: http://api.example.org/accounts/?offset=200&limit=100
-        results:
-          type: array
-          items:
-            $ref: '#/components/schemas/Day'
-    DayTypeEnum:
-      enum:
-      - custom
-      - enom
-      - amrap
-      - hiit
-      - tabata
-      - edt
-      - rft
-      - afap
-      type: string
-      description: '* `custom` - Custom
-
-        * `enom` - Enom
-
-        * `amrap` - Amrap
-
-        * `hiit` - Hiit
-
-        * `tabata` - Tabata
-
-        * `edt` - Edt
-
-        * `rft` - Rft
-
-        * `afap` - Afap'
     DayRequest:
       type: object
       description: Day serializer
@@ -325,6 +274,31 @@ components:
         type:
           $ref: '#/components/schemas/DayTypeEnum'
         config: {}
+    PaginatedDayList:
+      type: object
+      required:
+      - count
+      - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?offset=400&limit=100
+        previous:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?offset=200&limit=100
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/Day'
     Day:
       type: object
       description: Day serializer
@@ -354,6 +328,32 @@ components:
       required:
       - id
       - routine
+    DayTypeEnum:
+      enum:
+      - custom
+      - enom
+      - amrap
+      - hiit
+      - tabata
+      - edt
+      - rft
+      - afap
+      type: string
+      description: '* `custom` - Custom
+
+        * `enom` - Enom
+
+        * `amrap` - Amrap
+
+        * `hiit` - Hiit
+
+        * `tabata` - Tabata
+
+        * `edt` - Edt
+
+        * `rft` - Rft
+
+        * `afap` - Afap'
   securitySchemes:
     cookieAuth:
       type: apiKey

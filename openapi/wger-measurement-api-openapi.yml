@@ -282,31 +282,28 @@ components:
       required:
       - category
       - value
-    PaginatedMeasurementList:
+    PatchedMeasurementRequest:
       type: object
-      required:
-      - count
-      - results
+      description: Measurement serializer
       properties:
-        count:
-          type: integer
-          example: 123
-        next:
-          type:
-          - string
-          - 'null'
-          format: uri
-          example: http://api.example.org/accounts/?offset=400&limit=100
-        previous:
-          type:
-          - string
-          - 'null'
-          format: uri
-          example: http://api.example.org/accounts/?offset=200&limit=100
-        results:
-          type: array
-          items:
-            $ref: '#/components/schemas/Measurement'
+        id:
+          type: string
+          format: uuid
+        category:
+          type: string
+          format: uuid
+        date:
+          type: string
+          format: date-time
+        value:
+          type: number
+          format: double
+          maximum: 5000
+          minimum: 0
+        notes:
+          type: string
+          title: Description
+          maxLength: 100
     MeasurementRequest:
       type: object
       description: Measurement serializer
@@ -332,28 +329,31 @@ components:
       required:
       - category
       - value
-    PatchedMeasurementRequest:
+    PaginatedMeasurementList:
       type: object
-      description: Measurement serializer
+      required:
+      - count
+      - results
       properties:
-        id:
-          type: string
-          format: uuid
-        category:
-          type: string
-          format: uuid
-        date:
-          type: string
-          format: date-time
-        value:
-          type: number
-          format: double
-          maximum: 5000
-          minimum: 0
-        notes:
-          type: string
-          title: Description
-          maxLength: 100
+        count:
+          type: integer
+          example: 123
+        next:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?offset=400&limit=100
+        previous:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?offset=200&limit=100
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/Measurement'
   securitySchemes:
     cookieAuth:
       type: apiKey

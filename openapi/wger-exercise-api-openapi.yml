@@ -245,38 +245,6 @@ paths:
       x-summary-source: derived
 components:
   schemas:
-    PatchedExerciseRequest:
-      type: object
-      description: Exercise serializer
-      properties:
-        category:
-          type: integer
-        muscles:
-          type: array
-          items:
-            type: integer
-            title: Primary muscles
-          title: Primary muscles
-        muscles_secondary:
-          type: array
-          items:
-            type: integer
-            title: Secondary muscles
-          title: Secondary muscles
-        equipment:
-          type: array
-          items:
-            type: integer
-        variation_group:
-          type:
-          - string
-          - 'null'
-          format: uuid
-        license_author:
-          type: string
-          title: Author(s)
-          description: If you are not the author, enter the name or source here.
-          maxLength: 3500
     ExerciseRequest:
       type: object
       description: Exercise serializer
@@ -311,6 +279,38 @@ components:
           maxLength: 3500
       required:
       - category
+    PatchedExerciseRequest:
+      type: object
+      description: Exercise serializer
+      properties:
+        category:
+          type: integer
+        muscles:
+          type: array
+          items:
+            type: integer
+            title: Primary muscles
+          title: Primary muscles
+        muscles_secondary:
+          type: array
+          items:
+            type: integer
+            title: Secondary muscles
+          title: Secondary muscles
+        equipment:
+          type: array
+          items:
+            type: integer
+        variation_group:
+          type:
+          - string
+          - 'null'
+          format: uuid
+        license_author:
+          type: string
+          title: Author(s)
+          description: If you are not the author, enter the name or source here.
+          maxLength: 3500
     Exercise:
       type: object
       description: Exercise serializer

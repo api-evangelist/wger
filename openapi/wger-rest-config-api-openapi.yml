@@ -245,17 +245,88 @@ paths:
       x-summary-source: derived
 components:
   schemas:
-    StepEnum:
+    PaginatedRestConfigList:
+      type: object
+      required:
+      - count
+      - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?offset=400&limit=100
+        previous:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?offset=200&limit=100
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/RestConfig'
+    RestConfigRequest:
+      type: object
+      description: Rest Config serializer
+      properties:
+        slot_entry:
+          type: integer
+        iteration:
+          type: integer
+          maximum: 2147483647
+          minimum: 0
+        value:
+          type: integer
+          maximum: 1800
+          minimum: 0
+        operation:
+          $ref: '#/components/schemas/OperationEnum'
+        step:
+          $ref: '#/components/schemas/StepEnum'
+        repeat:
+          type: boolean
+        requirements: {}
+      required:
+      - iteration
+      - slot_entry
+      - value
+    OperationEnum:
       enum:
-      - na
-      - abs
-      - percent
+      - +
+      - '-'
+      - r
       type: string
-      description: '* `na` - Not Applicable
+      description: '* `+` - Plus
 
-        * `abs` - Absolute
+        * `-` - Minus
 
-        * `percent` - Percent'
+        * `r` - Replace'
+    PatchedRestConfigRequest:
+      type: object
+      description: Rest Config serializer
+      properties:
+        slot_entry:
+          type: integer
+        iteration:
+          type: integer
+          maximum: 2147483647
+          minimum: 0
+        value:
+          type: integer
+          maximum: 1800
+          minimum: 0
+        operation:
+          $ref: '#/components/schemas/OperationEnum'
+        step:
+          $ref: '#/components/schemas/StepEnum'
+        repeat:
+          type: boolean
+        requirements: {}
     RestConfig:
       type: object
       description: Rest Config serializer
@@ -285,88 +356,17 @@ components:
       - iteration
       - slot_entry
       - value
-    RestConfigRequest:
-      type: object
-      description: Rest Config serializer
-      properties:
-        slot_entry:
-          type: integer
-        iteration:
-          type: integer
-          maximum: 2147483647
-          minimum: 0
-        value:
-          type: integer
-          maximum: 1800
-          minimum: 0
-        operation:
-          $ref: '#/components/schemas/OperationEnum'
-        step:
-          $ref: '#/components/schemas/StepEnum'
-        repeat:
-          type: boolean
-        requirements: {}
-      required:
-      - iteration
-      - slot_entry
-      - value
-    PatchedRestConfigRequest:
-      type: object
-      description: Rest Config serializer
-      properties:
-        slot_entry:
-          type: integer
-        iteration:
-          type: integer
-          maximum: 2147483647
-          minimum: 0
-        value:
-          type: integer
-          maximum: 1800
-          minimum: 0
-        operation:
-          $ref: '#/components/schemas/OperationEnum'
-        step:
-          $ref: '#/components/schemas/StepEnum'
-        repeat:
-          type: boolean
-        requirements: {}
-    PaginatedRestConfigList:
-      type: object
-      required:
-      - count
-      - results
-      properties:
-        count:
-          type: integer
-          example: 123
-        next:
-          type:
-          - string
-          - 'null'
-          format: uri
-          example: http://api.example.org/accounts/?offset=400&limit=100
-        previous:
-          type:
-          - string
-          - 'null'
-          format: uri
-          example: http://api.example.org/accounts/?offset=200&limit=100
-        results:
-          type: array
-          items:
-            $ref: '#/components/schemas/RestConfig'
-    OperationEnum:
+    StepEnum:
       enum:
-      - +
-      - '-'
-      - r
+      - na
+      - abs
+      - percent
       type: string
-      description: '* `+` - Plus
+      description: '* `na` - Not Applicable
 
-        * `-` - Minus
+        * `abs` - Absolute
 
-        * `r` - Replace'
+        * `percent` - Percent'
   securitySchemes:
     cookieAuth:
       type: apiKey

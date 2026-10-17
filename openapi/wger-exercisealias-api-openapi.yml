@@ -206,31 +206,21 @@ paths:
       x-summary-source: derived
 components:
   schemas:
-    PaginatedExerciseAliasList:
+    ExerciseAliasRequest:
       type: object
-      required:
-      - count
-      - results
+      description: ExerciseAlias serializer
       properties:
-        count:
+        translation:
           type: integer
-          example: 123
-        next:
-          type:
-          - string
-          - 'null'
-          format: uri
-          example: http://api.example.org/accounts/?offset=400&limit=100
-        previous:
-          type:
-          - string
-          - 'null'
-          format: uri
-          example: http://api.example.org/accounts/?offset=200&limit=100
-        results:
-          type: array
-          items:
-            $ref: '#/components/schemas/ExerciseAlias'
+          title: Exercise
+        alias:
+          type: string
+          minLength: 1
+          title: Alias for an exercise
+          maxLength: 200
+      required:
+      - alias
+      - translation
     ExerciseAlias:
       type: object
       description: ExerciseAlias serializer
@@ -266,21 +256,31 @@ components:
           minLength: 1
           title: Alias for an exercise
           maxLength: 200
-    ExerciseAliasRequest:
+    PaginatedExerciseAliasList:
       type: object
-      description: ExerciseAlias serializer
-      properties:
-        translation:
-          type: integer
-          title: Exercise
-        alias:
-          type: string
-          minLength: 1
-          title: Alias for an exercise
-          maxLength: 200
       required:
-      - alias
-      - translation
+      - count
+      - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?offset=400&limit=100
+        previous:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?offset=200&limit=100
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/ExerciseAlias'
   securitySchemes:
     cookieAuth:
       type: apiKey

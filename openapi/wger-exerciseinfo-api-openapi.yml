@@ -199,37 +199,42 @@ paths:
       x-summary-source: derived
 components:
   schemas:
-    License:
+    Thumbnails:
       type: object
-      description: License serializer
+      description: 'Shape of the ``thumbnails`` field, used for schema generation only.
+
+
+        The aliases are read from settings.THUMBNAIL_ALIASES and are the same for
+
+        every thumbnailed image in the API. Without this, the generated schema falls
+
+        back to a plain string for the dict the method fields return.'
+      properties:
+        small:
+          type: string
+          format: uri
+        medium:
+          type: string
+          format: uri
+      required:
+      - medium
+      - small
+    Equipment:
+      type: object
+      description: Equipment serializer
       properties:
         id:
           type: integer
           readOnly: true
-        full_name:
+        name:
           type: string
-          description: If a license has been localized, e.g. the Creative Commons licenses for the different countries, add them as separate entries here.
-          maxLength: 60
-        short_name:
-          type: string
-          title: Short name, e.g. CC-BY-SA 3
-          maxLength: 15
-        url:
-          title: Link
-          description: Link to license text or other information
-          oneOf:
-          - type: string
-            format: uri
-            maxLength: 200
-          - type: string
-            maxLength: 0
+          maxLength: 50
       required:
-      - full_name
       - id
-      - short_name
-    ExerciseInfoAlias:
+      - name
+    ExerciseVideoInfo:
       type: object
-      description: Exercise alias serializer for info endpoint
+      description: ExerciseVideo serializer for the info endpoint
       properties:
         id:
           type: integer
@@ -238,14 +243,88 @@ components:
           type: string
           format: uuid
           readOnly: true
-        alias:
+        exercise:
+          type: integer
+        video:
           type: string
-          title: Alias for an exercise
-          maxLength: 200
+          format: uri
+        is_main:
+          type: boolean
+          title: Is main video
+        size:
+          type: integer
+          readOnly: true
+        duration:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,10}(?:\.\d{0,2})?$
+          readOnly: true
+        width:
+          type: integer
+          readOnly: true
+        height:
+          type: integer
+          readOnly: true
+        codec:
+          type: string
+          readOnly: true
+        codec_long:
+          type: string
+          readOnly: true
+          title: Codec, long name
+        license:
+          type: integer
+        license_title:
+          type: string
+          title: The original title of this object, if available
+          maxLength: 300
+        license_object_url:
+          title: Link to original object, if available
+          oneOf:
+          - type: string
+            format: uri
+            maxLength: 200
+          - type: string
+            maxLength: 0
+        license_author:
+          type: string
+          title: Author(s)
+          description: If you are not the author, enter the name or source here.
+          maxLength: 3500
+        license_author_url:
+          title: Link to author profile, if available
+          oneOf:
+          - type: string
+            format: uri
+            maxLength: 200
+          - type: string
+            maxLength: 0
+        license_derivative_source_url:
+          title: Link to the original source, if this is a derivative work
+          description: Note that a derivative work is one which is not only based on a previous work, but which also contains sufficient new, creative content to entitle it to its own copyright.
+          oneOf:
+          - type: string
+            format: uri
+            maxLength: 200
+          - type: string
+            maxLength: 0
+        author_history:
+          type: array
+          items:
+            type: string
+          readOnly: true
       required:
-      - alias
+      - author_history
+      - codec
+      - codec_long
+      - duration
+      - exercise
+      - height
       - id
+      - size
       - uuid
+      - video
+      - width
     ExerciseImage:
       type: object
       description: ExerciseImage serializer
@@ -342,26 +421,51 @@ components:
       - image
       - thumbnails
       - uuid
-    Thumbnails:
+    License:
       type: object
-      description: 'Shape of the ``thumbnails`` field, used for schema generation only.
-
-
-        The aliases are read from settings.THUMBNAIL_ALIASES and are the same for
-
-        every thumbnailed image in the API. Without this, the generated schema falls
-
-        back to a plain string for the dict the method fields return.'
+      description: License serializer
       properties:
-        small:
+        id:
+          type: integer
+          readOnly: true
+        full_name:
           type: string
-          format: uri
-        medium:
+          description: If a license has been localized, e.g. the Creative Commons licenses for the different countries, add them as separate entries here.
+          maxLength: 60
+        short_name:
           type: string
-          format: uri
+          title: Short name, e.g. CC-BY-SA 3
+          maxLength: 15
+        url:
+          title: Link
+          description: Link to license text or other information
+          oneOf:
+          - type: string
+            format: uri
+            maxLength: 200
+          - type: string
+            maxLength: 0
       required:
-      - medium
-      - small
+      - full_name
+      - id
+      - short_name
+    StyleEnum:
+      enum:
+      - '1'
+      - '2'
+      - '3'
+      - '4'
+      - '5'
+      type: string
+      description: '* `1` - Line
+
+        * `2` - 3D
+
+        * `3` - Low-poly
+
+        * `4` - Photo
+
+        * `5` - Other'
     PaginatedExerciseInfoList:
       type: object
       required:
@@ -513,6 +617,38 @@ components:
       - name
       - notes
       - uuid
+    ExerciseCategory:
+      type: object
+      description: ExerciseCategory serializer
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        name:
+          type: string
+          maxLength: 100
+      required:
+      - id
+      - name
+    ExerciseInfoAlias:
+      type: object
+      description: Exercise alias serializer for info endpoint
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        uuid:
+          type: string
+          format: uuid
+          readOnly: true
+        alias:
+          type: string
+          title: Alias for an exercise
+          maxLength: 200
+      required:
+      - alias
+      - id
+      - uuid
     ExerciseComment:
       type: object
       description: ExerciseComment serializer
@@ -536,142 +672,6 @@ components:
       - id
       - translation
       - uuid
-    ExerciseCategory:
-      type: object
-      description: ExerciseCategory serializer
-      properties:
-        id:
-          type: integer
-          readOnly: true
-        name:
-          type: string
-          maxLength: 100
-      required:
-      - id
-      - name
-    StyleEnum:
-      enum:
-      - '1'
-      - '2'
-      - '3'
-      - '4'
-      - '5'
-      type: string
-      description: '* `1` - Line
-
-        * `2` - 3D
-
-        * `3` - Low-poly
-
-        * `4` - Photo
-
-        * `5` - Other'
-    Equipment:
-      type: object
-      description: Equipment serializer
-      properties:
-        id:
-          type: integer
-          readOnly: true
-        name:
-          type: string
-          maxLength: 50
-      required:
-      - id
-      - name
-    ExerciseVideoInfo:
-      type: object
-      description: ExerciseVideo serializer for the info endpoint
-      properties:
-        id:
-          type: integer
-          readOnly: true
-        uuid:
-          type: string
-          format: uuid
-          readOnly: true
-        exercise:
-          type: integer
-        video:
-          type: string
-          format: uri
-        is_main:
-          type: boolean
-          title: Is main video
-        size:
-          type: integer
-          readOnly: true
-        duration:
-          type: string
-          format: decimal
-          pattern: ^-?\d{0,10}(?:\.\d{0,2})?$
-          readOnly: true
-        width:
-          type: integer
-          readOnly: true
-        height:
-          type: integer
-          readOnly: true
-        codec:
-          type: string
-          readOnly: true
-        codec_long:
-          type: string
-          readOnly: true
-          title: Codec, long name
-        license:
-          type: integer
-        license_title:
-          type: string
-          title: The original title of this object, if available
-          maxLength: 300
-        license_object_url:
-          title: Link to original object, if available
-          oneOf:
-          - type: string
-            format: uri
-            maxLength: 200
-          - type: string
-            maxLength: 0
-        license_author:
-          type: string
-          title: Author(s)
-          description: If you are not the author, enter the name or source here.
-          maxLength: 3500
-        license_author_url:
-          title: Link to author profile, if available
-          oneOf:
-          - type: string
-            format: uri
-            maxLength: 200
-          - type: string
-            maxLength: 0
-        license_derivative_source_url:
-          title: Link to the original source, if this is a derivative work
-          description: Note that a derivative work is one which is not only based on a previous work, but which also contains sufficient new, creative content to entitle it to its own copyright.
-          oneOf:
-          - type: string
-            format: uri
-            maxLength: 200
-          - type: string
-            maxLength: 0
-        author_history:
-          type: array
-          items:
-            type: string
-          readOnly: true
-      required:
-      - author_history
-      - codec
-      - codec_long
-      - duration
-      - exercise
-      - height
-      - id
-      - size
-      - uuid
-      - video
-      - width
     ExerciseInfo:
       type: object
       description: Exercise info serializer

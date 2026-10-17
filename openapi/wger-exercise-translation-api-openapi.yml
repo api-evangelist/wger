@@ -241,6 +241,57 @@ components:
           title: Author(s)
           description: If you are not the author, enter the name or source here.
           maxLength: 3500
+    PaginatedExerciseTranslationList:
+      type: object
+      required:
+      - count
+      - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?offset=400&limit=100
+        previous:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?offset=200&limit=100
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/ExerciseTranslation'
+    ExerciseTranslationRequest:
+      type: object
+      description: Exercise translation serializer
+      properties:
+        name:
+          type: string
+          minLength: 1
+          maxLength: 200
+        exercise:
+          type: integer
+        description_source:
+          type: string
+          minLength: 40
+          title: Description (Source)
+        language:
+          type: integer
+        license_author:
+          type: string
+          title: Author(s)
+          description: If you are not the author, enter the name or source here.
+          maxLength: 3500
+      required:
+      - description_source
+      - exercise
+      - language
+      - name
     ExerciseTranslation:
       type: object
       description: Exercise translation serializer
@@ -285,57 +336,6 @@ components:
       - language
       - name
       - uuid
-    ExerciseTranslationRequest:
-      type: object
-      description: Exercise translation serializer
-      properties:
-        name:
-          type: string
-          minLength: 1
-          maxLength: 200
-        exercise:
-          type: integer
-        description_source:
-          type: string
-          minLength: 40
-          title: Description (Source)
-        language:
-          type: integer
-        license_author:
-          type: string
-          title: Author(s)
-          description: If you are not the author, enter the name or source here.
-          maxLength: 3500
-      required:
-      - description_source
-      - exercise
-      - language
-      - name
-    PaginatedExerciseTranslationList:
-      type: object
-      required:
-      - count
-      - results
-      properties:
-        count:
-          type: integer
-          example: 123
-        next:
-          type:
-          - string
-          - 'null'
-          format: uri
-          example: http://api.example.org/accounts/?offset=400&limit=100
-        previous:
-          type:
-          - string
-          - 'null'
-          format: uri
-          example: http://api.example.org/accounts/?offset=200&limit=100
-        results:
-          type: array
-          items:
-            $ref: '#/components/schemas/ExerciseTranslation'
   securitySchemes:
     cookieAuth:
       type: apiKey

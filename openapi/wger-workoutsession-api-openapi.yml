@@ -240,111 +240,31 @@ paths:
       x-summary-source: derived
 components:
   schemas:
-    ImpressionEnum:
-      enum:
-      - '1'
-      - '2'
-      - '3'
-      type: string
-      description: '* `1` - Bad
-
-        * `2` - Neutral
-
-        * `3` - Good'
-    WorkoutSessionRequest:
+    PaginatedWorkoutSessionList:
       type: object
-      description: Workout session serializer
+      required:
+      - count
+      - results
       properties:
-        id:
-          type: string
-          format: uuid
-        routine:
-          type:
-          - integer
-          - 'null'
-        day:
-          type:
-          - integer
-          - 'null'
-        date:
-          type: string
-          format: date
-        notes:
+        count:
+          type: integer
+          example: 123
+        next:
           type:
           - string
           - 'null'
-          description: Any notes you might want to save about this workout session.
-        impression:
-          allOf:
-          - $ref: '#/components/schemas/ImpressionEnum'
-          title: General impression
-          description: 'Your impression about this workout session. Did you exercise as well as you could?
-
-
-            * `1` - Bad
-
-            * `2` - Neutral
-
-            * `3` - Good'
-        time_start:
+          format: uri
+          example: http://api.example.org/accounts/?offset=400&limit=100
+        previous:
           type:
           - string
           - 'null'
-          format: time
-          title: Start time
-        time_end:
-          type:
-          - string
-          - 'null'
-          format: time
-          title: Finish time
-    PatchedWorkoutSessionRequest:
-      type: object
-      description: Workout session serializer
-      properties:
-        id:
-          type: string
-          format: uuid
-        routine:
-          type:
-          - integer
-          - 'null'
-        day:
-          type:
-          - integer
-          - 'null'
-        date:
-          type: string
-          format: date
-        notes:
-          type:
-          - string
-          - 'null'
-          description: Any notes you might want to save about this workout session.
-        impression:
-          allOf:
-          - $ref: '#/components/schemas/ImpressionEnum'
-          title: General impression
-          description: 'Your impression about this workout session. Did you exercise as well as you could?
-
-
-            * `1` - Bad
-
-            * `2` - Neutral
-
-            * `3` - Good'
-        time_start:
-          type:
-          - string
-          - 'null'
-          format: time
-          title: Start time
-        time_end:
-          type:
-          - string
-          - 'null'
-          format: time
-          title: Finish time
+          format: uri
+          example: http://api.example.org/accounts/?offset=200&limit=100
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/WorkoutSession'
     WorkoutSession:
       type: object
       description: Workout session serializer
@@ -392,31 +312,111 @@ components:
           - 'null'
           format: time
           title: Finish time
-    PaginatedWorkoutSessionList:
+    WorkoutSessionRequest:
       type: object
-      required:
-      - count
-      - results
+      description: Workout session serializer
       properties:
-        count:
-          type: integer
-          example: 123
-        next:
+        id:
+          type: string
+          format: uuid
+        routine:
+          type:
+          - integer
+          - 'null'
+        day:
+          type:
+          - integer
+          - 'null'
+        date:
+          type: string
+          format: date
+        notes:
           type:
           - string
           - 'null'
-          format: uri
-          example: http://api.example.org/accounts/?offset=400&limit=100
-        previous:
+          description: Any notes you might want to save about this workout session.
+        impression:
+          allOf:
+          - $ref: '#/components/schemas/ImpressionEnum'
+          title: General impression
+          description: 'Your impression about this workout session. Did you exercise as well as you could?
+
+
+            * `1` - Bad
+
+            * `2` - Neutral
+
+            * `3` - Good'
+        time_start:
           type:
           - string
           - 'null'
-          format: uri
-          example: http://api.example.org/accounts/?offset=200&limit=100
-        results:
-          type: array
-          items:
-            $ref: '#/components/schemas/WorkoutSession'
+          format: time
+          title: Start time
+        time_end:
+          type:
+          - string
+          - 'null'
+          format: time
+          title: Finish time
+    ImpressionEnum:
+      enum:
+      - '1'
+      - '2'
+      - '3'
+      type: string
+      description: '* `1` - Bad
+
+        * `2` - Neutral
+
+        * `3` - Good'
+    PatchedWorkoutSessionRequest:
+      type: object
+      description: Workout session serializer
+      properties:
+        id:
+          type: string
+          format: uuid
+        routine:
+          type:
+          - integer
+          - 'null'
+        day:
+          type:
+          - integer
+          - 'null'
+        date:
+          type: string
+          format: date
+        notes:
+          type:
+          - string
+          - 'null'
+          description: Any notes you might want to save about this workout session.
+        impression:
+          allOf:
+          - $ref: '#/components/schemas/ImpressionEnum'
+          title: General impression
+          description: 'Your impression about this workout session. Did you exercise as well as you could?
+
+
+            * `1` - Bad
+
+            * `2` - Neutral
+
+            * `3` - Good'
+        time_start:
+          type:
+          - string
+          - 'null'
+          format: time
+          title: Start time
+        time_end:
+          type:
+          - string
+          - 'null'
+          format: time
+          title: Finish time
   securitySchemes:
     cookieAuth:
       type: apiKey

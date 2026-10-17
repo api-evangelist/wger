@@ -256,17 +256,6 @@ paths:
       x-summary-source: derived
 components:
   schemas:
-    PatchedWeightEntryRequest:
-      type: object
-      description: Weight serializer
-      properties:
-        date:
-          type: string
-          format: date-time
-        weight:
-          type: string
-          format: decimal
-          pattern: ^-?\d{0,3}(?:\.\d{0,2})?$
     WeightEntry:
       type: object
       description: Weight serializer
@@ -303,6 +292,17 @@ components:
       required:
       - date
       - weight
+    PatchedWeightEntryRequest:
+      type: object
+      description: Weight serializer
+      properties:
+        date:
+          type: string
+          format: date-time
+        weight:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,3}(?:\.\d{0,2})?$
     PaginatedWeightEntryList:
       type: object
       required:

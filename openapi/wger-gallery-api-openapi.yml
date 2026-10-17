@@ -211,6 +211,31 @@ paths:
       x-summary-source: derived
 components:
   schemas:
+    PaginatedImageList:
+      type: object
+      required:
+      - count
+      - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?offset=400&limit=100
+        previous:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?offset=200&limit=100
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/Image'
     PatchedImageRequest:
       type: object
       description: Exercise serializer
@@ -225,6 +250,23 @@ components:
         description:
           type: string
           maxLength: 1000
+    ImageRequest:
+      type: object
+      description: Exercise serializer
+      properties:
+        date:
+          type: string
+          format: date
+        image:
+          type: string
+          format: binary
+          description: Only PNG and JPEG formats are supported
+        description:
+          type: string
+          maxLength: 1000
+      required:
+      - date
+      - image
     Image:
       type: object
       description: Exercise serializer
@@ -254,48 +296,6 @@ components:
       - id
       - image
       - width
-    ImageRequest:
-      type: object
-      description: Exercise serializer
-      properties:
-        date:
-          type: string
-          format: date
-        image:
-          type: string
-          format: binary
-          description: Only PNG and JPEG formats are supported
-        description:
-          type: string
-          maxLength: 1000
-      required:
-      - date
-      - image
-    PaginatedImageList:
-      type: object
-      required:
-      - count
-      - results
-      properties:
-        count:
-          type: integer
-          example: 123
-        next:
-          type:
-          - string
-          - 'null'
-          format: uri
-          example: http://api.example.org/accounts/?offset=400&limit=100
-        previous:
-          type:
-          - string
-          - 'null'
-          format: uri
-          example: http://api.example.org/accounts/?offset=200&limit=100
-        results:
-          type: array
-          items:
-            $ref: '#/components/schemas/Image'
   securitySchemes:
     cookieAuth:
       type: apiKey

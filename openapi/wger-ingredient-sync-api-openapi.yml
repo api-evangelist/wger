@@ -326,131 +326,26 @@ paths:
       x-summary-source: derived
 components:
   schemas:
-    License:
-      type: object
-      description: License serializer
-      properties:
-        id:
-          type: integer
-          readOnly: true
-        full_name:
-          type: string
-          description: If a license has been localized, e.g. the Creative Commons licenses for the different countries, add them as separate entries here.
-          maxLength: 60
-        short_name:
-          type: string
-          title: Short name, e.g. CC-BY-SA 3
-          maxLength: 15
-        url:
-          title: Link
-          description: Link to license text or other information
-          oneOf:
-          - type: string
-            format: uri
-            maxLength: 200
-          - type: string
-            maxLength: 0
-      required:
-      - full_name
-      - id
-      - short_name
     BlankEnum:
       enum:
       - ''
-    Language:
-      type: object
-      description: Language serializer
-      properties:
-        id:
-          type: integer
-          readOnly: true
-        short_name:
-          type: string
-          title: Language short name
-          description: ISO 639-1
-          maxLength: 2
-        full_name:
-          type: string
-          title: Language full name
-          maxLength: 30
-        full_name_en:
-          type: string
-          title: Language full name in English
-          maxLength: 30
-      required:
-      - full_name
-      - full_name_en
-      - id
-      - short_name
-    CursorPaginatedIngredientInfoList:
-      type: object
-      required:
-      - results
-      properties:
-        next:
-          type:
-          - string
-          - 'null'
-          format: uri
-          example: http://api.example.org/accounts/?cursor=cD00ODY%3D"
-        previous:
-          type:
-          - string
-          - 'null'
-          format: uri
-          example: http://api.example.org/accounts/?cursor=cj0xJnA9NDg3
-        results:
-          type: array
-          items:
-            $ref: '#/components/schemas/IngredientInfo'
-    IngredientWeightUnit:
-      type: object
-      description: IngredientWeightUnit serializer
-      properties:
-        id:
-          type: integer
-          readOnly: true
-        uuid:
-          type: string
-          format: uuid
-          readOnly: true
-        ingredient:
-          type: integer
-          readOnly: true
-        gram:
-          type: integer
-          maximum: 2147483647
-          minimum: -2147483648
-          title: Amount in grams
-        name:
-          type: string
-          maxLength: 200
-      required:
-      - gram
-      - id
-      - ingredient
-      - name
-      - uuid
-    Thumbnails:
-      type: object
-      description: 'Shape of the ``thumbnails`` field, used for schema generation only.
+    NutriscoreEnum:
+      enum:
+      - a
+      - b
+      - c
+      - d
+      - e
+      type: string
+      description: '* `a` - A
 
+        * `b` - B
 
-        The aliases are read from settings.THUMBNAIL_ALIASES and are the same for
+        * `c` - C
 
-        every thumbnailed image in the API. Without this, the generated schema falls
+        * `d` - D
 
-        back to a plain string for the dict the method fields return.'
-      properties:
-        small:
-          type: string
-          format: uri
-        medium:
-          type: string
-          format: uri
-      required:
-      - medium
-      - small
+        * `e` - E'
     IngredientInfo:
       type: object
       description: Ingredient info serializer
@@ -668,26 +563,62 @@ components:
       - thumbnails
       - uuid
       - weight_units
-    NullEnum:
-      enum:
-      - null
-    NutriscoreEnum:
-      enum:
-      - a
-      - b
-      - c
-      - d
-      - e
-      type: string
-      description: '* `a` - A
-
-        * `b` - B
-
-        * `c` - C
-
-        * `d` - D
-
-        * `e` - E'
+    IngredientWeightUnit:
+      type: object
+      description: IngredientWeightUnit serializer
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        uuid:
+          type: string
+          format: uuid
+          readOnly: true
+        ingredient:
+          type: integer
+          readOnly: true
+        gram:
+          type: integer
+          maximum: 2147483647
+          minimum: -2147483648
+          title: Amount in grams
+        name:
+          type: string
+          maxLength: 200
+      required:
+      - gram
+      - id
+      - ingredient
+      - name
+      - uuid
+    License:
+      type: object
+      description: License serializer
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        full_name:
+          type: string
+          description: If a license has been localized, e.g. the Creative Commons licenses for the different countries, add them as separate entries here.
+          maxLength: 60
+        short_name:
+          type: string
+          title: Short name, e.g. CC-BY-SA 3
+          maxLength: 15
+        url:
+          title: Link
+          description: Link to license text or other information
+          oneOf:
+          - type: string
+            format: uri
+            maxLength: 200
+          - type: string
+            maxLength: 0
+      required:
+      - full_name
+      - id
+      - short_name
     IngredientImage:
       type: object
       description: Image serializer
@@ -776,6 +707,75 @@ components:
       - size
       - uuid
       - width
+    Thumbnails:
+      type: object
+      description: 'Shape of the ``thumbnails`` field, used for schema generation only.
+
+
+        The aliases are read from settings.THUMBNAIL_ALIASES and are the same for
+
+        every thumbnailed image in the API. Without this, the generated schema falls
+
+        back to a plain string for the dict the method fields return.'
+      properties:
+        small:
+          type: string
+          format: uri
+        medium:
+          type: string
+          format: uri
+      required:
+      - medium
+      - small
+    CursorPaginatedIngredientInfoList:
+      type: object
+      required:
+      - results
+      properties:
+        next:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?cursor=cD00ODY%3D"
+        previous:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?cursor=cj0xJnA9NDg3
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/IngredientInfo'
+    Language:
+      type: object
+      description: Language serializer
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        short_name:
+          type: string
+          title: Language short name
+          description: ISO 639-1
+          maxLength: 2
+        full_name:
+          type: string
+          title: Language full name
+          maxLength: 30
+        full_name_en:
+          type: string
+          title: Language full name in English
+          maxLength: 30
+      required:
+      - full_name
+      - full_name_en
+      - id
+      - short_name
+    NullEnum:
+      enum:
+      - null
   securitySchemes:
     cookieAuth:
       type: apiKey

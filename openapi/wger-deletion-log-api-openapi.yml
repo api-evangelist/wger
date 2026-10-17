@@ -139,6 +139,20 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/DeletionLog'
+    ModelTypeEnum:
+      enum:
+      - base
+      - translation
+      - image
+      - video
+      type: string
+      description: '* `base` - base
+
+        * `translation` - translation
+
+        * `image` - image
+
+        * `video` - video'
     DeletionLog:
       type: object
       description: Deletion log serializer
@@ -168,20 +182,6 @@ components:
       - replaced_by
       - timestamp
       - uuid
-    ModelTypeEnum:
-      enum:
-      - base
-      - translation
-      - image
-      - video
-      type: string
-      description: '* `base` - base
-
-        * `translation` - translation
-
-        * `image` - image
-
-        * `video` - video'
   securitySchemes:
     cookieAuth:
       type: apiKey

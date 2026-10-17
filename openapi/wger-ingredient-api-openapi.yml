@@ -377,6 +377,23 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/Ingredient'
+    NutriscoreEnum:
+      enum:
+      - a
+      - b
+      - c
+      - d
+      - e
+      type: string
+      description: '* `a` - A
+
+        * `b` - B
+
+        * `c` - C
+
+        * `d` - D
+
+        * `e` - E'
     Ingredient:
       type: object
       description: Ingredient serializer
@@ -608,26 +625,6 @@ components:
       - ingredient
       - name
       - uuid
-    NullEnum:
-      enum:
-      - null
-    NutriscoreEnum:
-      enum:
-      - a
-      - b
-      - c
-      - d
-      - e
-      type: string
-      description: '* `a` - A
-
-        * `b` - B
-
-        * `c` - C
-
-        * `d` - D
-
-        * `e` - E'
     IngredientValues:
       type: object
       description: 'Nutritional values for a given amount and unit of an ingredient.
@@ -684,6 +681,9 @@ components:
       - fiber
       - protein
       - sodium
+    NullEnum:
+      enum:
+      - null
   securitySchemes:
     cookieAuth:
       type: apiKey

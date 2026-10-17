@@ -349,110 +349,26 @@ paths:
       x-summary-source: derived
 components:
   schemas:
-    License:
-      type: object
-      description: License serializer
-      properties:
-        id:
-          type: integer
-          readOnly: true
-        full_name:
-          type: string
-          description: If a license has been localized, e.g. the Creative Commons licenses for the different countries, add them as separate entries here.
-          maxLength: 60
-        short_name:
-          type: string
-          title: Short name, e.g. CC-BY-SA 3
-          maxLength: 15
-        url:
-          title: Link
-          description: Link to license text or other information
-          oneOf:
-          - type: string
-            format: uri
-            maxLength: 200
-          - type: string
-            maxLength: 0
-      required:
-      - full_name
-      - id
-      - short_name
     BlankEnum:
       enum:
       - ''
-    Language:
-      type: object
-      description: Language serializer
-      properties:
-        id:
-          type: integer
-          readOnly: true
-        short_name:
-          type: string
-          title: Language short name
-          description: ISO 639-1
-          maxLength: 2
-        full_name:
-          type: string
-          title: Language full name
-          maxLength: 30
-        full_name_en:
-          type: string
-          title: Language full name in English
-          maxLength: 30
-      required:
-      - full_name
-      - full_name_en
-      - id
-      - short_name
-    IngredientWeightUnit:
-      type: object
-      description: IngredientWeightUnit serializer
-      properties:
-        id:
-          type: integer
-          readOnly: true
-        uuid:
-          type: string
-          format: uuid
-          readOnly: true
-        ingredient:
-          type: integer
-          readOnly: true
-        gram:
-          type: integer
-          maximum: 2147483647
-          minimum: -2147483648
-          title: Amount in grams
-        name:
-          type: string
-          maxLength: 200
-      required:
-      - gram
-      - id
-      - ingredient
-      - name
-      - uuid
-    Thumbnails:
-      type: object
-      description: 'Shape of the ``thumbnails`` field, used for schema generation only.
+    NutriscoreEnum:
+      enum:
+      - a
+      - b
+      - c
+      - d
+      - e
+      type: string
+      description: '* `a` - A
 
+        * `b` - B
 
-        The aliases are read from settings.THUMBNAIL_ALIASES and are the same for
+        * `c` - C
 
-        every thumbnailed image in the API. Without this, the generated schema falls
+        * `d` - D
 
-        back to a plain string for the dict the method fields return.'
-      properties:
-        small:
-          type: string
-          format: uri
-        medium:
-          type: string
-          format: uri
-      required:
-      - medium
-      - small
+        * `e` - E'
     IngredientInfo:
       type: object
       description: Ingredient info serializer
@@ -695,26 +611,118 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/IngredientInfo'
-    NullEnum:
-      enum:
-      - null
-    NutriscoreEnum:
-      enum:
-      - a
-      - b
-      - c
-      - d
-      - e
-      type: string
-      description: '* `a` - A
+    IngredientWeightUnit:
+      type: object
+      description: IngredientWeightUnit serializer
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        uuid:
+          type: string
+          format: uuid
+          readOnly: true
+        ingredient:
+          type: integer
+          readOnly: true
+        gram:
+          type: integer
+          maximum: 2147483647
+          minimum: -2147483648
+          title: Amount in grams
+        name:
+          type: string
+          maxLength: 200
+      required:
+      - gram
+      - id
+      - ingredient
+      - name
+      - uuid
+    IngredientValues:
+      type: object
+      description: 'Nutritional values for a given amount and unit of an ingredient.
 
-        * `b` - B
 
-        * `c` - C
+        Carries the form errors instead of usable values when the amount or unit
 
-        * `d` - D
-
-        * `e` - E'
+        query parameters don''t validate.'
+      properties:
+        energy:
+          type: number
+          format: double
+        protein:
+          type: number
+          format: double
+        carbohydrates:
+          type: number
+          format: double
+        carbohydrates_sugar:
+          type:
+          - number
+          - 'null'
+          format: double
+        fat:
+          type: number
+          format: double
+        fat_saturated:
+          type:
+          - number
+          - 'null'
+          format: double
+        fiber:
+          type:
+          - number
+          - 'null'
+          format: double
+        sodium:
+          type:
+          - number
+          - 'null'
+          format: double
+        errors:
+          type: object
+          additionalProperties:
+            type: array
+            items:
+              type: string
+      required:
+      - carbohydrates
+      - carbohydrates_sugar
+      - energy
+      - fat
+      - fat_saturated
+      - fiber
+      - protein
+      - sodium
+    License:
+      type: object
+      description: License serializer
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        full_name:
+          type: string
+          description: If a license has been localized, e.g. the Creative Commons licenses for the different countries, add them as separate entries here.
+          maxLength: 60
+        short_name:
+          type: string
+          title: Short name, e.g. CC-BY-SA 3
+          maxLength: 15
+        url:
+          title: Link
+          description: Link to license text or other information
+          oneOf:
+          - type: string
+            format: uri
+            maxLength: 200
+          - type: string
+            maxLength: 0
+      required:
+      - full_name
+      - id
+      - short_name
     IngredientImage:
       type: object
       description: Image serializer
@@ -803,62 +811,54 @@ components:
       - size
       - uuid
       - width
-    IngredientValues:
+    Thumbnails:
       type: object
-      description: 'Nutritional values for a given amount and unit of an ingredient.
+      description: 'Shape of the ``thumbnails`` field, used for schema generation only.
 
 
-        Carries the form errors instead of usable values when the amount or unit
+        The aliases are read from settings.THUMBNAIL_ALIASES and are the same for
 
-        query parameters don''t validate.'
+        every thumbnailed image in the API. Without this, the generated schema falls
+
+        back to a plain string for the dict the method fields return.'
       properties:
-        energy:
-          type: number
-          format: double
-        protein:
-          type: number
-          format: double
-        carbohydrates:
-          type: number
-          format: double
-        carbohydrates_sugar:
-          type:
-          - number
-          - 'null'
-          format: double
-        fat:
-          type: number
-          format: double
-        fat_saturated:
-          type:
-          - number
-          - 'null'
-          format: double
-        fiber:
-          type:
-          - number
-          - 'null'
-          format: double
-        sodium:
-          type:
-          - number
-          - 'null'
-          format: double
-        errors:
-          type: object
-          additionalProperties:
-            type: array
-            items:
-              type: string
+        small:
+          type: string
+          format: uri
+        medium:
+          type: string
+          format: uri
       required:
-      - carbohydrates
-      - carbohydrates_sugar
-      - energy
-      - fat
-      - fat_saturated
-      - fiber
-      - protein
-      - sodium
+      - medium
+      - small
+    Language:
+      type: object
+      description: Language serializer
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        short_name:
+          type: string
+          title: Language short name
+          description: ISO 639-1
+          maxLength: 2
+        full_name:
+          type: string
+          title: Language full name
+          maxLength: 30
+        full_name_en:
+          type: string
+          title: Language full name in English
+          maxLength: 30
+      required:
+      - full_name
+      - full_name_en
+      - id
+      - short_name
+    NullEnum:
+      enum:
+      - null
   securitySchemes:
     cookieAuth:
       type: apiKey

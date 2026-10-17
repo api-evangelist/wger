@@ -245,63 +245,6 @@ paths:
       x-summary-source: derived
 components:
   schemas:
-    RiRConfigRequest:
-      type: object
-      description: RiR Config serializer
-      properties:
-        slot_entry:
-          type: integer
-        iteration:
-          type: integer
-          maximum: 2147483647
-          minimum: 0
-        value:
-          type: string
-          format: decimal
-          pattern: ^-?\d{0,1}(?:\.\d{0,1})?$
-        operation:
-          $ref: '#/components/schemas/OperationEnum'
-        step:
-          $ref: '#/components/schemas/StepEnum'
-        repeat:
-          type: boolean
-        requirements: {}
-      required:
-      - iteration
-      - slot_entry
-      - value
-    StepEnum:
-      enum:
-      - na
-      - abs
-      - percent
-      type: string
-      description: '* `na` - Not Applicable
-
-        * `abs` - Absolute
-
-        * `percent` - Percent'
-    PatchedRiRConfigRequest:
-      type: object
-      description: RiR Config serializer
-      properties:
-        slot_entry:
-          type: integer
-        iteration:
-          type: integer
-          maximum: 2147483647
-          minimum: 0
-        value:
-          type: string
-          format: decimal
-          pattern: ^-?\d{0,1}(?:\.\d{0,1})?$
-        operation:
-          $ref: '#/components/schemas/OperationEnum'
-        step:
-          $ref: '#/components/schemas/StepEnum'
-        repeat:
-          type: boolean
-        requirements: {}
     RiRConfig:
       type: object
       description: RiR Config serializer
@@ -331,6 +274,31 @@ components:
       - iteration
       - slot_entry
       - value
+    RiRConfigRequest:
+      type: object
+      description: RiR Config serializer
+      properties:
+        slot_entry:
+          type: integer
+        iteration:
+          type: integer
+          maximum: 2147483647
+          minimum: 0
+        value:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,1}(?:\.\d{0,1})?$
+        operation:
+          $ref: '#/components/schemas/OperationEnum'
+        step:
+          $ref: '#/components/schemas/StepEnum'
+        repeat:
+          type: boolean
+        requirements: {}
+      required:
+      - iteration
+      - slot_entry
+      - value
     OperationEnum:
       enum:
       - +
@@ -342,6 +310,38 @@ components:
         * `-` - Minus
 
         * `r` - Replace'
+    PatchedRiRConfigRequest:
+      type: object
+      description: RiR Config serializer
+      properties:
+        slot_entry:
+          type: integer
+        iteration:
+          type: integer
+          maximum: 2147483647
+          minimum: 0
+        value:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,1}(?:\.\d{0,1})?$
+        operation:
+          $ref: '#/components/schemas/OperationEnum'
+        step:
+          $ref: '#/components/schemas/StepEnum'
+        repeat:
+          type: boolean
+        requirements: {}
+    StepEnum:
+      enum:
+      - na
+      - abs
+      - percent
+      type: string
+      description: '* `na` - Not Applicable
+
+        * `abs` - Absolute
+
+        * `percent` - Percent'
     PaginatedRiRConfigList:
       type: object
       required:
