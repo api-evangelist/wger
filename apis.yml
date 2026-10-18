@@ -143,6 +143,8 @@ apis:
   humanURL: https://wger.readthedocs.io/en/latest/api/api.html
   baseURL: https://wger.de/api/v2
   tags:
+  - Day
+  tags_raw:
   - day
   properties:
   - type: OpenAPI
