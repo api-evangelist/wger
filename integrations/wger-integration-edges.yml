@@ -96,6 +96,25 @@ edges:
   - Flathub verified
   detected_by: sweep-flathub-linux-app-publishers.py
   first_seen: '2026-10-22'
+- partner_name: Artifact Hub (artifact-hub)
+  partner: artifact-hub
+  partner_match: mirror
+  mirror_match: domain
+  type: marketplace
+  relationship: platform-app
+  direction: third-party
+  channel: partner-built
+  marketplace: artifact-hub
+  evidence: https://artifacthub.io/packages/search?repo=wger
+  mirror_of: artifact-hub/integrations/artifact-hub-integration-edges.yml
+  apps:
+  - wger
+  listing_count: 1
+  detected: '2026-10-22'
+  detected_by: mirror-platform-listings.py
+  category: Artifact Hub listing (Helm chart)
+  badges:
+  - 'Verified publisher (Artifact Hub verified publisher: repository ownership proven)'
 generated: '2026-10-18'
 method: searched
 source:
@@ -116,3 +135,4 @@ checked:
 - https://rubygems.org/api/v1
 - https://flathub.org/api/v2/appstream
 - https://flathub.org/api/v2/appstream/<app-id>
+- artifact-hub/integrations/artifact-hub-integration-edges.yml

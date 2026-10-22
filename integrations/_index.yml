@@ -95,3 +95,16 @@
     detected: '2026-10-22'
   status: not-a-workflow
   arazzo: null
+- slug: wger-artifact-hub-artifact-hub
+  label: Artifact Hub (artifact-hub)
+  partner: artifact-hub
+  partner_name: Artifact Hub (artifact-hub)
+  category: Artifact Hub listing (Helm chart)
+  type: marketplace
+  marketplace: artifact-hub
+  channel: partner-built
+  evidence: https://artifacthub.io/packages/search?repo=wger
+  source: edge
+  relationship: platform-app
+  status: not-a-workflow
+  arazzo: null
