@@ -187,3 +187,9 @@ components:
 externalDocs:
   url: https://wger.readthedocs.io
   description: wger documentation
+x-provenance:
+  method: harvested
+  publisher: Wger
+  source: https://wger.de/api/v2/schema
+  note: split by refine-openapis from the provider's own published document, verified by fetch (openapi/_original/*.fetch.json);
+    stamped by stamp-openapi-provenance.py (roadmap#793)
